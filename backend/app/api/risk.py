@@ -50,7 +50,8 @@ def get_quantified_risk_scenarios(
     point-estimate EAL, and Monte Carlo loss percentile distributions (mean EAL, P90, P95, P99).
     """
     try:
-        scenarios = quantify_all_scenarios(data_dir=data_dir)
+        res = quantify_all_scenarios(data_dir=data_dir)
+        scenarios = res.get("scenarios", [])
         
         # Enterprise Monte Carlo Aggregation across all simulated scenarios
         enterprise_mc = run_enterprise_monte_carlo(scenarios)
@@ -194,7 +195,8 @@ def get_top_risk_drivers(
     rank, formatted likelihood, EAL, P95, attack path, vulnerabilities, and controls.
     """
     try:
-        all_scenarios = quantify_all_scenarios(data_dir=data_dir)
+        all_res = quantify_all_scenarios(data_dir=data_dir)
+        all_scenarios = all_res.get("scenarios", [])
         top_scenarios = all_scenarios[:limit]
 
         results = []
@@ -239,7 +241,8 @@ def get_top_risk_drivers(
 @router.get("/scenarios/{scenario_id}", response_model=RiskQuantificationSchema)
 def get_scenario_by_id(scenario_id: str, data_dir: Optional[str] = Query(None)):
     """Returns single quantified risk scenario by scenario_id."""
-    scenarios = quantify_all_scenarios(data_dir=data_dir)
+    res = quantify_all_scenarios(data_dir=data_dir)
+    scenarios = res.get("scenarios", [])
     target = next((s for s in scenarios if s["scenario_id"].lower() == scenario_id.lower()), None)
     if not target:
         raise HTTPException(status_code=404, detail=f"Risk scenario '{scenario_id}' not found")
@@ -267,7 +270,7 @@ def evaluate_custom_risk_scenario(req: CustomRiskEvaluateRequestSchema):
     }
     service_data = {
         "downtime_cost_per_hour": req.downtime_cost_per_hour,
-        "data_sensitivity": "High",
+        "data_sensitivity": "High", "estimated_downtime_hours": 24.0,
     }
     controls = [
         {"control_id": "C001", "status": "Implemented" if req.mfa_enabled else "Not Implemented"},

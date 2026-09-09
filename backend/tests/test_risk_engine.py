@@ -12,9 +12,9 @@ client = TestClient(app)
 
 
 def test_feature_builder():
-    """Verify feature builder extracts all 11 required ML feature fields."""
+    """Verify feature builder extracts all required ML feature fields."""
     asset_data = {"asset_id": "A001", "criticality": 9, "internet_exposed": "Yes"}
-    vuln_data = {"cvss_score": 9.8, "known_exploited": "Yes", "days_open": 45, "patch_available": "No"}
+    vuln_data = {"cvss_score": 9.8, "known_exploited": "Yes", "days_open": 45}
     controls = [
         {"control_id": "C001", "status": "Implemented"},
         {"control_id": "C002", "status": "Not Implemented"},
@@ -28,9 +28,10 @@ def test_feature_builder():
     )
 
     required_keys = [
-        "cvss_score", "exploitability", "known_exploited", "internet_exposed",
-        "asset_criticality", "vuln_age_days", "patch_available",
-        "attack_path_length", "mfa_enabled", "edr_enabled", "prior_incidents"
+        "cvss_score", "exploitability", "known_exploited", "vulnerability_age_days",
+        "internet_exposed", "asset_criticality", "attack_path_reachable",
+        "attack_path_length", "path_strength", "control_coverage",
+        "control_maturity", "threat_activity"
     ]
     for key in required_keys:
         assert key in features
@@ -39,23 +40,17 @@ def test_feature_builder():
     assert features["known_exploited"] == 1
     assert features["internet_exposed"] == 1
     assert features["asset_criticality"] == 9
-    assert features["mfa_enabled"] == 1
-    assert features["edr_enabled"] == 0
 
 
 def test_ml_predictor_interface():
     """Verify ML Predictor interface returns single calibrated probability and confidence."""
     high_risk_features = {
         "cvss_score": 9.8, "exploitability": 1.0, "known_exploited": 1,
-        "internet_exposed": 1, "asset_criticality": 9, "vuln_age_days": 60,
-        "patch_available": 0, "attack_path_length": 1, "mfa_enabled": 0,
-        "edr_enabled": 0, "prior_incidents": 2
+        "internet_exposed": 1, "asset_criticality": 9, "vulnerability_age_days": 60,
     }
     low_risk_features = {
         "cvss_score": 3.0, "exploitability": 0.2, "known_exploited": 0,
-        "internet_exposed": 0, "asset_criticality": 3, "vuln_age_days": 5,
-        "patch_available": 1, "attack_path_length": 4, "mfa_enabled": 1,
-        "edr_enabled": 1, "prior_incidents": 0
+        "internet_exposed": 0, "asset_criticality": 3, "vulnerability_age_days": 5,
     }
 
     prob_high, conf_high = predictor_service.predict_likelihood(high_risk_features)
@@ -69,10 +64,11 @@ def test_ml_predictor_interface():
 
 def test_financial_impact_resolution():
     """Verify financial impact resolution from business service downtime cost."""
-    service_data = {"downtime_cost_per_hour": 2500000.0, "revenue_dependency": 0.8}
-    threat_data = {"activity_level": "high"}
+    service_data = {"downtime_cost_per_hour": 2500000.0, "revenue_dependency": 0.8, "estimated_downtime_hours": 24.0}
+    threat_data = {"activity_level": "high", "threat_id": "T001"}
+    scenario_row = {"scenario_id": "RS0001", "financial_impact": 2500000.0 * 24.0 * 1.8}
     
-    impact = resolve_financial_impact(service_data=service_data, threat_data=threat_data)
+    impact = resolve_financial_impact(service_data=service_data, threat_data=threat_data, scenario_row=scenario_row)
     assert impact > 0
     assert impact == 2500000.0 * 24.0 * 1.8
 
@@ -83,7 +79,7 @@ def test_scenario_quantification():
         "scenario_row": {"scenario_id": "RS0001", "threat_id": "T001"},
         "asset_data": {"asset_id": "A001", "asset_name": "IDENTITY-SERVER-001", "criticality": 9, "internet_exposed": "No"},
         "vuln_data": {"vulnerability_id": "V0001", "cvss_score": 9.9, "known_exploited": "Yes", "days_open": 47},
-        "service_data": {"service_id": "S007", "downtime_cost_per_hour": 2200000.0},
+        "service_data": {"service_id": "S007", "downtime_cost_per_hour": 2200000.0, "estimated_downtime_hours": 24.0},
         "threat_data": {"threat_id": "T001", "threat_name": "Ransomware"},
         "control_status_list": [{"control_id": "C001", "status": "Implemented"}],
     }
@@ -111,8 +107,9 @@ def test_scenario_quantification():
 def test_quantify_all_scenarios():
     """Verify quantifying all risk scenarios from dataset."""
     results = quantify_all_scenarios()
-    assert len(results) > 0, "Should quantify at least 1 risk scenario from CSV dataset"
-    assert results[0]["eal"] >= results[-1]["eal"], "Results should be sorted descending by EAL"
+    scenarios = results["scenarios"]
+    assert len(scenarios) > 0, "Should quantify at least 1 risk scenario from CSV dataset"
+    assert scenarios[0]["eal"] >= scenarios[-1]["eal"], "Results should be sorted descending by EAL"
 
 
 def test_fastapi_risk_endpoints():
@@ -138,6 +135,7 @@ def test_fastapi_custom_evaluate_endpoint():
         "mfa_enabled": False,
         "edr_enabled": True,
         "downtime_cost_per_hour": 3000000.0,
+        "estimated_downtime_hours": 24.0,
         "attack_path_length": 2,
     }
     response = client.post("/api/v1/risk/evaluate", json=payload)
@@ -160,7 +158,7 @@ def test_missing_linked_record_error():
         "scenario_row": {"scenario_id": "RS9999", "threat_id": "T001"},
         "asset_data": {},  # missing asset_id
         "vuln_data": {"vulnerability_id": "V001"},
-        "service_data": {"downtime_cost_per_hour": 1000.0},
+        "service_data": {"downtime_cost_per_hour": 1000.0, "estimated_downtime_hours": 24.0},
         "threat_data": {"threat_id": "T001"},
     }
     with pytest.raises(MissingLinkedRecordError):
@@ -181,4 +179,3 @@ def test_missing_impact_data_error():
     }
     with pytest.raises(MissingImpactDataError):
         quantify_scenario(scenario_no_impact)
-

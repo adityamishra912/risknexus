@@ -15,3 +15,27 @@ venv\Scripts\activate   # On Windows
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
+
+## What-If Simulation
+
+The what-if simulation feature allows you to test hypothetical changes to the environment and see the impact on risk quantification, without persisting the changes to the underlying data.
+
+### Endpoints
+
+*   **`POST /api/v1/what-if/scenario`**: Simulate changes on a single scenario. Requires either `scenario_id` or `scenario_data` inline, plus a `changes` object (WhatIfChangeset).
+*   **`POST /api/v1/what-if/portfolio`**: Simulate changes across the entire portfolio (or a subset by `scope_asset_ids`). Requires a `changes` object (WhatIfChangeset).
+
+### Changeset Schema (`WhatIfChangeset`)
+
+*   `asset_criticality` (int): 1-10
+*   `internet_exposed` (bool)
+*   `cvss_score` (float): 0.0-10.0
+*   `known_exploited` (bool)
+*   `days_open` (int)
+*   `control_overrides` (List[ControlOverride]): Modify existing controls
+*   `add_controls` (List[ControlOverride]): Add new controls
+*   `remove_control_ids` (List[str]): Remove controls by ID
+*   `downtime_cost_per_hour` (float)
+*   `threat_activity` (string): low, medium, high
+
+*Note: All simulation results are ephemeral. No state is persisted to the database.*
