@@ -1,0 +1,2 @@
+// copilot.js module
+export {};

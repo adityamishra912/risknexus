@@ -1,0 +1,2 @@
+// client.js module
+export {};

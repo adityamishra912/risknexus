@@ -1,0 +1,2 @@
+// asset.js module
+export {};

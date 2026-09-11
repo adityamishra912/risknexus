@@ -1,0 +1,2 @@
+// vulnerabilities.js module
+export {};
