@@ -26,4 +26,23 @@ class MissingLinkedRecordError(Exception):
         )
 
 
-__all__ = ["MissingImpactDataError", "MissingLinkedRecordError"]
+class MissingOptimizerInputError(Exception):
+    """
+    Raised when required data for investment optimization (control cost in controls.csv,
+    coverage in control_status.csv, or effectiveness in control_effectiveness.csv) is missing.
+    """
+
+    def __init__(
+        self,
+        control_id: Optional[str] = None,
+        missing_field: str = "",
+        reason: str = "",
+    ):
+        self.control_id = control_id
+        self.missing_field = missing_field
+        self.reason = reason or f"Control '{control_id}' missing {missing_field} in dataset"
+        super().__init__(self.reason)
+
+
+__all__ = ["MissingImpactDataError", "MissingLinkedRecordError", "MissingOptimizerInputError"]
+

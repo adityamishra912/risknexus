@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=sqlite:///./cyberx.db
+      - DATABASE_URL=sqlite:///./risknexus.db
       - ENVIRONMENT=development
     volumes:
       - .:/app

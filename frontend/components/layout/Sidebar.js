@@ -50,7 +50,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-base tracking-wider text-white font-mono">CYBERX</span>
+              <span className="font-extrabold text-base tracking-wider text-white font-mono">RiskNexus</span>
             </div>
             <p className="text-[11px] text-cyan-400 font-medium tracking-wide uppercase">Risk Intelligence</p>
           </div>

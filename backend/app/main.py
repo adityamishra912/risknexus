@@ -19,10 +19,17 @@ app.add_middleware(
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
+@app.on_event("startup")
+async def prewarm_cache():
+    import asyncio
+    from app.services.risk_engine.engine import quantify_all_scenarios
+    # Pre-warm risk engine cache asynchronously at startup
+    asyncio.create_task(asyncio.to_thread(quantify_all_scenarios))
+
 @app.get("/")
 def root():
     return {
-        "message": "CYBERX Cyber Risk Quantification & Investment Optimization API",
+        "message": "RiskNexus Cyber Risk Quantification & Investment Optimization API",
         "version": settings.VERSION,
         "docs": "/docs",
     }

@@ -22,7 +22,8 @@ def get_all_assets_with_risk(data_dir: Optional[str] = None) -> List[Dict[str, A
         raise FileNotFoundError(f"Assets CSV missing at: {assets_file}")
 
     assets_df = pd.read_csv(assets_file)
-    quantified_scenarios = quantify_all_scenarios(data_dir=data_dir)
+    quantified_res = quantify_all_scenarios(data_dir=data_dir)
+    quantified_scenarios = quantified_res.get("scenarios", []) if isinstance(quantified_res, dict) else quantified_res
 
     # Group risk scenarios by asset_id
     scenarios_by_asset: Dict[str, List[Dict[str, Any]]] = {}

@@ -31,7 +31,6 @@ def get_assets_list(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
 @router.get("/top-risk")
 def get_top_risk_assets_endpoint(
     limit: int = Query(10, ge=1, le=50, description="Top N highest-risk assets"),

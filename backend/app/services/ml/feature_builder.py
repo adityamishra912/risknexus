@@ -1,110 +1,205 @@
 # app/services/ml/feature_builder.py
 
-from typing import Dict, Any, List, Optional
+from dataclasses import dataclass
+from datetime import date, datetime
+from typing import Dict, Any, List, Optional, Union
+
+# Exact input contract array
+FEATURE_ORDER = [
+    "cvss_score",
+    "exploitability",
+    "known_exploited",
+    "vulnerability_age_days",
+    "internet_exposed",
+    "asset_criticality",
+    "attack_path_reachable",
+    "attack_path_length",
+    "path_strength",
+    "control_coverage",
+    "control_maturity",
+    "threat_activity",
+]
+
+EXPLOITABILITY_MAP = {"low": 0.2, "medium": 0.5, "high": 0.9}
 
 
-def extract_exploitability_score(exploitability_str: str) -> float:
-    """Converts exploitability string into numerical rating (0.0 to 1.0)."""
-    val = str(exploitability_str).strip().lower()
-    if val in ["high", "critical", "1.0", "1"]:
-        return 1.0
-    elif val in ["medium", "med", "0.5"]:
+class FeatureBuildError(Exception):
+    """Raised when a required field can't be resolved from joined records."""
+    pass
+
+
+def _require(value: Any, field_name: str) -> Any:
+    if value is None:
+        raise FeatureBuildError(f"Cannot resolve required field: {field_name}")
+    return value
+
+
+@dataclass
+class RawRecords:
+    """Shape of the raw joined input expected by the model pipeline."""
+    vulnerability: dict
+    asset: dict
+    attack_path: dict
+    controls: list
+    threat: dict
+
+
+def extract_exploitability_score(exploitability_val: Any) -> float:
+    """Converts exploitability string or float into numerical rating."""
+    if isinstance(exploitability_val, (int, float)):
+        return float(exploitability_val)
+    label_key = str(exploitability_val).strip().lower()
+    if label_key in EXPLOITABILITY_MAP:
+        return EXPLOITABILITY_MAP[label_key]
+    if label_key in ["critical", "1.0", "1"]:
+        return 0.9
+    if label_key in ["med", "0.5"]:
         return 0.5
-    elif val in ["low", "0.2"]:
+    if label_key in ["low", "0.2"]:
         return 0.2
     return 0.5
 
 
 def build_feature_vector(
-    asset_data: Dict[str, Any],
+    records: Optional[RawRecords] = None,
+    asset_data: Optional[Dict[str, Any]] = None,
     vuln_data: Optional[Dict[str, Any]] = None,
     control_status_list: Optional[List[Dict[str, Any]]] = None,
     threat_data: Optional[Dict[str, Any]] = None,
     attack_path_info: Optional[Dict[str, Any]] = None,
     attack_path_length: int = 2,
-    prior_incidents: int = 0,
+    as_of: Optional[date] = None,
+    **kwargs: Any,
 ) -> Dict[str, Any]:
     """
-    Builds the standardized 12-feature ML feature vector required by the likelihood model.
-    
-    Features:
-    - cvss_score (float)
-    - exploitability (float: 0.0 to 1.0)
-    - known_exploited (int: 0 or 1)
-    - vulnerability_age_days (int)
-    - internet_exposed (int: 0 or 1)
-    - asset_criticality (int: 1-10)
-    - attack_path_reachable (int: 0 or 1)
-    - attack_path_length (int)
-    - path_strength (float: 0.0 to 1.0)
-    - control_coverage (float: 0.0 to 1.0)
-    - control_maturity (float: 0.0 to 1.0)
-    - threat_activity (float: 0.0 to 1.0)
+    Returns a dict of {feature_name: value} adhering strictly to FEATURE_ORDER.
+    Supports both RawRecords dataclass input and structured dictionary keyword arguments.
     """
-    vuln = vuln_data or {}
-    controls = control_status_list or []
-    threat = threat_data or {}
-    path_info = attack_path_info or {}
+    as_of_date = as_of or date.today()
 
-    # Vulnerability & Asset features
-    cvss_score = float(vuln.get("cvss_score", 5.0))
-    exploitability_val = extract_exploitability_score(vuln.get("exploitability", "Medium"))
-    known_exp = 1 if str(vuln.get("known_exploited", "")).strip().lower() in ["yes", "true", "1"] else 0
-    vuln_age = int(vuln.get("days_open", vuln.get("vulnerability_age_days", 30)))
-    is_internet = 1 if str(asset_data.get("internet_exposed", "")).strip().lower() in ["yes", "true", "1"] or asset_data.get("internet_exposed") is True else 0
-    asset_crit = int(asset_data.get("criticality", 5))
+    if records is not None:
+        vuln = records.vulnerability or {}
+        asset = records.asset or {}
+        path = records.attack_path or {}
+        threat = records.threat or {}
+        controls = records.controls or []
+    else:
+        vuln = vuln_data or {}
+        asset = asset_data or {}
+        path = attack_path_info or {}
+        threat = threat_data or {}
+        controls = control_status_list or []
 
-    # Attack path features
-    path_reachable = 1 if path_info.get("reachable", True) or is_internet == 1 else 0
-    path_len = max(1, int(path_info.get("length", attack_path_length)))
-    path_strength = float(path_info.get("strength", round(min(1.0, (cvss_score / 10.0) * 0.6 + (asset_crit / 10.0) * 0.4), 2)))
+    # --- vulnerability fields ---
+    cvss_raw = vuln.get("cvss_score", 5.0)
+    cvss_score = float(_require(cvss_raw, "cvss_score"))
 
-    # Control coverage and maturity calculation from control_status_list
+    exploit_raw = vuln.get("exploitability_label", vuln.get("exploitability", "Medium"))
+    exploitability = extract_exploitability_score(exploit_raw)
+
+    ke_raw = vuln.get("known_exploited", False)
+    if isinstance(ke_raw, str):
+        known_exploited = 1 if ke_raw.strip().lower() in ["yes", "true", "1"] else 0
+    else:
+        known_exploited = 1 if bool(ke_raw) else 0
+
+    if "disclosure_date" in vuln and vuln["disclosure_date"] is not None:
+        disc_date = vuln["disclosure_date"]
+        if isinstance(disc_date, str):
+            disc_date = datetime.strptime(disc_date, "%Y-%m-%d").date()
+        vulnerability_age_days = (as_of_date - disc_date).days
+        if vulnerability_age_days < 0:
+            raise FeatureBuildError("vulnerability_age_days computed as negative")
+    else:
+        vulnerability_age_days = int(vuln.get("days_open", vuln.get("vulnerability_age_days", 30)))
+
+    # --- asset fields ---
+    ie_raw = asset.get("internet_exposed", False)
+    if isinstance(ie_raw, str):
+        internet_exposed = 1 if ie_raw.strip().lower() in ["yes", "true", "1"] else 0
+    else:
+        internet_exposed = 1 if bool(ie_raw) else 0
+
+    crit_raw = asset.get("criticality", asset.get("asset_criticality", 5))
+    asset_criticality = int(_require(crit_raw, "asset_criticality"))
+    if not (1 <= asset_criticality <= 10):
+        raise FeatureBuildError("asset_criticality out of range 1-10")
+
+    # --- attack path fields ---
+    reachable_raw = path.get("reachable", path.get("attack_path_reachable", True))
+    attack_path_reachable = 1 if bool(reachable_raw) else 0
+
+    length_raw = path.get("length", path.get("attack_path_length", attack_path_length))
+    attack_path_length_val = int(length_raw)
+
+    default_strength = round(min(1.0, (cvss_score / 10.0) * 0.6 + (asset_criticality / 10.0) * 0.4), 2)
+    strength_raw = path.get("path_strength", path.get("strength", default_strength))
+    path_strength = float(strength_raw)
+
+    # --- control fields ---
     if controls:
-        coverages = []
+        implemented_count = 0
         maturities = []
+        coverages = []
+
         for c in controls:
-            status = str(c.get("status", "")).strip().lower()
-            cov = float(c.get("coverage", 0.0))
-            mat = float(c.get("maturity", 0.0))
-            if status == "implemented":
-                coverages.append(cov if cov > 0 else 0.85)
-                maturities.append(mat if mat > 0 else 4.0)
-            elif status == "partially implemented":
-                coverages.append(cov if cov > 0 else 0.45)
-                maturities.append(mat if mat > 0 else 2.0)
-            else:
-                coverages.append(0.0)
-                maturities.append(0.0)
-        avg_coverage = round(sum(coverages) / len(coverages), 2)
-        avg_maturity = round((sum(maturities) / len(maturities)) / 5.0, 2)  # Scale 0-5 to 0.0-1.0
-    else:
-        avg_coverage = 0.5
-        avg_maturity = 0.5
+            if isinstance(c, dict):
+                is_impl = c.get("implemented", False)
+                status_str = str(c.get("status", "")).strip().lower()
+                if is_impl or status_str == "implemented":
+                    implemented_count += 1
+                    cov = float(c.get("coverage", 0.85))
+                    mat = float(c.get("maturity", 4.0))
+                    coverages.append(cov)
+                    maturities.append(mat)
+                elif status_str == "partially implemented":
+                    coverages.append(float(c.get("coverage", 0.45)))
+                    maturities.append(float(c.get("maturity", 2.0)))
 
-    # Threat activity level rating (0.0 to 1.0)
-    act_str = str(threat.get("activity_level", "medium")).strip().lower()
-    if act_str in ["high", "critical", "1.0", "1"]:
-        threat_act = 0.85
-    elif act_str in ["medium", "med", "0.5"]:
-        threat_act = 0.50
-    elif act_str in ["low", "0.2"]:
-        threat_act = 0.20
+        control_coverage = float(len(coverages) / len(controls)) if len(controls) > 0 else 0.0
+        if maturities:
+            avg_mat = sum(maturities) / len(maturities)
+            control_maturity = float(round(avg_mat / 5.0, 2) if avg_mat > 1.0 else round(avg_mat, 2))
+        else:
+            control_maturity = 0.0
     else:
-        threat_act = 0.50
+        control_coverage = 0.5
+        control_maturity = 0.5
 
-    return {
-        "cvss_score": cvss_score,
-        "exploitability": exploitability_val,
-        "known_exploited": known_exp,
-        "vulnerability_age_days": vuln_age,
-        "internet_exposed": is_internet,
-        "asset_criticality": asset_crit,
-        "attack_path_reachable": path_reachable,
-        "attack_path_length": path_len,
-        "path_strength": path_strength,
-        "control_coverage": avg_coverage,
-        "control_maturity": avg_maturity,
-        "threat_activity": threat_act,
+    # --- threat fields ---
+    act_raw = threat.get("activity_score", threat.get("activity_level", 0.5))
+    if isinstance(act_raw, (int, float)):
+        threat_activity = float(act_raw)
+    else:
+        act_str = str(act_raw).strip().lower()
+        if act_str in ["high", "critical", "1.0", "1"]:
+            threat_activity = 0.85
+        elif act_str in ["medium", "med", "0.5"]:
+            threat_activity = 0.50
+        elif act_str in ["low", "0.2"]:
+            threat_activity = 0.20
+        else:
+            threat_activity = 0.50
+
+    vector = {
+        "cvss_score": float(cvss_score),
+        "exploitability": float(exploitability),
+        "known_exploited": known_exploited,
+        "vulnerability_age_days": int(vulnerability_age_days),
+        "internet_exposed": internet_exposed,
+        "asset_criticality": int(asset_criticality),
+        "attack_path_reachable": attack_path_reachable,
+        "attack_path_length": int(attack_path_length_val),
+        "path_strength": float(path_strength),
+        "control_coverage": float(control_coverage),
+        "control_maturity": float(control_maturity),
+        "threat_activity": float(threat_activity),
     }
 
+    assert set(vector.keys()) == set(FEATURE_ORDER)
+    return vector
+
+
+def vector_to_ordered_list(vector: dict) -> list:
+    """Model input must be a plain ordered list, not a dict."""
+    return [vector[name] for name in FEATURE_ORDER]

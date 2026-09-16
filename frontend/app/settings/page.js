@@ -64,7 +64,7 @@ export default function SecuritySettingsPage() {
         {/* SECTION 14: Platform Security & Data Protection */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Security Principles */}
-          <Card title="Platform Data Isolation & Encryption" subtitle="How CYBERX protects IndoBank's sensitive cybersecurity data">
+          <Card title="Platform Data Isolation & Encryption" subtitle="How RiskNexus protects IndoBank's sensitive cybersecurity data">
             <div className="space-y-3 text-xs">
               <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
                 <span className="font-semibold text-cyan-300 block flex items-center gap-1.5">
@@ -129,7 +129,7 @@ export default function SecuritySettingsPage() {
         </div>
 
         {/* Data Architecture Diagram Box */}
-        <Card title="CYBERX Enterprise Data Flow Architecture" subtitle="Zero raw payload ingestion — normalized risk telemetry only">
+        <Card title="RiskNexus Enterprise Data Flow Architecture" subtitle="Zero raw payload ingestion — normalized risk telemetry only">
           <div className="p-4 rounded-xl bg-[#06090F] border border-slate-850 flex flex-col md:flex-row items-center justify-between gap-3 text-xs font-mono">
             <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 text-center w-full md:w-auto">
               <Server className="w-5 h-5 text-cyan-400 mx-auto mb-1" />

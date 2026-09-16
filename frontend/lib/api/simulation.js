@@ -1,2 +1,1 @@
-// simulation.js module
-export {};
+export { simulateScenario, simulatePortfolio } from './whatIf';

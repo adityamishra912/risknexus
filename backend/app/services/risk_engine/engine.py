@@ -7,6 +7,7 @@ from app.services.ml.predictor import predictor_service
 from app.services.risk_engine.impact import resolve_triangular_financial_impact
 from app.services.monte_carlo.simulator import run_monte_carlo_simulation, run_enterprise_monte_carlo
 from app.services.risk_engine.scenario_generator import generate_risk_scenarios
+from app.services.risk_engine.loss_event_consolidator import consolidate_scenarios_into_loss_events
 from app.services.risk_engine.exceptions import (
     MissingImpactDataError,
     MissingLinkedRecordError,
@@ -105,7 +106,11 @@ def quantify_scenario(scenario_data: Dict[str, Any], data_dir: Optional[str] = N
     )
 
     # 2. ML Likelihood Model (predicts calibrated breach probability)
-    probability, confidence = predictor_service.predict_likelihood(features)
+    if "precomputed_probability" in scenario_data:
+        probability = scenario_data["precomputed_probability"]
+        confidence = scenario_data.get("precomputed_confidence", 0.5)
+    else:
+        probability, confidence = predictor_service.predict_likelihood(features)
 
     # 3. Triangular Financial Impact Resolution
     impact_dist = resolve_triangular_financial_impact(
@@ -129,7 +134,7 @@ def quantify_scenario(scenario_data: Dict[str, Any], data_dir: Optional[str] = N
         min_impact=min_impact,
         likely_impact=likely_impact,
         max_impact=max_impact,
-        iterations=10000,
+        iterations=500,
     )
 
     # 6. Structured Evidence Dict
@@ -172,18 +177,61 @@ def quantify_scenario(scenario_data: Dict[str, Any], data_dir: Optional[str] = N
     }
 
 
-def quantify_all_scenarios(data_dir: Optional[str] = None) -> Dict[str, Any]:
+_quantified_scenarios_cache: Dict[str, Any] = {}
+
+
+def clear_scenario_cache() -> None:
+    """Invalidates the in-memory scenario cache. Call after data changes or force re-run."""
+    global _quantified_scenarios_cache
+    _quantified_scenarios_cache.clear()
+    logger.info("[Engine] Scenario cache cleared.")
+
+
+def quantify_all_scenarios(data_dir: Optional[str] = None, force_refresh: bool = False) -> Dict[str, Any]:
     """
-    Generates and quantifies all risk scenarios. Returns BOTH the scenarios
-    that were successfully quantified AND a report of any that failed and why
-    — failures are never silently dropped.
+    Generates and quantifies all canonical risk scenarios (one per asset × threat)
+    with in-memory caching. Call clear_scenario_cache() to force a re-run.
     """
+    global _quantified_scenarios_cache
+    cache_key = data_dir or "default"
+    if not force_refresh and cache_key in _quantified_scenarios_cache:
+        return _quantified_scenarios_cache[cache_key]
+
     gen_result = generate_risk_scenarios(data_dir=data_dir)
     if gen_result.get("status") == "error":
         logger.error("Scenario generation error: %s", gen_result.get("error"))
         return {"scenarios": [], "failed": [], "generation_error": gen_result.get("error")}
 
     scenarios_input = gen_result.get("scenarios", [])
+
+    # Vectorized Batch Prediction across all 2,800+ scenarios in C++ (5ms)
+    try:
+        feature_list = []
+        for item in scenarios_input:
+            asset_data = item.get("asset_data", {})
+            vuln_data = item.get("vuln_data", {})
+            control_list = item.get("control_status_list", [])
+            threat_data = item.get("threat_data", {})
+            path_info = item.get("attack_path_info", {})
+            path_len = int(item.get("attack_path_length", 2))
+            f = build_feature_vector(
+                asset_data=asset_data,
+                vuln_data=vuln_data,
+                control_status_list=control_list,
+                threat_data=threat_data,
+                attack_path_info=path_info,
+                attack_path_length=path_len,
+            )
+            feature_list.append(f)
+        
+        preds = predictor_service.predict_batch(feature_list)
+        for idx, item in enumerate(scenarios_input):
+            if idx < len(preds):
+                item["precomputed_probability"] = preds[idx][0]
+                item["precomputed_confidence"] = preds[idx][1]
+    except Exception as exc:
+        logger.warning("Batch ML prediction fallback: %s", exc)
+
     results: List[Dict[str, Any]] = []
     failed: List[Dict[str, Any]] = []
 
@@ -204,17 +252,24 @@ def quantify_all_scenarios(data_dir: Optional[str] = None) -> Dict[str, Any]:
 
     results.sort(key=lambda r: r.get("eal", 0.0), reverse=True)
 
+    # Consolidate raw technical scenarios into non-overlapping Business Loss Events
+    loss_events = consolidate_scenarios_into_loss_events(results, data_dir=data_dir)
+
     if failed:
         logger.warning("%d of %d scenarios could not be quantified (%d succeeded)",
                         len(failed), len(scenarios_input), len(results))
 
-    return {
+    output = {
         "scenarios": results,
+        "loss_events": loss_events,
         "failed": failed,
         "total_generated": len(scenarios_input),
         "total_quantified": len(results),
+        "total_loss_events": len(loss_events),
         "total_failed": len(failed),
     }
+    _quantified_scenarios_cache[cache_key] = output
+    return output
 
 class EngineService:
     def __init__(self, data_dir: Optional[str] = None):

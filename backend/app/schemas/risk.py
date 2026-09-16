@@ -45,8 +45,19 @@ class RiskQuantificationSchema(BaseModel):
 
 class RiskSummarySchema(BaseModel):
     total_scenarios: int
-    total_eal: float
+    total_technical_scenarios: Optional[int] = None
+    total_loss_events: Optional[int] = None
+
+    # technical_scenario_exposure = Σ(P × likely_impact) across canonical technical scenarios.
+    # This is a point-estimate sum, NOT the Enterprise EAL.
+    total_eal: float                            # kept for API compatibility — same value as below
+    technical_scenario_exposure: Optional[float] = None  # correctly-labelled alias
+
+    # Enterprise EAL = mean of consolidated Monte Carlo simulation across Business Loss Events.
+    # Events are sampled independently (no correlation modeling).
     mean_eal: float
+
+    p90_loss: Optional[float] = 0.0
     p95_loss: float
     p99_loss: float
     high_risk_scenarios_count: int
@@ -55,6 +66,7 @@ class RiskSummarySchema(BaseModel):
 class RiskEngineResponseSchema(BaseModel):
     summary: RiskSummarySchema
     scenarios: List[RiskQuantificationSchema]
+    loss_events: Optional[List[Dict[str, Any]]] = []
     failed: List[Dict[str, Any]] = []
 
 

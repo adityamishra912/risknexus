@@ -1,4 +1,4 @@
-# CYBERX — AI-Powered Continuous Cyber Risk Quantification & Investment Optimization Backend
+# RiskNexus — AI-Powered Continuous Cyber Risk Quantification & Investment Optimization Backend
 
 FastAPI + SQLAlchemy + Monte Carlo FAIR Engine + Knapsack Portfolio Optimizer + Machine Learning.
 

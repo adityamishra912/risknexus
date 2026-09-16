@@ -3,65 +3,85 @@
 import React from 'react';
 import { useRiskContext } from '../../providers/RiskProvider';
 import { formatCurrency } from '../../lib/utils/formatCurrency';
-import { TrendingDown, ShieldAlert, DollarSign, Wallet, Activity } from 'lucide-react';
+import { TrendingDown, ShieldAlert, Wallet, Activity } from 'lucide-react';
+import Loading from '../ui/Loading';
+import ErrorState from '../ui/ErrorState';
 
 export default function RiskOverview() {
-  const { currentEAL, currentP95, budget } = useRiskContext();
+  const { currentEAL, currentP95, budget, apiSummary, apiLoading, apiError } = useRiskContext();
+
+  if (apiLoading) {
+    return <Loading message="Loading risk metrics from backend..." />;
+  }
+
+  if (apiError || !apiSummary) {
+    return (
+      <ErrorState
+        title="Risk Metrics API Error"
+        message={apiError || "Could not load risk metrics summary from FastAPI backend."}
+      />
+    );
+  }
+
+  const technicalExposure = apiSummary.technical_scenario_exposure ?? apiSummary.total_eal ?? 0;
+  const enterpriseEAL     = apiSummary.mean_eal ?? 0;
+  const totalScenarios    = apiSummary.total_technical_scenarios ?? apiSummary.total_scenarios ?? 0;
+  const totalEvents       = apiSummary.total_loss_events ?? 0;
 
   const kpis = [
     {
-      title: 'Expected Annual Loss (EAL)',
-      value: formatCurrency(currentEAL),
-      subtext: 'Modeled mean exposure',
-      icon: TrendingDown,
-      color: 'text-amber-400',
+      title:   'Technical Scenario Exposure',
+      value:   formatCurrency(technicalExposure),
+      subtext: `Σ(P×Impact) across ${totalScenarios} canonical scenarios`,
+      icon:    TrendingDown,
+      color:   'text-amber-400',
       bgColor: 'bg-amber-950/40 border-amber-800/40',
-      badge: 'Baseline',
+      badge:   'Baseline',
     },
     {
-      title: 'P90 Exposure',
-      value: '₹3.20 Cr',
-      subtext: '90th percentile annual loss',
-      icon: Activity,
-      color: 'text-orange-400',
+      title:   'Enterprise EAL',
+      value:   formatCurrency(enterpriseEAL),
+      subtext: `Monte Carlo mean — ${totalEvents} consolidated events`,
+      icon:    Activity,
+      color:   'text-orange-400',
       bgColor: 'bg-orange-950/40 border-orange-800/40',
-      badge: 'High Tail',
+      badge:   'Monte Carlo',
     },
     {
-      title: 'P95 Exposure',
-      value: formatCurrency(currentP95),
+      title:   'P95 Exposure',
+      value:   formatCurrency(apiSummary.p95_loss),
       subtext: '95th percentile annual loss',
-      icon: ShieldAlert,
-      color: 'text-red-400',
+      icon:    ShieldAlert,
+      color:   'text-red-400',
       bgColor: 'bg-red-950/40 border-red-800/40',
-      badge: 'Extreme Tail',
+      badge:   '95th Percentile',
     },
     {
-      title: 'P99 Exposure',
-      value: '₹5.80 Cr',
-      subtext: 'Worst-case catastrophic loss',
-      icon: ShieldAlert,
-      color: 'text-rose-500',
+      title:   'P99 Exposure',
+      value:   formatCurrency(apiSummary.p99_loss),
+      subtext: '99th percentile annual loss',
+      icon:    ShieldAlert,
+      color:   'text-rose-500',
       bgColor: 'bg-rose-950/40 border-rose-800/40',
-      badge: 'Catastrophic',
+      badge:   '99th Percentile',
     },
     {
-      title: '30-Day Risk Trend',
-      value: '↓ 12.4%',
-      subtext: 'Net financial reduction',
-      icon: TrendingDown,
-      color: 'text-emerald-400',
+      title:   'High Risk Scenarios',
+      value:   `${apiSummary.high_risk_scenarios_count}`,
+      subtext: 'EAL ≥ ₹50L scenarios',
+      icon:    TrendingDown,
+      color:   'text-emerald-400',
       bgColor: 'bg-emerald-950/40 border-emerald-800/40',
-      badge: 'Improving',
+      badge:   'High Priority',
     },
     {
-      title: 'Current Security Budget',
-      value: formatCurrency(budget),
+      title:   'Current Security Budget',
+      value:   formatCurrency(budget),
       subtext: 'FY 2026 allocation',
-      icon: Wallet,
-      color: 'text-cyan-400',
+      icon:    Wallet,
+      color:   'text-cyan-400',
       bgColor: 'bg-cyan-950/40 border-cyan-800/40',
-      badge: 'Active',
+      badge:   'Active',
     },
   ];
 

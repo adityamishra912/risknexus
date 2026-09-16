@@ -25,11 +25,43 @@ import { ATTACK_NODES, ATTACK_EDGES } from '../../lib/constants';
 import Link from 'next/link';
 import { useRiskContext } from '../../providers/RiskProvider';
 
+import Loading from '../../components/ui/Loading';
+import ErrorState from '../../components/ui/ErrorState';
+
 export default function AttackPathsPage() {
   const { setActiveAssetId } = useRiskContext();
-  const [selectedNode, setSelectedNode] = useState(ATTACK_NODES[2]); // Default Payment API
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [selectedNode, setSelectedNode] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
+  const [graphAnalysis, setGraphAnalysis] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchGraph = () => {
+    setLoading(true);
+    setError(null);
+    import('../../lib/api/attackPaths').then(({ getAttackPathsAnalysis }) => {
+      getAttackPathsAnalysis()
+        .then((res) => {
+          if (res) {
+            setGraphAnalysis(res);
+            if (res.nodes && res.nodes.length > 0) {
+              setSelectedNode(res.nodes[0]);
+              setIsDrawerOpen(true);
+            }
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message || 'Failed to fetch attack graph analysis from FastAPI backend.');
+          setLoading(false);
+        });
+    });
+  };
+
+  React.useEffect(() => {
+    fetchGraph();
+  }, []);
 
   const getNodeIcon = (type) => {
     switch (type) {
@@ -97,7 +129,12 @@ export default function AttackPathsPage() {
           </div>
         </div>
 
-        {/* Interactive Graph Canvas Area */}
+        {loading ? (
+          <Loading message="Fetching attack graph topology from backend..." />
+        ) : error ? (
+          <ErrorState title="Attack Paths API Error" message={error} onRetry={fetchGraph} />
+        ) : (
+        /* Interactive Graph Canvas Area */
         <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[520px]">
           {/* Main Visual Graph Node Chain */}
           <div className={`${isDrawerOpen ? 'lg:col-span-8' : 'lg:col-span-12'} transition-all`}>
@@ -290,6 +327,7 @@ export default function AttackPathsPage() {
             </div>
           )}
         </div>
+        )}
       </div>
     </PageContainer>
   );

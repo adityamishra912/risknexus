@@ -8,4 +8,4 @@ def setup_logging():
         handlers=[logging.StreamHandler(sys.stdout)]
     )
 
-logger = logging.getLogger("cyberx")
+logger = logging.getLogger("risknexus")

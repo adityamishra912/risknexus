@@ -41,13 +41,26 @@ def run_enterprise_monte_carlo(
     scenarios: List[Dict[str, Any]],
     iterations: int = 10000,
     seed: Optional[int] = 42,
+    include_raw: bool = False,
 ) -> Dict[str, Any]:
     """
-    Runs Enterprise-level Monte Carlo loss aggregation:
-    Iterates N times. In each iteration i, evaluates all scenarios concurrently
-    with Bernoulli trials and Triangular impacts, summing to get Enterprise Loss[i].
-    
-    Enterprise Loss[i] = Sum_k ( Bernoulli(P_k) * Triangular(min_k, likely_k, max_k) )
+    Enterprise-level Monte Carlo loss aggregation across consolidated Business Loss Events.
+
+    Each iteration i samples all events independently:
+        Enterprise_Loss[i] = Σ_k ( Bernoulli(P_k) × Triangular(min_k, likely_k, max_k) )
+
+    IMPORTANT: Events are sampled independently — this model does NOT capture
+    correlated failures, systemic shocks, or cascading breach scenarios
+    (e.g., a single attacker simultaneously compromising multiple services).
+    Dependency/correlation modeling (copulas, shared threat-actor latent variables)
+    is reserved for future scope.
+
+    Args:
+        scenarios:   List of consolidated Business Loss Event dicts.
+        iterations:  Number of Monte Carlo iterations (default 10,000).
+        seed:        RNG seed for reproducibility.
+        include_raw: Pass through to summarize_losses — returns raw loss array
+                     when True (used by /risk/loss-distribution endpoint).
     """
     if not scenarios:
         return {
@@ -78,7 +91,7 @@ def run_enterprise_monte_carlo(
         # Vectorized addition of scenario losses to enterprise total array
         enterprise_losses += scen_losses
 
-    metrics = summarize_losses(enterprise_losses)
+    metrics = summarize_losses(enterprise_losses, include_raw=include_raw)
     metrics["total_scenarios"] = len(scenarios)
     return metrics
 

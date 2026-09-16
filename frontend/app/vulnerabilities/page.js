@@ -28,7 +28,7 @@ export default function VulnerabilitiesPage() {
                 <span>Risk Quantification Triage Formula</span>
               </h3>
               <p className="text-xs text-slate-400 mt-1">
-                Traditional CVSS sorting ignores business context. CYBERX prioritizes findings based on actual financial loss potential.
+                Traditional CVSS sorting ignores business context. RiskNexus prioritizes findings based on actual financial loss potential.
               </p>
             </div>
 

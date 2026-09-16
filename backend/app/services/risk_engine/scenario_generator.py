@@ -297,7 +297,13 @@ def generate_risk_scenarios(
 
         # ------------------------------------------------------------------ #
         # Core 5-step correlation loop
+        # Phase A: Group all qualifying (vuln, threat) pairs by (asset_id, threat_id)
+        # Phase B: Emit ONE canonical scenario per (asset, threat) with aggregated signals
+        # Impact is pulled exactly once per group — not once per vulnerability.
         # ------------------------------------------------------------------ #
+        from collections import defaultdict
+        from app.services.ml.feature_builder import extract_exploitability_score
+
         raw_scenarios: List[Dict[str, Any]] = []
 
         for _, asset_row in assets_iter.iterrows():
@@ -322,7 +328,6 @@ def generate_risk_scenarios(
             attack_path_ids   = reachability_map.get(asset_id, [])
             attack_path_names = _path_as_names(attack_path_ids, graph) if attack_path_ids else []
 
-            # Prepend "Internet" label to the path for display
             if attack_path_names and "Internet" not in attack_path_names:
                 attack_path_names = ["Internet"] + attack_path_names
             elif not attack_path_names and internet_exposed:
@@ -330,98 +335,155 @@ def generate_risk_scenarios(
 
             attack_path_reachable = len(attack_path_ids) > 0
 
+            # Collect active controls for this asset (once, shared across all threats)
+            asset_controls = controls_map.get(asset_id, [])
+            active_controls = [
+                str(c.get("control_id", ""))
+                for c in asset_controls
+                if str(c.get("status", "")).lower() == "implemented"
+            ]
+
+            # -------------------------------------------------------------- #
+            # Phase A: Group qualifying vulns by (asset_id, threat_id)
+            # -------------------------------------------------------------- #
+            # key = threat_id → list of qualifying vuln dicts for this asset
+            threat_vuln_groups: Dict[str, List[Dict]] = defaultdict(list)
+
             for vuln in asset_vulns:
                 cvss = float(vuln.get("cvss_score", 0.0))
                 if cvss < MIN_CVSS_FOR_SCENARIO:
                     continue  # Skip trivially low-risk vulnerabilities
 
-                vuln_id         = str(vuln.get("vulnerability_id", "")).strip()
-                cve_id          = str(vuln.get("cve_id", "")).strip()
-                known_exploited = str(vuln.get("known_exploited", "No")).lower() in [
-                    "yes", "true", "1"
-                ]
-                patch_available = str(vuln.get("patch_available", "No")).lower() in [
-                    "yes", "true", "1"
-                ]
-                days_open       = int(vuln.get("days_open", 0))
-                exploitability  = str(vuln.get("exploitability", "Medium")).strip()
-
                 for threat in threats_list:
-                    threat_id     = str(threat.get("threat_id", "")).strip()
-                    threat_name   = str(threat.get("threat_name", "")).strip()
+                    threat_id_t   = str(threat.get("threat_id", "")).strip()
                     attack_vector = str(threat.get("attack_vector", "")).strip()
 
                     # Step 2 - Threat compatibility filter
-                    if not _is_threat_compatible(threat_id, asset_type):
+                    if not _is_threat_compatible(threat_id_t, asset_type):
                         continue
 
                     # Skip purely external threats for non-reachable, non-internet assets
-                    is_external_threat = "internet" in attack_vector.lower()
-                    if is_external_threat and not internet_exposed and not attack_path_reachable:
+                    is_external = "internet" in attack_vector.lower()
+                    if is_external and not internet_exposed and not attack_path_reachable:
                         continue
 
-                    # Step 5 - Attach impact profile
-                    impact_profile = _get_impact_profile(impacts_df, threat_id, asset_type)
-
-                    # Collect active controls for this asset
-                    asset_controls = controls_map.get(asset_id, [])
-                    active_controls = [
-                        str(c.get("control_id", ""))
-                        for c in asset_controls
-                        if str(c.get("status", "")).lower() == "implemented"
-                    ]
-
-                    raw_scenarios.append({
-                        "asset_id":                    asset_id,
-                        "asset_name":                  asset_name,
-                        "asset_type":                  asset_type,
-                        "vulnerability_id":            vuln_id,
-                        "cve_id":                      cve_id,
-                        "threat_id":                   threat_id,
-                        "threat_name":                 threat_name,
-                        "service_id":                  service_id,
-                        "service_name":                service_data.get("service_name", ""),
-                        "attack_path":                 attack_path_names,
-                        "attack_path_asset_ids":       attack_path_ids,
-                        "attack_path_reachable":       attack_path_reachable,
-                        "attack_path_length":          len(attack_path_ids),
-                        "asset_criticality":           criticality,
-                        "cvss_score":                  cvss,
-                        "known_exploited":             known_exploited,
-                        "internet_exposed":            internet_exposed,
-                        "patch_available":             patch_available,
-                        "days_open":                   days_open,
-                        "exploitability":              exploitability,
-                        "active_controls":             active_controls,
-                        "contributing_vulnerabilities": [cve_id] if cve_id else [vuln_id],
-                        "impact_profile":              impact_profile,
-                        "downtime_cost_per_hour":      float(
-                            service_data.get("downtime_cost_per_hour", 0.0)
-                        ),
-                        "data_sensitivity":            str(
-                            service_data.get("data_sensitivity", "Medium")
-                        ),
-                        "generated": True,
+                    threat_vuln_groups[threat_id_t].append({
+                        "vuln":   vuln,
+                        "threat": threat,
                     })
 
-        # ------------------------------------------------------------------ #
-        # Deduplicate: same asset + vuln + threat -> one scenario
-        # ------------------------------------------------------------------ #
-        seen: Set[str] = set()
-        deduped: List[Dict[str, Any]] = []
-        for s in raw_scenarios:
-            key = f"{s['asset_id']}|{s['vulnerability_id']}|{s['threat_id']}"
-            if key not in seen:
-                seen.add(key)
-                deduped.append(s)
+            # -------------------------------------------------------------- #
+            # Phase B: Emit one canonical scenario per (asset, threat) group
+            # -------------------------------------------------------------- #
+            for threat_id, entries in threat_vuln_groups.items():
+                if not entries:
+                    continue
+
+                threat_meta = entries[0]["threat"]
+                threat_name = str(threat_meta.get("threat_name", "")).strip()
+
+                # --- Aggregate vulnerability signals ---
+
+                # 1. Worst-case CVSS drives the primary ML feature
+                worst_entry = max(
+                    entries,
+                    key=lambda e: float(e["vuln"].get("cvss_score", 0.0))
+                )
+                worst_vuln    = worst_entry["vuln"]
+                primary_cvss  = float(worst_vuln.get("cvss_score", 0.0))
+                primary_vuln_id = str(worst_vuln.get("vulnerability_id", "")).strip()
+                primary_cve_id  = str(worst_vuln.get("cve_id", "")).strip()
+
+                # 2. Noisy-OR combined exploitability (ML feature only — not for financial aggregation)
+                #    P(at_least_one_exploitable) = 1 - Π(1 - exploit_j)
+                #    Reflects that the attacker picks whichever vuln is easiest.
+                exploit_scores = [
+                    extract_exploitability_score(e["vuln"].get("exploitability", "Medium"))
+                    for e in entries
+                ]
+                prod_not_exploit = 1.0
+                for es in exploit_scores:
+                    prod_not_exploit *= (1.0 - es)
+                combined_exploitability = round(min(0.95, 1.0 - prod_not_exploit), 3)
+
+                # 3. Any known-exploited vuln → the group is known-exploited
+                any_known_exploited = any(
+                    str(e["vuln"].get("known_exploited", "No")).lower() in ["yes", "true", "1"]
+                    for e in entries
+                )
+
+                # 4. Worst-case days open (oldest unpatched vuln)
+                max_days_open = max(int(e["vuln"].get("days_open", 0)) for e in entries)
+
+                # 5. Any patch available across the group
+                any_patch_available = any(
+                    str(e["vuln"].get("patch_available", "No")).lower() in ["yes", "true", "1"]
+                    for e in entries
+                )
+
+                # 6. Collect all contributing CVEs for audit and display
+                all_cve_ids = list({
+                    str(e["vuln"].get("cve_id", e["vuln"].get("vulnerability_id", ""))).strip()
+                    for e in entries
+                    if str(e["vuln"].get("cve_id", "")).strip()
+                })
+                if not all_cve_ids:
+                    all_cve_ids = [
+                        str(e["vuln"].get("vulnerability_id", "")).strip()
+                        for e in entries
+                        if str(e["vuln"].get("vulnerability_id", "")).strip()
+                    ]
+
+                # Step 5 - Impact is pulled ONCE per (asset_type, threat_id) pair
+                impact_profile = _get_impact_profile(impacts_df, threat_id, asset_type)
+
+                raw_scenarios.append({
+                    # Identity
+                    "asset_id":                     asset_id,
+                    "asset_name":                   asset_name,
+                    "asset_type":                   asset_type,
+                    "vulnerability_id":             primary_vuln_id,
+                    "cve_id":                       primary_cve_id,
+                    "threat_id":                    threat_id,
+                    "threat_name":                  threat_name,
+                    "service_id":                   service_id,
+                    "service_name":                 service_data.get("service_name", ""),
+                    # Attack path
+                    "attack_path":                  attack_path_names,
+                    "attack_path_asset_ids":        attack_path_ids,
+                    "attack_path_reachable":        attack_path_reachable,
+                    "attack_path_length":           len(attack_path_ids),
+                    # Asset context
+                    "asset_criticality":            criticality,
+                    "internet_exposed":             internet_exposed,
+                    # Aggregated vulnerability signals (one canonical value per asset-threat)
+                    "cvss_score":                   primary_cvss,           # worst-case CVSS
+                    "exploitability":               combined_exploitability, # Noisy-OR (ML feature)
+                    "known_exploited":              any_known_exploited,     # any CVE in KEV
+                    "days_open":                    max_days_open,           # oldest unpatched
+                    "patch_available":              any_patch_available,
+                    # Audit trail: all contributing CVEs collapsed into this scenario
+                    "contributing_vulnerabilities": all_cve_ids,
+                    "contributing_vuln_count":      len(entries),
+                    # Impact — pulled exactly once per (asset_type, threat_id)
+                    "impact_profile":               impact_profile,
+                    "downtime_cost_per_hour":       float(service_data.get("downtime_cost_per_hour", 0.0)),
+                    "data_sensitivity":             str(service_data.get("data_sensitivity", "Medium")),
+                    "active_controls":              active_controls,
+                    "generated":                    True,
+                })
+
+        # No deduplication needed — generator guarantees at most one scenario per (asset, threat)
+        deduped = raw_scenarios
 
         # Assign sequential scenario IDs
         for i, s in enumerate(deduped, start=1):
             s["scenario_id"] = f"GEN-{i:04d}"
 
         logger.info(
-            f"[{run_id}] Generated {len(deduped)} unique scenarios from "
-            f"{len(assets_iter)} assets x {len(threats_list)} threats"
+            f"[{run_id}] Generated {len(deduped)} canonical scenarios "
+            f"(one per asset×threat) from {len(assets_iter)} assets × {len(threats_list)} threats. "
+            f"Vulnerability signals aggregated per group."
         )
 
         return {

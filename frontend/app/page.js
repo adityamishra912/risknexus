@@ -95,7 +95,7 @@ export default function MarketingHomePage() {
             <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
           </div>
           <div>
-            <span className="font-extrabold text-base tracking-wider text-white font-mono">CYBERX</span>
+            <span className="font-extrabold text-base tracking-wider text-white font-mono">RiskNexus</span>
             <span className="text-[10px] text-cyan-400 font-medium tracking-wide uppercase block -mt-1 font-mono">
               Risk Intelligence
             </span>
@@ -552,7 +552,7 @@ export default function MarketingHomePage() {
                 Customer VPC / On-Prem Boundary
               </span>
               <Building2 className="w-6 h-6 text-cyan-400 mx-auto" />
-              <h4 className="font-bold text-white">CYBERX Engine & Database</h4>
+              <h4 className="font-bold text-white">RiskNexus Engine & Database</h4>
               <p className="text-slate-400 text-[10px] font-sans">100% Customer Controlled Scope</p>
             </div>
 
@@ -608,7 +608,7 @@ export default function MarketingHomePage() {
             <Building2 className="w-5 h-5" />
           </div>
           <blockquote className="text-base sm:text-lg text-slate-200 italic font-sans leading-relaxed">
-            "CYBERX allowed us to transform vulnerability remediation from endless spreadsheet debates into a clear capital decision our CFO approved in 15 minutes."
+            "RiskNexus allowed us to transform vulnerability remediation from endless spreadsheet debates into a clear capital decision our CFO approved in 15 minutes."
           </blockquote>
           <div className="text-xs font-mono text-cyan-400">
             — Senior Vice President of Cyber Risk, Leading Financial Institution
@@ -629,7 +629,7 @@ export default function MarketingHomePage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link href="/dashboard">
               <button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-sm shadow-xl shadow-cyan-950/60 transition-all flex items-center justify-center gap-2 group">
-                <span>Launch CYBERX Platform</span>
+                <span>Launch RiskNexus Platform</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
@@ -649,7 +649,7 @@ export default function MarketingHomePage() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-cyan-400" />
-            <span className="font-bold text-white">CYBERX Risk Intelligence</span>
+            <span className="font-bold text-white">RiskNexus Risk Intelligence</span>
             <span>• © 2026 IndoBank Financial Services</span>
           </div>
 
