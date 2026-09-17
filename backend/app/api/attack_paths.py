@@ -11,6 +11,7 @@ from app.services.attack_graph.graph_builder import (
 from app.services.attack_graph.path_finder import find_attack_paths
 from app.services.attack_graph.risk_paths import rank_attack_paths
 from app.schemas.attack_path import AttackGraphResponseSchema, AttackGraphSummarySchema
+from app.utils.type_parsers import parse_criticality, parse_float, parse_int
 
 router = APIRouter(prefix="/attack-paths", tags=["attack_paths"])
 
@@ -43,6 +44,7 @@ def get_attack_paths_analysis(
 
         critical_paths = rank_attack_paths(graph, raw_paths)
 
+
         # Format node list for Pydantic schema
         nodes_list = []
         for n_id, d in graph.nodes(data=True):
@@ -50,14 +52,14 @@ def get_attack_paths_analysis(
                 "id": n_id,
                 "name": str(d.get("name", n_id)),
                 "type": str(d.get("type", "Unknown")),
-                "criticality": int(d.get("criticality", 5)),
+                "criticality": parse_criticality(d.get("criticality", 5)),
                 "internet_exposed": bool(d.get("internet_exposed", False)),
                 "environment": str(d.get("environment", "Production")),
                 "owner": d.get("owner"),
                 "service_id": d.get("service_id"),
                 "service_name": d.get("service_name"),
-                "max_cvss": float(d.get("max_cvss", 0.0)),
-                "vuln_count": int(d.get("vuln_count", 0)),
+                "max_cvss": parse_float(d.get("max_cvss", 0.0)),
+                "vuln_count": parse_int(d.get("vuln_count", 0)),
             })
 
         # Format edge list for Pydantic schema

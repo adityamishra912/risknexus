@@ -1,0 +1,1219 @@
+control_id,asset_id,status,coverage,maturity,last_assessed
+C001,A001,Implemented,0.72,4.6,2026-08-20
+C002,A001,Implemented,0.93,4.6,2026-08-20
+C003,A001,Implemented,0.77,4.5,2026-08-20
+C004,A001,Implemented,0.97,3.5,2026-08-20
+C005,A001,Not Implemented,0.0,0.0,2026-08-20
+C006,A001,Implemented,0.73,4.6,2026-08-20
+C009,A001,Partially Implemented,0.57,2.4,2026-08-20
+C010,A001,Partially Implemented,0.24,1.4,2026-08-20
+C001,A002,Not Implemented,0.0,0.0,2026-08-20
+C003,A002,Implemented,0.86,3.2,2026-08-20
+C004,A002,Implemented,0.76,3.2,2026-08-20
+C005,A002,Not Implemented,0.0,0.0,2026-08-20
+C006,A002,Not Implemented,0.0,0.0,2026-08-20
+C009,A002,Partially Implemented,0.53,2.7,2026-08-20
+C010,A002,Implemented,0.86,3.8,2026-08-20
+C001,A003,Partially Implemented,0.27,1.8,2026-08-20
+C002,A003,Implemented,0.9,3.9,2026-08-20
+C003,A003,Not Implemented,0.0,0.0,2026-08-20
+C004,A003,Implemented,0.79,2.9,2026-08-20
+C005,A003,Implemented,0.7,3.6,2026-08-20
+C006,A003,Not Implemented,0.0,0.0,2026-08-20
+C008,A003,Implemented,0.69,3.3,2026-08-20
+C009,A003,Implemented,0.83,2.8,2026-08-20
+C010,A003,Implemented,0.78,4.7,2026-08-20
+C001,A004,Not Implemented,0.0,0.0,2026-08-20
+C002,A004,Implemented,0.62,3.8,2026-08-20
+C003,A004,Implemented,0.91,3.9,2026-08-20
+C004,A004,Partially Implemented,0.47,2.3,2026-08-20
+C005,A004,Implemented,0.92,3.3,2026-08-20
+C006,A004,Partially Implemented,0.35,1.8,2026-08-20
+C009,A004,Implemented,0.81,2.6,2026-08-20
+C010,A004,Implemented,0.82,4.7,2026-08-20
+C001,A005,Not Implemented,0.0,0.0,2026-08-20
+C002,A005,Implemented,0.92,4.5,2026-08-20
+C003,A005,Partially Implemented,0.23,2.6,2026-08-20
+C004,A005,Implemented,0.83,3.4,2026-08-20
+C005,A005,Not Implemented,0.0,0.0,2026-08-20
+C006,A005,Partially Implemented,0.38,1.7,2026-08-20
+C007,A005,Implemented,0.77,4.2,2026-08-20
+C009,A005,Not Implemented,0.0,0.0,2026-08-20
+C010,A005,Implemented,0.94,2.5,2026-08-20
+C001,A006,Not Implemented,0.0,0.0,2026-08-20
+C003,A006,Partially Implemented,0.53,2.4,2026-08-20
+C004,A006,Implemented,0.75,4.7,2026-08-20
+C005,A006,Implemented,0.64,3.1,2026-08-20
+C006,A006,Implemented,0.87,4.6,2026-08-20
+C009,A006,Implemented,0.87,4.2,2026-08-20
+C010,A006,Partially Implemented,0.67,1.0,2026-08-20
+C001,A007,Not Implemented,0.0,0.0,2026-08-20
+C002,A007,Implemented,0.78,3.1,2026-08-20
+C003,A007,Implemented,0.9,3.9,2026-08-20
+C004,A007,Not Implemented,0.0,0.0,2026-08-20
+C005,A007,Not Implemented,0.0,0.0,2026-08-20
+C006,A007,Not Implemented,0.0,0.0,2026-08-20
+C008,A007,Partially Implemented,0.38,2.2,2026-08-20
+C009,A007,Partially Implemented,0.33,1.9,2026-08-20
+C010,A007,Implemented,0.84,4.1,2026-08-20
+C001,A008,Implemented,0.62,4.3,2026-08-20
+C002,A008,Implemented,0.62,4.4,2026-08-20
+C003,A008,Implemented,0.7,4.5,2026-08-20
+C004,A008,Not Implemented,0.0,0.0,2026-08-20
+C005,A008,Implemented,0.9,3.5,2026-08-20
+C006,A008,Partially Implemented,0.5,2.4,2026-08-20
+C009,A008,Implemented,0.68,2.7,2026-08-20
+C010,A008,Implemented,0.86,3.9,2026-08-20
+C001,A009,Not Implemented,0.0,0.0,2026-08-20
+C002,A009,Implemented,0.78,2.6,2026-08-20
+C003,A009,Partially Implemented,0.24,2.6,2026-08-20
+C004,A009,Implemented,0.85,4.8,2026-08-20
+C005,A009,Not Implemented,0.0,0.0,2026-08-20
+C006,A009,Partially Implemented,0.43,1.5,2026-08-20
+C007,A009,Implemented,0.79,3.1,2026-08-20
+C009,A009,Partially Implemented,0.58,2.1,2026-08-20
+C010,A009,Not Implemented,0.0,0.0,2026-08-20
+C001,A010,Implemented,0.74,4.0,2026-08-20
+C002,A010,Implemented,0.83,3.2,2026-08-20
+C003,A010,Not Implemented,0.0,0.0,2026-08-20
+C004,A010,Not Implemented,0.0,0.0,2026-08-20
+C005,A010,Not Implemented,0.0,0.0,2026-08-20
+C006,A010,Not Implemented,0.0,0.0,2026-08-20
+C007,A010,Implemented,0.64,2.9,2026-08-20
+C009,A010,Partially Implemented,0.61,2.1,2026-08-20
+C010,A010,Partially Implemented,0.51,1.2,2026-08-20
+C001,A011,Partially Implemented,0.53,1.0,2026-08-20
+C002,A011,Implemented,0.77,3.6,2026-08-20
+C003,A011,Partially Implemented,0.34,2.7,2026-08-20
+C004,A011,Partially Implemented,0.4,1.1,2026-08-20
+C005,A011,Partially Implemented,0.37,2.7,2026-08-20
+C006,A011,Not Implemented,0.0,0.0,2026-08-20
+C009,A011,Implemented,0.71,2.8,2026-08-20
+C010,A011,Partially Implemented,0.24,1.0,2026-08-20
+C001,A012,Partially Implemented,0.4,1.1,2026-08-20
+C002,A012,Implemented,0.98,2.8,2026-08-20
+C003,A012,Implemented,0.63,4.1,2026-08-20
+C004,A012,Not Implemented,0.0,0.0,2026-08-20
+C005,A012,Implemented,0.72,3.0,2026-08-20
+C006,A012,Partially Implemented,0.57,2.5,2026-08-20
+C009,A012,Implemented,0.65,3.7,2026-08-20
+C010,A012,Not Implemented,0.0,0.0,2026-08-20
+C001,A013,Not Implemented,0.0,0.0,2026-08-20
+C003,A013,Implemented,0.84,3.9,2026-08-20
+C004,A013,Partially Implemented,0.36,2.2,2026-08-20
+C005,A013,Partially Implemented,0.53,1.7,2026-08-20
+C006,A013,Not Implemented,0.0,0.0,2026-08-20
+C009,A013,Not Implemented,0.0,0.0,2026-08-20
+C010,A013,Partially Implemented,0.59,2.2,2026-08-20
+C001,A014,Not Implemented,0.0,0.0,2026-08-20
+C002,A014,Not Implemented,0.0,0.0,2026-08-20
+C003,A014,Implemented,0.7,3.0,2026-08-20
+C004,A014,Implemented,0.81,4.0,2026-08-20
+C005,A014,Not Implemented,0.0,0.0,2026-08-20
+C006,A014,Not Implemented,0.0,0.0,2026-08-20
+C007,A014,Not Implemented,0.0,0.0,2026-08-20
+C009,A014,Implemented,0.67,4.1,2026-08-20
+C010,A014,Implemented,0.61,3.0,2026-08-20
+C001,A015,Partially Implemented,0.45,2.3,2026-08-20
+C003,A015,Not Implemented,0.0,0.0,2026-08-20
+C004,A015,Partially Implemented,0.29,2.7,2026-08-20
+C005,A015,Implemented,0.96,4.0,2026-08-20
+C006,A015,Not Implemented,0.0,0.0,2026-08-20
+C009,A015,Implemented,0.9,3.7,2026-08-20
+C010,A015,Not Implemented,0.0,0.0,2026-08-20
+C001,A016,Not Implemented,0.0,0.0,2026-08-20
+C002,A016,Partially Implemented,0.52,2.7,2026-08-20
+C003,A016,Implemented,0.62,2.7,2026-08-20
+C004,A016,Implemented,0.73,2.6,2026-08-20
+C005,A016,Not Implemented,0.0,0.0,2026-08-20
+C006,A016,Partially Implemented,0.41,1.7,2026-08-20
+C009,A016,Partially Implemented,0.45,2.3,2026-08-20
+C010,A016,Not Implemented,0.0,0.0,2026-08-20
+C001,A017,Implemented,0.7,2.9,2026-08-20
+C003,A017,Not Implemented,0.0,0.0,2026-08-20
+C004,A017,Implemented,0.87,2.8,2026-08-20
+C005,A017,Implemented,0.64,4.6,2026-08-20
+C006,A017,Not Implemented,0.0,0.0,2026-08-20
+C009,A017,Partially Implemented,0.39,1.3,2026-08-20
+C010,A017,Implemented,0.97,4.4,2026-08-20
+C001,A018,Not Implemented,0.0,0.0,2026-08-20
+C003,A018,Partially Implemented,0.4,1.8,2026-08-20
+C004,A018,Implemented,0.89,3.4,2026-08-20
+C005,A018,Not Implemented,0.0,0.0,2026-08-20
+C006,A018,Partially Implemented,0.68,1.2,2026-08-20
+C009,A018,Implemented,0.73,2.6,2026-08-20
+C010,A018,Not Implemented,0.0,0.0,2026-08-20
+C001,A019,Not Implemented,0.0,0.0,2026-08-20
+C002,A019,Implemented,0.93,2.8,2026-08-20
+C003,A019,Not Implemented,0.0,0.0,2026-08-20
+C004,A019,Implemented,0.81,4.4,2026-08-20
+C005,A019,Partially Implemented,0.49,2.4,2026-08-20
+C006,A019,Partially Implemented,0.42,2.8,2026-08-20
+C009,A019,Not Implemented,0.0,0.0,2026-08-20
+C010,A019,Implemented,0.9,3.6,2026-08-20
+C001,A020,Implemented,0.88,4.6,2026-08-20
+C002,A020,Implemented,0.72,4.2,2026-08-20
+C003,A020,Partially Implemented,0.26,1.0,2026-08-20
+C004,A020,Not Implemented,0.0,0.0,2026-08-20
+C005,A020,Not Implemented,0.0,0.0,2026-08-20
+C006,A020,Implemented,0.64,2.9,2026-08-20
+C009,A020,Implemented,0.68,4.7,2026-08-20
+C010,A020,Not Implemented,0.0,0.0,2026-08-20
+C001,A021,Implemented,0.61,4.5,2026-08-20
+C002,A021,Not Implemented,0.0,0.0,2026-08-20
+C003,A021,Implemented,0.72,3.7,2026-08-20
+C004,A021,Not Implemented,0.0,0.0,2026-08-20
+C005,A021,Not Implemented,0.0,0.0,2026-08-20
+C006,A021,Implemented,0.93,4.3,2026-08-20
+C009,A021,Partially Implemented,0.26,1.0,2026-08-20
+C010,A021,Not Implemented,0.0,0.0,2026-08-20
+C001,A022,Not Implemented,0.0,0.0,2026-08-20
+C002,A022,Implemented,0.98,3.8,2026-08-20
+C003,A022,Implemented,0.9,4.1,2026-08-20
+C004,A022,Implemented,0.94,2.8,2026-08-20
+C005,A022,Partially Implemented,0.63,1.9,2026-08-20
+C006,A022,Not Implemented,0.0,0.0,2026-08-20
+C008,A022,Implemented,0.69,4.0,2026-08-20
+C009,A022,Implemented,0.84,4.0,2026-08-20
+C010,A022,Partially Implemented,0.66,2.0,2026-08-20
+C001,A023,Implemented,0.79,3.7,2026-08-20
+C002,A023,Partially Implemented,0.35,1.0,2026-08-20
+C003,A023,Partially Implemented,0.28,1.8,2026-08-20
+C004,A023,Partially Implemented,0.29,2.4,2026-08-20
+C005,A023,Implemented,0.74,3.3,2026-08-20
+C006,A023,Implemented,0.91,3.2,2026-08-20
+C009,A023,Implemented,0.72,3.6,2026-08-20
+C010,A023,Not Implemented,0.0,0.0,2026-08-20
+C001,A024,Not Implemented,0.0,0.0,2026-08-20
+C002,A024,Partially Implemented,0.28,2.7,2026-08-20
+C003,A024,Not Implemented,0.0,0.0,2026-08-20
+C004,A024,Partially Implemented,0.64,2.5,2026-08-20
+C005,A024,Implemented,0.91,4.5,2026-08-20
+C006,A024,Implemented,0.93,3.3,2026-08-20
+C007,A024,Implemented,0.63,4.3,2026-08-20
+C009,A024,Not Implemented,0.0,0.0,2026-08-20
+C010,A024,Implemented,0.75,3.4,2026-08-20
+C001,A025,Partially Implemented,0.22,1.2,2026-08-20
+C002,A025,Not Implemented,0.0,0.0,2026-08-20
+C003,A025,Implemented,0.66,4.7,2026-08-20
+C004,A025,Not Implemented,0.0,0.0,2026-08-20
+C005,A025,Partially Implemented,0.67,1.3,2026-08-20
+C006,A025,Implemented,0.98,3.1,2026-08-20
+C009,A025,Implemented,0.87,3.3,2026-08-20
+C010,A025,Implemented,0.83,2.6,2026-08-20
+C001,A026,Not Implemented,0.0,0.0,2026-08-20
+C002,A026,Not Implemented,0.0,0.0,2026-08-20
+C003,A026,Implemented,0.67,2.6,2026-08-20
+C004,A026,Implemented,0.88,4.3,2026-08-20
+C005,A026,Not Implemented,0.0,0.0,2026-08-20
+C006,A026,Implemented,0.92,3.1,2026-08-20
+C009,A026,Implemented,0.73,3.3,2026-08-20
+C010,A026,Implemented,0.67,2.8,2026-08-20
+C001,A027,Partially Implemented,0.34,1.6,2026-08-20
+C002,A027,Implemented,0.75,2.6,2026-08-20
+C003,A027,Not Implemented,0.0,0.0,2026-08-20
+C004,A027,Implemented,0.91,2.8,2026-08-20
+C005,A027,Partially Implemented,0.47,2.5,2026-08-20
+C006,A027,Implemented,0.95,3.4,2026-08-20
+C008,A027,Not Implemented,0.0,0.0,2026-08-20
+C009,A027,Implemented,0.99,4.6,2026-08-20
+C010,A027,Partially Implemented,0.3,2.6,2026-08-20
+C001,A028,Partially Implemented,0.37,1.8,2026-08-20
+C002,A028,Implemented,0.75,4.6,2026-08-20
+C003,A028,Not Implemented,0.0,0.0,2026-08-20
+C004,A028,Implemented,0.66,3.8,2026-08-20
+C005,A028,Implemented,0.84,2.6,2026-08-20
+C006,A028,Implemented,0.69,4.2,2026-08-20
+C009,A028,Partially Implemented,0.43,2.1,2026-08-20
+C010,A028,Partially Implemented,0.6,1.5,2026-08-20
+C001,A029,Implemented,0.91,4.4,2026-08-20
+C003,A029,Implemented,0.94,3.7,2026-08-20
+C004,A029,Not Implemented,0.0,0.0,2026-08-20
+C005,A029,Not Implemented,0.0,0.0,2026-08-20
+C006,A029,Implemented,0.96,2.6,2026-08-20
+C009,A029,Partially Implemented,0.34,1.1,2026-08-20
+C010,A029,Partially Implemented,0.65,1.7,2026-08-20
+C001,A030,Implemented,0.9,3.9,2026-08-20
+C002,A030,Partially Implemented,0.26,1.9,2026-08-20
+C003,A030,Partially Implemented,0.63,1.7,2026-08-20
+C004,A030,Partially Implemented,0.51,1.6,2026-08-20
+C005,A030,Not Implemented,0.0,0.0,2026-08-20
+C006,A030,Partially Implemented,0.56,2.7,2026-08-20
+C009,A030,Implemented,0.92,3.7,2026-08-20
+C010,A030,Implemented,1.0,3.6,2026-08-20
+C001,A031,Implemented,0.98,4.2,2026-08-20
+C003,A031,Partially Implemented,0.28,2.7,2026-08-20
+C004,A031,Not Implemented,0.0,0.0,2026-08-20
+C005,A031,Implemented,0.85,3.2,2026-08-20
+C006,A031,Not Implemented,0.0,0.0,2026-08-20
+C009,A031,Implemented,0.7,4.3,2026-08-20
+C010,A031,Implemented,0.74,3.5,2026-08-20
+C001,A032,Not Implemented,0.0,0.0,2026-08-20
+C002,A032,Implemented,0.66,4.3,2026-08-20
+C003,A032,Not Implemented,0.0,0.0,2026-08-20
+C004,A032,Not Implemented,0.0,0.0,2026-08-20
+C005,A032,Implemented,0.68,3.1,2026-08-20
+C006,A032,Implemented,0.61,2.8,2026-08-20
+C009,A032,Implemented,0.85,4.4,2026-08-20
+C010,A032,Partially Implemented,0.38,2.6,2026-08-20
+C001,A033,Implemented,0.68,2.6,2026-08-20
+C003,A033,Not Implemented,0.0,0.0,2026-08-20
+C004,A033,Not Implemented,0.0,0.0,2026-08-20
+C005,A033,Not Implemented,0.0,0.0,2026-08-20
+C006,A033,Partially Implemented,0.34,1.6,2026-08-20
+C009,A033,Implemented,0.91,3.3,2026-08-20
+C010,A033,Implemented,0.87,3.1,2026-08-20
+C001,A034,Implemented,0.73,3.3,2026-08-20
+C003,A034,Implemented,0.92,3.0,2026-08-20
+C004,A034,Implemented,0.99,4.5,2026-08-20
+C005,A034,Implemented,0.9,2.5,2026-08-20
+C006,A034,Partially Implemented,0.33,1.6,2026-08-20
+C009,A034,Not Implemented,0.0,0.0,2026-08-20
+C010,A034,Partially Implemented,0.63,1.5,2026-08-20
+C001,A035,Not Implemented,0.0,0.0,2026-08-20
+C002,A035,Not Implemented,0.0,0.0,2026-08-20
+C003,A035,Implemented,0.74,3.9,2026-08-20
+C004,A035,Partially Implemented,0.66,2.5,2026-08-20
+C005,A035,Partially Implemented,0.49,2.0,2026-08-20
+C006,A035,Partially Implemented,0.68,2.9,2026-08-20
+C008,A035,Not Implemented,0.0,0.0,2026-08-20
+C009,A035,Implemented,0.72,3.5,2026-08-20
+C010,A035,Implemented,0.97,4.6,2026-08-20
+C001,A036,Implemented,0.66,3.0,2026-08-20
+C002,A036,Partially Implemented,0.54,1.2,2026-08-20
+C003,A036,Implemented,0.98,3.8,2026-08-20
+C004,A036,Implemented,0.78,3.3,2026-08-20
+C005,A036,Not Implemented,0.0,0.0,2026-08-20
+C006,A036,Not Implemented,0.0,0.0,2026-08-20
+C009,A036,Not Implemented,0.0,0.0,2026-08-20
+C010,A036,Implemented,0.77,4.6,2026-08-20
+C001,A037,Implemented,0.83,3.1,2026-08-20
+C003,A037,Not Implemented,0.0,0.0,2026-08-20
+C004,A037,Not Implemented,0.0,0.0,2026-08-20
+C005,A037,Partially Implemented,0.28,2.7,2026-08-20
+C006,A037,Implemented,0.98,4.7,2026-08-20
+C009,A037,Implemented,0.61,3.7,2026-08-20
+C010,A037,Partially Implemented,0.25,1.1,2026-08-20
+C001,A038,Implemented,0.84,3.5,2026-08-20
+C002,A038,Implemented,0.66,2.6,2026-08-20
+C003,A038,Implemented,0.98,3.1,2026-08-20
+C004,A038,Implemented,0.89,3.4,2026-08-20
+C005,A038,Implemented,0.99,3.1,2026-08-20
+C006,A038,Not Implemented,0.0,0.0,2026-08-20
+C008,A038,Implemented,0.72,3.3,2026-08-20
+C009,A038,Not Implemented,0.0,0.0,2026-08-20
+C010,A038,Implemented,0.66,3.9,2026-08-20
+C001,A039,Implemented,0.8,4.5,2026-08-20
+C003,A039,Not Implemented,0.0,0.0,2026-08-20
+C004,A039,Implemented,0.61,4.1,2026-08-20
+C005,A039,Not Implemented,0.0,0.0,2026-08-20
+C006,A039,Implemented,0.67,4.2,2026-08-20
+C009,A039,Not Implemented,0.0,0.0,2026-08-20
+C010,A039,Implemented,0.6,3.1,2026-08-20
+C001,A040,Implemented,0.84,3.9,2026-08-20
+C002,A040,Implemented,0.87,3.7,2026-08-20
+C003,A040,Partially Implemented,0.23,1.2,2026-08-20
+C004,A040,Partially Implemented,0.33,1.3,2026-08-20
+C005,A040,Partially Implemented,0.23,2.4,2026-08-20
+C006,A040,Partially Implemented,0.55,1.7,2026-08-20
+C007,A040,Implemented,0.75,4.7,2026-08-20
+C009,A040,Not Implemented,0.0,0.0,2026-08-20
+C010,A040,Not Implemented,0.0,0.0,2026-08-20
+C001,A041,Not Implemented,0.0,0.0,2026-08-20
+C002,A041,Implemented,0.65,3.4,2026-08-20
+C003,A041,Implemented,0.65,3.0,2026-08-20
+C004,A041,Not Implemented,0.0,0.0,2026-08-20
+C005,A041,Not Implemented,0.0,0.0,2026-08-20
+C006,A041,Not Implemented,0.0,0.0,2026-08-20
+C007,A041,Not Implemented,0.0,0.0,2026-08-20
+C009,A041,Implemented,0.7,2.5,2026-08-20
+C010,A041,Not Implemented,0.0,0.0,2026-08-20
+C001,A042,Implemented,0.89,4.6,2026-08-20
+C002,A042,Not Implemented,0.0,0.0,2026-08-20
+C003,A042,Not Implemented,0.0,0.0,2026-08-20
+C004,A042,Implemented,0.77,3.2,2026-08-20
+C005,A042,Implemented,0.98,4.6,2026-08-20
+C006,A042,Implemented,0.63,3.0,2026-08-20
+C007,A042,Partially Implemented,0.29,1.2,2026-08-20
+C009,A042,Implemented,0.65,2.6,2026-08-20
+C010,A042,Partially Implemented,0.58,1.4,2026-08-20
+C001,A043,Partially Implemented,0.54,1.2,2026-08-20
+C002,A043,Partially Implemented,0.55,1.3,2026-08-20
+C003,A043,Not Implemented,0.0,0.0,2026-08-20
+C004,A043,Implemented,0.64,2.5,2026-08-20
+C005,A043,Implemented,0.62,4.1,2026-08-20
+C006,A043,Not Implemented,0.0,0.0,2026-08-20
+C009,A043,Partially Implemented,0.56,1.1,2026-08-20
+C010,A043,Implemented,0.97,4.6,2026-08-20
+C001,A044,Partially Implemented,0.21,2.4,2026-08-20
+C002,A044,Implemented,0.74,3.7,2026-08-20
+C003,A044,Implemented,0.84,4.0,2026-08-20
+C004,A044,Implemented,0.93,4.8,2026-08-20
+C005,A044,Implemented,0.62,4.2,2026-08-20
+C006,A044,Implemented,0.62,4.2,2026-08-20
+C008,A044,Not Implemented,0.0,0.0,2026-08-20
+C009,A044,Partially Implemented,0.26,1.0,2026-08-20
+C010,A044,Implemented,0.81,4.7,2026-08-20
+C001,A045,Not Implemented,0.0,0.0,2026-08-20
+C002,A045,Implemented,0.64,4.5,2026-08-20
+C003,A045,Not Implemented,0.0,0.0,2026-08-20
+C004,A045,Implemented,0.67,3.3,2026-08-20
+C005,A045,Implemented,1.0,3.8,2026-08-20
+C006,A045,Not Implemented,0.0,0.0,2026-08-20
+C009,A045,Implemented,0.87,4.7,2026-08-20
+C010,A045,Not Implemented,0.0,0.0,2026-08-20
+C001,A046,Not Implemented,0.0,0.0,2026-08-20
+C003,A046,Implemented,0.88,4.5,2026-08-20
+C004,A046,Implemented,0.76,2.7,2026-08-20
+C005,A046,Partially Implemented,0.38,2.8,2026-08-20
+C006,A046,Partially Implemented,0.64,2.0,2026-08-20
+C009,A046,Not Implemented,0.0,0.0,2026-08-20
+C010,A046,Not Implemented,0.0,0.0,2026-08-20
+C001,A047,Implemented,0.62,4.2,2026-08-20
+C002,A047,Partially Implemented,0.48,2.7,2026-08-20
+C003,A047,Implemented,0.89,3.7,2026-08-20
+C004,A047,Not Implemented,0.0,0.0,2026-08-20
+C005,A047,Implemented,0.98,2.7,2026-08-20
+C006,A047,Implemented,0.61,3.8,2026-08-20
+C007,A047,Not Implemented,0.0,0.0,2026-08-20
+C009,A047,Implemented,0.95,4.5,2026-08-20
+C010,A047,Implemented,0.73,2.9,2026-08-20
+C001,A048,Implemented,0.84,3.2,2026-08-20
+C002,A048,Implemented,0.77,2.9,2026-08-20
+C003,A048,Partially Implemented,0.56,1.1,2026-08-20
+C004,A048,Implemented,0.99,3.6,2026-08-20
+C005,A048,Partially Implemented,0.25,1.9,2026-08-20
+C006,A048,Implemented,0.79,4.5,2026-08-20
+C009,A048,Implemented,0.68,3.4,2026-08-20
+C010,A048,Partially Implemented,0.49,2.8,2026-08-20
+C001,A049,Not Implemented,0.0,0.0,2026-08-20
+C003,A049,Not Implemented,0.0,0.0,2026-08-20
+C004,A049,Implemented,0.65,2.6,2026-08-20
+C005,A049,Partially Implemented,0.29,1.8,2026-08-20
+C006,A049,Implemented,0.67,4.7,2026-08-20
+C009,A049,Not Implemented,0.0,0.0,2026-08-20
+C010,A049,Not Implemented,0.0,0.0,2026-08-20
+C001,A050,Implemented,0.74,3.6,2026-08-20
+C002,A050,Not Implemented,0.0,0.0,2026-08-20
+C003,A050,Not Implemented,0.0,0.0,2026-08-20
+C004,A050,Partially Implemented,0.64,1.6,2026-08-20
+C005,A050,Not Implemented,0.0,0.0,2026-08-20
+C006,A050,Implemented,0.98,4.6,2026-08-20
+C007,A050,Implemented,0.78,3.9,2026-08-20
+C009,A050,Partially Implemented,0.51,2.5,2026-08-20
+C010,A050,Partially Implemented,0.42,1.5,2026-08-20
+C001,A051,Implemented,0.8,2.5,2026-08-20
+C002,A051,Not Implemented,0.0,0.0,2026-08-20
+C003,A051,Implemented,0.8,4.0,2026-08-20
+C004,A051,Not Implemented,0.0,0.0,2026-08-20
+C005,A051,Implemented,0.74,4.7,2026-08-20
+C006,A051,Implemented,0.69,3.5,2026-08-20
+C009,A051,Implemented,0.68,4.5,2026-08-20
+C010,A051,Not Implemented,0.0,0.0,2026-08-20
+C001,A052,Implemented,0.94,4.8,2026-08-20
+C002,A052,Implemented,0.87,3.9,2026-08-20
+C003,A052,Partially Implemented,0.33,1.5,2026-08-20
+C004,A052,Implemented,0.96,3.8,2026-08-20
+C005,A052,Not Implemented,0.0,0.0,2026-08-20
+C006,A052,Implemented,0.62,4.4,2026-08-20
+C009,A052,Implemented,0.94,3.5,2026-08-20
+C010,A052,Not Implemented,0.0,0.0,2026-08-20
+C001,A053,Not Implemented,0.0,0.0,2026-08-20
+C002,A053,Implemented,0.73,4.0,2026-08-20
+C003,A053,Not Implemented,0.0,0.0,2026-08-20
+C004,A053,Implemented,0.93,4.3,2026-08-20
+C005,A053,Implemented,0.74,4.8,2026-08-20
+C006,A053,Implemented,0.69,3.7,2026-08-20
+C008,A053,Implemented,0.62,4.1,2026-08-20
+C009,A053,Not Implemented,0.0,0.0,2026-08-20
+C010,A053,Implemented,0.76,4.3,2026-08-20
+C001,A054,Partially Implemented,0.38,1.7,2026-08-20
+C002,A054,Not Implemented,0.0,0.0,2026-08-20
+C003,A054,Not Implemented,0.0,0.0,2026-08-20
+C004,A054,Implemented,0.71,2.7,2026-08-20
+C005,A054,Implemented,0.83,2.8,2026-08-20
+C006,A054,Not Implemented,0.0,0.0,2026-08-20
+C009,A054,Not Implemented,0.0,0.0,2026-08-20
+C010,A054,Not Implemented,0.0,0.0,2026-08-20
+C001,A055,Not Implemented,0.0,0.0,2026-08-20
+C002,A055,Implemented,0.96,4.3,2026-08-20
+C003,A055,Not Implemented,0.0,0.0,2026-08-20
+C004,A055,Implemented,0.67,3.5,2026-08-20
+C005,A055,Partially Implemented,0.64,2.6,2026-08-20
+C006,A055,Not Implemented,0.0,0.0,2026-08-20
+C007,A055,Implemented,0.62,3.9,2026-08-20
+C009,A055,Partially Implemented,0.59,1.9,2026-08-20
+C010,A055,Not Implemented,0.0,0.0,2026-08-20
+C001,A056,Partially Implemented,0.37,1.7,2026-08-20
+C003,A056,Not Implemented,0.0,0.0,2026-08-20
+C004,A056,Not Implemented,0.0,0.0,2026-08-20
+C005,A056,Not Implemented,0.0,0.0,2026-08-20
+C006,A056,Not Implemented,0.0,0.0,2026-08-20
+C009,A056,Not Implemented,0.0,0.0,2026-08-20
+C010,A056,Implemented,0.86,3.2,2026-08-20
+C001,A057,Implemented,0.61,4.8,2026-08-20
+C002,A057,Implemented,0.7,3.3,2026-08-20
+C003,A057,Implemented,0.69,3.7,2026-08-20
+C004,A057,Not Implemented,0.0,0.0,2026-08-20
+C005,A057,Partially Implemented,0.52,1.2,2026-08-20
+C006,A057,Partially Implemented,0.29,1.7,2026-08-20
+C009,A057,Implemented,0.68,4.2,2026-08-20
+C010,A057,Implemented,0.8,3.0,2026-08-20
+C001,A058,Implemented,0.85,3.7,2026-08-20
+C002,A058,Implemented,1.0,2.9,2026-08-20
+C003,A058,Implemented,0.62,2.8,2026-08-20
+C004,A058,Implemented,0.75,3.8,2026-08-20
+C005,A058,Not Implemented,0.0,0.0,2026-08-20
+C006,A058,Partially Implemented,0.39,2.4,2026-08-20
+C007,A058,Implemented,0.84,3.7,2026-08-20
+C009,A058,Implemented,0.83,3.5,2026-08-20
+C010,A058,Implemented,0.82,2.7,2026-08-20
+C001,A059,Implemented,0.92,4.0,2026-08-20
+C002,A059,Implemented,0.61,4.7,2026-08-20
+C003,A059,Implemented,0.77,2.6,2026-08-20
+C004,A059,Implemented,0.87,3.5,2026-08-20
+C005,A059,Implemented,0.9,4.1,2026-08-20
+C006,A059,Partially Implemented,0.69,1.2,2026-08-20
+C009,A059,Not Implemented,0.0,0.0,2026-08-20
+C010,A059,Implemented,0.84,2.9,2026-08-20
+C001,A060,Implemented,0.68,4.2,2026-08-20
+C002,A060,Not Implemented,0.0,0.0,2026-08-20
+C003,A060,Partially Implemented,0.25,2.6,2026-08-20
+C004,A060,Partially Implemented,0.35,1.4,2026-08-20
+C005,A060,Not Implemented,0.0,0.0,2026-08-20
+C006,A060,Implemented,0.74,3.6,2026-08-20
+C007,A060,Implemented,0.8,3.1,2026-08-20
+C009,A060,Not Implemented,0.0,0.0,2026-08-20
+C010,A060,Not Implemented,0.0,0.0,2026-08-20
+C001,A061,Implemented,0.86,4.6,2026-08-20
+C003,A061,Implemented,0.98,3.4,2026-08-20
+C004,A061,Partially Implemented,0.31,2.9,2026-08-20
+C005,A061,Implemented,0.64,4.4,2026-08-20
+C006,A061,Not Implemented,0.0,0.0,2026-08-20
+C009,A061,Not Implemented,0.0,0.0,2026-08-20
+C010,A061,Not Implemented,0.0,0.0,2026-08-20
+C001,A062,Partially Implemented,0.22,1.9,2026-08-20
+C002,A062,Partially Implemented,0.63,1.6,2026-08-20
+C003,A062,Implemented,0.6,2.9,2026-08-20
+C004,A062,Not Implemented,0.0,0.0,2026-08-20
+C005,A062,Implemented,0.88,3.4,2026-08-20
+C006,A062,Partially Implemented,0.35,2.3,2026-08-20
+C008,A062,Implemented,0.85,4.1,2026-08-20
+C009,A062,Not Implemented,0.0,0.0,2026-08-20
+C010,A062,Not Implemented,0.0,0.0,2026-08-20
+C001,A063,Partially Implemented,0.59,1.7,2026-08-20
+C002,A063,Implemented,0.79,2.6,2026-08-20
+C003,A063,Implemented,0.61,3.7,2026-08-20
+C004,A063,Implemented,0.78,2.5,2026-08-20
+C005,A063,Not Implemented,0.0,0.0,2026-08-20
+C006,A063,Implemented,0.88,3.0,2026-08-20
+C007,A063,Implemented,0.73,4.4,2026-08-20
+C009,A063,Partially Implemented,0.37,2.0,2026-08-20
+C010,A063,Implemented,0.97,3.6,2026-08-20
+C001,A064,Partially Implemented,0.23,1.8,2026-08-20
+C002,A064,Implemented,0.99,3.6,2026-08-20
+C003,A064,Implemented,0.74,4.6,2026-08-20
+C004,A064,Implemented,0.76,3.5,2026-08-20
+C005,A064,Implemented,0.91,3.2,2026-08-20
+C006,A064,Implemented,0.82,3.2,2026-08-20
+C009,A064,Implemented,0.9,3.7,2026-08-20
+C010,A064,Implemented,0.61,2.6,2026-08-20
+C001,A065,Implemented,0.96,3.3,2026-08-20
+C003,A065,Implemented,0.97,2.9,2026-08-20
+C004,A065,Partially Implemented,0.67,1.8,2026-08-20
+C005,A065,Implemented,0.9,2.9,2026-08-20
+C006,A065,Not Implemented,0.0,0.0,2026-08-20
+C009,A065,Partially Implemented,0.66,1.9,2026-08-20
+C010,A065,Not Implemented,0.0,0.0,2026-08-20
+C001,A066,Implemented,0.61,2.5,2026-08-20
+C002,A066,Not Implemented,0.0,0.0,2026-08-20
+C003,A066,Partially Implemented,0.68,1.6,2026-08-20
+C004,A066,Not Implemented,0.0,0.0,2026-08-20
+C005,A066,Implemented,1.0,2.8,2026-08-20
+C006,A066,Implemented,0.64,2.9,2026-08-20
+C009,A066,Implemented,0.8,4.3,2026-08-20
+C010,A066,Partially Implemented,0.28,1.1,2026-08-20
+C001,A067,Implemented,0.96,2.6,2026-08-20
+C002,A067,Not Implemented,0.0,0.0,2026-08-20
+C003,A067,Not Implemented,0.0,0.0,2026-08-20
+C004,A067,Implemented,0.92,2.5,2026-08-20
+C005,A067,Implemented,0.99,3.3,2026-08-20
+C006,A067,Partially Implemented,0.49,2.2,2026-08-20
+C009,A067,Not Implemented,0.0,0.0,2026-08-20
+C010,A067,Partially Implemented,0.38,1.5,2026-08-20
+C001,A068,Implemented,0.72,3.5,2026-08-20
+C002,A068,Partially Implemented,0.67,2.5,2026-08-20
+C003,A068,Implemented,0.71,3.7,2026-08-20
+C004,A068,Partially Implemented,0.22,2.8,2026-08-20
+C005,A068,Implemented,0.85,4.3,2026-08-20
+C006,A068,Implemented,0.89,3.5,2026-08-20
+C007,A068,Not Implemented,0.0,0.0,2026-08-20
+C009,A068,Implemented,0.7,4.6,2026-08-20
+C010,A068,Not Implemented,0.0,0.0,2026-08-20
+C001,A069,Implemented,0.69,3.6,2026-08-20
+C002,A069,Partially Implemented,0.37,2.1,2026-08-20
+C003,A069,Implemented,0.78,2.8,2026-08-20
+C004,A069,Implemented,0.97,4.5,2026-08-20
+C005,A069,Implemented,0.69,3.7,2026-08-20
+C006,A069,Partially Implemented,0.46,1.3,2026-08-20
+C009,A069,Implemented,0.89,2.6,2026-08-20
+C010,A069,Partially Implemented,0.45,1.1,2026-08-20
+C001,A070,Partially Implemented,0.64,2.5,2026-08-20
+C002,A070,Partially Implemented,0.33,2.3,2026-08-20
+C003,A070,Partially Implemented,0.26,2.5,2026-08-20
+C004,A070,Implemented,0.68,4.1,2026-08-20
+C005,A070,Not Implemented,0.0,0.0,2026-08-20
+C006,A070,Partially Implemented,0.46,1.7,2026-08-20
+C007,A070,Implemented,0.9,2.9,2026-08-20
+C009,A070,Partially Implemented,0.68,2.0,2026-08-20
+C010,A070,Implemented,0.99,2.5,2026-08-20
+C001,A071,Not Implemented,0.0,0.0,2026-08-20
+C003,A071,Not Implemented,0.0,0.0,2026-08-20
+C004,A071,Implemented,0.72,3.0,2026-08-20
+C005,A071,Implemented,0.79,2.9,2026-08-20
+C006,A071,Implemented,0.67,3.1,2026-08-20
+C009,A071,Implemented,0.97,2.5,2026-08-20
+C010,A071,Implemented,0.72,3.3,2026-08-20
+C001,A072,Implemented,0.66,3.7,2026-08-20
+C002,A072,Not Implemented,0.0,0.0,2026-08-20
+C003,A072,Not Implemented,0.0,0.0,2026-08-20
+C004,A072,Implemented,0.92,4.7,2026-08-20
+C005,A072,Implemented,0.63,4.1,2026-08-20
+C006,A072,Not Implemented,0.0,0.0,2026-08-20
+C009,A072,Implemented,0.99,3.7,2026-08-20
+C010,A072,Implemented,0.73,3.6,2026-08-20
+C001,A073,Implemented,0.72,3.0,2026-08-20
+C002,A073,Partially Implemented,0.25,1.4,2026-08-20
+C003,A073,Not Implemented,0.0,0.0,2026-08-20
+C004,A073,Partially Implemented,0.35,2.3,2026-08-20
+C005,A073,Partially Implemented,0.51,2.7,2026-08-20
+C006,A073,Partially Implemented,0.65,2.1,2026-08-20
+C009,A073,Implemented,0.95,3.0,2026-08-20
+C010,A073,Implemented,0.63,2.6,2026-08-20
+C001,A074,Implemented,0.93,3.3,2026-08-20
+C003,A074,Partially Implemented,0.39,1.7,2026-08-20
+C004,A074,Implemented,0.75,4.5,2026-08-20
+C005,A074,Implemented,0.65,2.5,2026-08-20
+C006,A074,Implemented,0.75,4.4,2026-08-20
+C009,A074,Implemented,0.82,3.4,2026-08-20
+C010,A074,Implemented,0.93,3.3,2026-08-20
+C001,A075,Not Implemented,0.0,0.0,2026-08-20
+C003,A075,Implemented,0.88,4.5,2026-08-20
+C004,A075,Implemented,0.68,2.8,2026-08-20
+C005,A075,Partially Implemented,0.49,1.5,2026-08-20
+C006,A075,Not Implemented,0.0,0.0,2026-08-20
+C009,A075,Implemented,1.0,3.8,2026-08-20
+C010,A075,Partially Implemented,0.43,1.1,2026-08-20
+C001,A076,Implemented,0.94,2.6,2026-08-20
+C002,A076,Implemented,0.67,4.4,2026-08-20
+C003,A076,Implemented,0.63,3.3,2026-08-20
+C004,A076,Implemented,0.94,4.7,2026-08-20
+C005,A076,Not Implemented,0.0,0.0,2026-08-20
+C006,A076,Implemented,0.66,4.2,2026-08-20
+C007,A076,Implemented,0.95,3.3,2026-08-20
+C009,A076,Implemented,0.66,4.0,2026-08-20
+C010,A076,Not Implemented,0.0,0.0,2026-08-20
+C001,A077,Not Implemented,0.0,0.0,2026-08-20
+C002,A077,Partially Implemented,0.29,2.7,2026-08-20
+C003,A077,Partially Implemented,0.41,2.1,2026-08-20
+C004,A077,Implemented,0.77,4.1,2026-08-20
+C005,A077,Partially Implemented,0.3,1.0,2026-08-20
+C006,A077,Implemented,0.63,2.7,2026-08-20
+C009,A077,Not Implemented,0.0,0.0,2026-08-20
+C010,A077,Partially Implemented,0.65,1.4,2026-08-20
+C001,A078,Implemented,0.69,4.2,2026-08-20
+C002,A078,Implemented,1.0,4.5,2026-08-20
+C003,A078,Implemented,0.95,3.2,2026-08-20
+C004,A078,Implemented,0.93,4.6,2026-08-20
+C005,A078,Implemented,0.72,3.7,2026-08-20
+C006,A078,Not Implemented,0.0,0.0,2026-08-20
+C009,A078,Implemented,0.73,4.3,2026-08-20
+C010,A078,Implemented,0.98,4.8,2026-08-20
+C001,A079,Implemented,0.66,4.4,2026-08-20
+C002,A079,Not Implemented,0.0,0.0,2026-08-20
+C003,A079,Implemented,0.72,4.2,2026-08-20
+C004,A079,Implemented,0.62,3.7,2026-08-20
+C005,A079,Partially Implemented,0.66,2.3,2026-08-20
+C006,A079,Implemented,0.78,3.2,2026-08-20
+C009,A079,Implemented,0.84,4.1,2026-08-20
+C010,A079,Implemented,0.92,3.2,2026-08-20
+C001,A080,Not Implemented,0.0,0.0,2026-08-20
+C002,A080,Not Implemented,0.0,0.0,2026-08-20
+C003,A080,Implemented,0.99,3.2,2026-08-20
+C004,A080,Partially Implemented,0.66,1.5,2026-08-20
+C005,A080,Not Implemented,0.0,0.0,2026-08-20
+C006,A080,Partially Implemented,0.49,1.7,2026-08-20
+C007,A080,Partially Implemented,0.25,1.5,2026-08-20
+C009,A080,Implemented,0.72,4.5,2026-08-20
+C010,A080,Not Implemented,0.0,0.0,2026-08-20
+C001,A081,Implemented,0.71,4.5,2026-08-20
+C002,A081,Not Implemented,0.0,0.0,2026-08-20
+C003,A081,Partially Implemented,0.7,2.0,2026-08-20
+C004,A081,Partially Implemented,0.23,2.0,2026-08-20
+C005,A081,Not Implemented,0.0,0.0,2026-08-20
+C006,A081,Implemented,0.62,3.6,2026-08-20
+C009,A081,Partially Implemented,0.41,2.8,2026-08-20
+C010,A081,Not Implemented,0.0,0.0,2026-08-20
+C001,A082,Not Implemented,0.0,0.0,2026-08-20
+C002,A082,Implemented,0.65,3.4,2026-08-20
+C003,A082,Implemented,0.95,3.1,2026-08-20
+C004,A082,Not Implemented,0.0,0.0,2026-08-20
+C005,A082,Implemented,0.6,3.4,2026-08-20
+C006,A082,Not Implemented,0.0,0.0,2026-08-20
+C007,A082,Not Implemented,0.0,0.0,2026-08-20
+C009,A082,Implemented,0.9,4.6,2026-08-20
+C010,A082,Implemented,0.99,3.5,2026-08-20
+C001,A083,Implemented,0.75,3.3,2026-08-20
+C002,A083,Implemented,0.7,3.5,2026-08-20
+C003,A083,Not Implemented,0.0,0.0,2026-08-20
+C004,A083,Implemented,0.94,3.9,2026-08-20
+C005,A083,Implemented,0.79,2.9,2026-08-20
+C006,A083,Not Implemented,0.0,0.0,2026-08-20
+C007,A083,Not Implemented,0.0,0.0,2026-08-20
+C009,A083,Implemented,0.95,3.2,2026-08-20
+C010,A083,Partially Implemented,0.23,2.4,2026-08-20
+C001,A084,Partially Implemented,0.37,1.8,2026-08-20
+C002,A084,Partially Implemented,0.44,2.5,2026-08-20
+C003,A084,Not Implemented,0.0,0.0,2026-08-20
+C004,A084,Implemented,0.87,2.9,2026-08-20
+C005,A084,Implemented,0.76,3.4,2026-08-20
+C006,A084,Implemented,0.87,4.7,2026-08-20
+C009,A084,Not Implemented,0.0,0.0,2026-08-20
+C010,A084,Implemented,0.94,4.1,2026-08-20
+C001,A085,Partially Implemented,0.23,1.4,2026-08-20
+C003,A085,Implemented,0.77,4.1,2026-08-20
+C004,A085,Not Implemented,0.0,0.0,2026-08-20
+C005,A085,Implemented,0.85,4.7,2026-08-20
+C006,A085,Not Implemented,0.0,0.0,2026-08-20
+C009,A085,Implemented,0.81,3.0,2026-08-20
+C010,A085,Partially Implemented,0.4,2.3,2026-08-20
+C001,A086,Partially Implemented,0.33,2.0,2026-08-20
+C002,A086,Partially Implemented,0.58,1.2,2026-08-20
+C003,A086,Partially Implemented,0.56,1.1,2026-08-20
+C004,A086,Not Implemented,0.0,0.0,2026-08-20
+C005,A086,Implemented,1.0,2.7,2026-08-20
+C006,A086,Implemented,0.68,3.3,2026-08-20
+C009,A086,Not Implemented,0.0,0.0,2026-08-20
+C010,A086,Partially Implemented,0.66,1.3,2026-08-20
+C001,A087,Not Implemented,0.0,0.0,2026-08-20
+C002,A087,Not Implemented,0.0,0.0,2026-08-20
+C003,A087,Not Implemented,0.0,0.0,2026-08-20
+C004,A087,Not Implemented,0.0,0.0,2026-08-20
+C005,A087,Not Implemented,0.0,0.0,2026-08-20
+C006,A087,Not Implemented,0.0,0.0,2026-08-20
+C007,A087,Implemented,0.77,3.0,2026-08-20
+C009,A087,Not Implemented,0.0,0.0,2026-08-20
+C010,A087,Not Implemented,0.0,0.0,2026-08-20
+C001,A088,Not Implemented,0.0,0.0,2026-08-20
+C002,A088,Implemented,0.92,4.1,2026-08-20
+C003,A088,Implemented,0.98,4.7,2026-08-20
+C004,A088,Not Implemented,0.0,0.0,2026-08-20
+C005,A088,Not Implemented,0.0,0.0,2026-08-20
+C006,A088,Implemented,0.99,2.6,2026-08-20
+C009,A088,Partially Implemented,0.38,1.6,2026-08-20
+C010,A088,Implemented,0.76,4.4,2026-08-20
+C001,A089,Implemented,0.66,3.7,2026-08-20
+C002,A089,Implemented,0.62,3.0,2026-08-20
+C003,A089,Not Implemented,0.0,0.0,2026-08-20
+C004,A089,Implemented,0.86,4.4,2026-08-20
+C005,A089,Implemented,0.77,3.5,2026-08-20
+C006,A089,Partially Implemented,0.6,1.2,2026-08-20
+C009,A089,Implemented,0.88,4.3,2026-08-20
+C010,A089,Not Implemented,0.0,0.0,2026-08-20
+C001,A090,Not Implemented,0.0,0.0,2026-08-20
+C002,A090,Implemented,0.61,4.2,2026-08-20
+C003,A090,Implemented,0.66,3.5,2026-08-20
+C004,A090,Implemented,0.61,2.6,2026-08-20
+C005,A090,Not Implemented,0.0,0.0,2026-08-20
+C006,A090,Implemented,0.64,3.2,2026-08-20
+C007,A090,Partially Implemented,0.29,2.0,2026-08-20
+C009,A090,Implemented,0.77,4.0,2026-08-20
+C010,A090,Implemented,0.9,4.3,2026-08-20
+C001,A091,Implemented,0.69,2.7,2026-08-20
+C002,A091,Implemented,0.91,3.2,2026-08-20
+C003,A091,Not Implemented,0.0,0.0,2026-08-20
+C004,A091,Implemented,0.65,2.8,2026-08-20
+C005,A091,Partially Implemented,0.36,1.1,2026-08-20
+C006,A091,Partially Implemented,0.66,2.5,2026-08-20
+C009,A091,Implemented,0.8,3.6,2026-08-20
+C010,A091,Partially Implemented,0.31,2.0,2026-08-20
+C001,A092,Implemented,0.61,4.5,2026-08-20
+C002,A092,Implemented,0.78,3.8,2026-08-20
+C003,A092,Partially Implemented,0.27,2.0,2026-08-20
+C004,A092,Implemented,0.78,4.2,2026-08-20
+C005,A092,Partially Implemented,0.42,2.1,2026-08-20
+C006,A092,Not Implemented,0.0,0.0,2026-08-20
+C009,A092,Not Implemented,0.0,0.0,2026-08-20
+C010,A092,Partially Implemented,0.4,2.8,2026-08-20
+C001,A093,Partially Implemented,0.24,2.7,2026-08-20
+C002,A093,Implemented,0.72,3.3,2026-08-20
+C003,A093,Implemented,0.72,2.7,2026-08-20
+C004,A093,Not Implemented,0.0,0.0,2026-08-20
+C005,A093,Implemented,0.74,3.2,2026-08-20
+C006,A093,Implemented,0.7,4.7,2026-08-20
+C009,A093,Implemented,0.64,4.7,2026-08-20
+C010,A093,Partially Implemented,0.25,2.0,2026-08-20
+C001,A094,Implemented,0.76,2.8,2026-08-20
+C002,A094,Implemented,0.6,4.1,2026-08-20
+C003,A094,Not Implemented,0.0,0.0,2026-08-20
+C004,A094,Not Implemented,0.0,0.0,2026-08-20
+C005,A094,Implemented,0.91,3.7,2026-08-20
+C006,A094,Implemented,0.71,4.8,2026-08-20
+C009,A094,Implemented,0.69,4.6,2026-08-20
+C010,A094,Implemented,0.73,4.0,2026-08-20
+C001,A095,Not Implemented,0.0,0.0,2026-08-20
+C002,A095,Implemented,0.65,2.6,2026-08-20
+C003,A095,Not Implemented,0.0,0.0,2026-08-20
+C004,A095,Not Implemented,0.0,0.0,2026-08-20
+C005,A095,Not Implemented,0.0,0.0,2026-08-20
+C006,A095,Implemented,0.76,3.9,2026-08-20
+C009,A095,Not Implemented,0.0,0.0,2026-08-20
+C010,A095,Not Implemented,0.0,0.0,2026-08-20
+C001,A096,Implemented,0.81,3.3,2026-08-20
+C002,A096,Implemented,0.98,3.1,2026-08-20
+C003,A096,Not Implemented,0.0,0.0,2026-08-20
+C004,A096,Implemented,0.99,4.4,2026-08-20
+C005,A096,Partially Implemented,0.69,2.3,2026-08-20
+C006,A096,Implemented,0.68,3.2,2026-08-20
+C008,A096,Implemented,0.61,3.9,2026-08-20
+C009,A096,Partially Implemented,0.48,1.3,2026-08-20
+C010,A096,Partially Implemented,0.66,1.5,2026-08-20
+C001,A097,Not Implemented,0.0,0.0,2026-08-20
+C002,A097,Implemented,0.95,2.6,2026-08-20
+C003,A097,Not Implemented,0.0,0.0,2026-08-20
+C004,A097,Partially Implemented,0.54,1.3,2026-08-20
+C005,A097,Not Implemented,0.0,0.0,2026-08-20
+C006,A097,Not Implemented,0.0,0.0,2026-08-20
+C009,A097,Implemented,0.67,3.3,2026-08-20
+C010,A097,Implemented,0.92,4.4,2026-08-20
+C001,A098,Not Implemented,0.0,0.0,2026-08-20
+C002,A098,Partially Implemented,0.42,2.6,2026-08-20
+C003,A098,Implemented,0.8,4.2,2026-08-20
+C004,A098,Implemented,0.98,3.7,2026-08-20
+C005,A098,Implemented,0.71,4.0,2026-08-20
+C006,A098,Partially Implemented,0.53,1.1,2026-08-20
+C009,A098,Not Implemented,0.0,0.0,2026-08-20
+C010,A098,Partially Implemented,0.34,1.5,2026-08-20
+C001,A099,Partially Implemented,0.21,1.1,2026-08-20
+C003,A099,Not Implemented,0.0,0.0,2026-08-20
+C004,A099,Partially Implemented,0.47,2.4,2026-08-20
+C005,A099,Not Implemented,0.0,0.0,2026-08-20
+C006,A099,Implemented,0.97,4.2,2026-08-20
+C009,A099,Partially Implemented,0.54,1.1,2026-08-20
+C010,A099,Not Implemented,0.0,0.0,2026-08-20
+C001,A100,Not Implemented,0.0,0.0,2026-08-20
+C002,A100,Not Implemented,0.0,0.0,2026-08-20
+C003,A100,Partially Implemented,0.5,2.9,2026-08-20
+C004,A100,Not Implemented,0.0,0.0,2026-08-20
+C005,A100,Partially Implemented,0.54,1.7,2026-08-20
+C006,A100,Not Implemented,0.0,0.0,2026-08-20
+C009,A100,Partially Implemented,0.27,2.3,2026-08-20
+C010,A100,Partially Implemented,0.38,1.4,2026-08-20
+C001,A101,Not Implemented,0.0,0.0,2026-08-20
+C002,A101,Not Implemented,0.0,0.0,2026-08-20
+C003,A101,Not Implemented,0.0,0.0,2026-08-20
+C004,A101,Not Implemented,0.0,0.0,2026-08-20
+C005,A101,Not Implemented,0.0,0.0,2026-08-20
+C006,A101,Implemented,0.71,4.7,2026-08-20
+C008,A101,Not Implemented,0.0,0.0,2026-08-20
+C009,A101,Not Implemented,0.0,0.0,2026-08-20
+C010,A101,Not Implemented,0.0,0.0,2026-08-20
+C001,A102,Implemented,0.8,4.6,2026-08-20
+C002,A102,Not Implemented,0.0,0.0,2026-08-20
+C003,A102,Implemented,0.96,3.6,2026-08-20
+C004,A102,Implemented,0.82,2.7,2026-08-20
+C005,A102,Partially Implemented,0.69,1.7,2026-08-20
+C006,A102,Implemented,0.83,3.6,2026-08-20
+C009,A102,Not Implemented,0.0,0.0,2026-08-20
+C010,A102,Not Implemented,0.0,0.0,2026-08-20
+C001,A103,Implemented,0.84,3.6,2026-08-20
+C003,A103,Implemented,0.94,3.5,2026-08-20
+C004,A103,Implemented,0.8,4.6,2026-08-20
+C005,A103,Not Implemented,0.0,0.0,2026-08-20
+C006,A103,Partially Implemented,0.58,2.2,2026-08-20
+C009,A103,Not Implemented,0.0,0.0,2026-08-20
+C010,A103,Implemented,0.74,4.6,2026-08-20
+C001,A104,Implemented,0.93,3.5,2026-08-20
+C002,A104,Implemented,0.64,4.8,2026-08-20
+C003,A104,Implemented,0.92,3.7,2026-08-20
+C004,A104,Implemented,0.74,4.2,2026-08-20
+C005,A104,Implemented,0.76,2.7,2026-08-20
+C006,A104,Partially Implemented,0.53,2.5,2026-08-20
+C009,A104,Not Implemented,0.0,0.0,2026-08-20
+C010,A104,Not Implemented,0.0,0.0,2026-08-20
+C001,A105,Not Implemented,0.0,0.0,2026-08-20
+C002,A105,Implemented,0.74,2.5,2026-08-20
+C003,A105,Partially Implemented,0.23,1.1,2026-08-20
+C004,A105,Partially Implemented,0.55,2.1,2026-08-20
+C005,A105,Partially Implemented,0.47,2.3,2026-08-20
+C006,A105,Not Implemented,0.0,0.0,2026-08-20
+C007,A105,Not Implemented,0.0,0.0,2026-08-20
+C009,A105,Partially Implemented,0.3,2.3,2026-08-20
+C010,A105,Implemented,0.76,4.5,2026-08-20
+C001,A106,Implemented,0.82,2.5,2026-08-20
+C002,A106,Implemented,0.83,3.7,2026-08-20
+C003,A106,Not Implemented,0.0,0.0,2026-08-20
+C004,A106,Implemented,0.89,2.6,2026-08-20
+C005,A106,Partially Implemented,0.64,1.9,2026-08-20
+C006,A106,Implemented,0.63,2.6,2026-08-20
+C009,A106,Implemented,0.73,4.5,2026-08-20
+C010,A106,Not Implemented,0.0,0.0,2026-08-20
+C001,A107,Not Implemented,0.0,0.0,2026-08-20
+C002,A107,Implemented,0.86,2.6,2026-08-20
+C003,A107,Implemented,0.8,4.6,2026-08-20
+C004,A107,Implemented,0.6,2.8,2026-08-20
+C005,A107,Not Implemented,0.0,0.0,2026-08-20
+C006,A107,Not Implemented,0.0,0.0,2026-08-20
+C008,A107,Implemented,0.97,2.6,2026-08-20
+C009,A107,Implemented,0.96,3.0,2026-08-20
+C010,A107,Implemented,0.81,2.6,2026-08-20
+C001,A108,Not Implemented,0.0,0.0,2026-08-20
+C002,A108,Partially Implemented,0.31,1.4,2026-08-20
+C003,A108,Partially Implemented,0.29,1.9,2026-08-20
+C004,A108,Implemented,0.68,2.5,2026-08-20
+C005,A108,Implemented,0.81,3.8,2026-08-20
+C006,A108,Not Implemented,0.0,0.0,2026-08-20
+C009,A108,Not Implemented,0.0,0.0,2026-08-20
+C010,A108,Not Implemented,0.0,0.0,2026-08-20
+C001,A109,Implemented,0.85,4.3,2026-08-20
+C002,A109,Not Implemented,0.0,0.0,2026-08-20
+C003,A109,Partially Implemented,0.27,1.7,2026-08-20
+C004,A109,Partially Implemented,0.39,1.7,2026-08-20
+C005,A109,Not Implemented,0.0,0.0,2026-08-20
+C006,A109,Partially Implemented,0.49,2.9,2026-08-20
+C009,A109,Not Implemented,0.0,0.0,2026-08-20
+C010,A109,Implemented,0.86,2.9,2026-08-20
+C001,A110,Implemented,0.65,3.7,2026-08-20
+C002,A110,Implemented,0.79,4.3,2026-08-20
+C003,A110,Implemented,0.8,4.7,2026-08-20
+C004,A110,Implemented,0.83,3.0,2026-08-20
+C005,A110,Not Implemented,0.0,0.0,2026-08-20
+C006,A110,Implemented,0.77,4.0,2026-08-20
+C009,A110,Not Implemented,0.0,0.0,2026-08-20
+C010,A110,Partially Implemented,0.7,2.0,2026-08-20
+C001,A111,Not Implemented,0.0,0.0,2026-08-20
+C003,A111,Partially Implemented,0.32,2.5,2026-08-20
+C004,A111,Implemented,0.81,3.7,2026-08-20
+C005,A111,Implemented,0.83,4.6,2026-08-20
+C006,A111,Implemented,0.76,2.6,2026-08-20
+C009,A111,Implemented,0.68,4.6,2026-08-20
+C010,A111,Partially Implemented,0.48,2.0,2026-08-20
+C001,A112,Not Implemented,0.0,0.0,2026-08-20
+C003,A112,Not Implemented,0.0,0.0,2026-08-20
+C004,A112,Not Implemented,0.0,0.0,2026-08-20
+C005,A112,Implemented,0.79,2.8,2026-08-20
+C006,A112,Partially Implemented,0.5,1.2,2026-08-20
+C009,A112,Partially Implemented,0.52,2.1,2026-08-20
+C010,A112,Partially Implemented,0.5,2.6,2026-08-20
+C001,A113,Implemented,0.69,4.2,2026-08-20
+C002,A113,Implemented,0.77,2.8,2026-08-20
+C003,A113,Implemented,0.6,4.6,2026-08-20
+C004,A113,Implemented,0.9,3.8,2026-08-20
+C005,A113,Implemented,0.8,3.6,2026-08-20
+C006,A113,Not Implemented,0.0,0.0,2026-08-20
+C009,A113,Implemented,0.83,2.6,2026-08-20
+C010,A113,Partially Implemented,0.44,2.7,2026-08-20
+C001,A114,Implemented,0.61,4.6,2026-08-20
+C002,A114,Implemented,0.76,3.4,2026-08-20
+C003,A114,Implemented,0.66,2.7,2026-08-20
+C004,A114,Implemented,0.99,3.0,2026-08-20
+C005,A114,Implemented,0.97,3.2,2026-08-20
+C006,A114,Partially Implemented,0.41,2.7,2026-08-20
+C007,A114,Not Implemented,0.0,0.0,2026-08-20
+C009,A114,Partially Implemented,0.56,1.7,2026-08-20
+C010,A114,Implemented,0.73,3.3,2026-08-20
+C001,A115,Implemented,0.8,4.7,2026-08-20
+C002,A115,Not Implemented,0.0,0.0,2026-08-20
+C003,A115,Partially Implemented,0.46,2.3,2026-08-20
+C004,A115,Implemented,0.65,4.1,2026-08-20
+C005,A115,Implemented,0.95,2.5,2026-08-20
+C006,A115,Partially Implemented,0.47,2.0,2026-08-20
+C009,A115,Partially Implemented,0.38,2.5,2026-08-20
+C010,A115,Not Implemented,0.0,0.0,2026-08-20
+C001,A116,Implemented,0.81,3.4,2026-08-20
+C002,A116,Implemented,0.94,3.3,2026-08-20
+C003,A116,Implemented,0.88,3.0,2026-08-20
+C004,A116,Not Implemented,0.0,0.0,2026-08-20
+C005,A116,Partially Implemented,0.53,1.9,2026-08-20
+C006,A116,Not Implemented,0.0,0.0,2026-08-20
+C009,A116,Not Implemented,0.0,0.0,2026-08-20
+C010,A116,Not Implemented,0.0,0.0,2026-08-20
+C001,A117,Implemented,0.83,4.3,2026-08-20
+C002,A117,Implemented,0.86,3.9,2026-08-20
+C003,A117,Partially Implemented,0.62,2.8,2026-08-20
+C004,A117,Partially Implemented,0.67,2.6,2026-08-20
+C005,A117,Not Implemented,0.0,0.0,2026-08-20
+C006,A117,Not Implemented,0.0,0.0,2026-08-20
+C009,A117,Not Implemented,0.0,0.0,2026-08-20
+C010,A117,Not Implemented,0.0,0.0,2026-08-20
+C001,A118,Implemented,0.64,3.2,2026-08-20
+C002,A118,Not Implemented,0.0,0.0,2026-08-20
+C003,A118,Implemented,0.76,2.7,2026-08-20
+C004,A118,Implemented,0.82,2.7,2026-08-20
+C005,A118,Not Implemented,0.0,0.0,2026-08-20
+C006,A118,Not Implemented,0.0,0.0,2026-08-20
+C009,A118,Not Implemented,0.0,0.0,2026-08-20
+C010,A118,Implemented,0.87,2.8,2026-08-20
+C001,A119,Implemented,0.93,3.1,2026-08-20
+C002,A119,Implemented,0.8,2.7,2026-08-20
+C003,A119,Not Implemented,0.0,0.0,2026-08-20
+C004,A119,Implemented,0.93,4.0,2026-08-20
+C005,A119,Implemented,0.69,2.9,2026-08-20
+C006,A119,Not Implemented,0.0,0.0,2026-08-20
+C009,A119,Implemented,0.75,3.4,2026-08-20
+C010,A119,Implemented,0.66,2.6,2026-08-20
+C001,A120,Partially Implemented,0.2,2.1,2026-08-20
+C002,A120,Partially Implemented,0.6,1.9,2026-08-20
+C003,A120,Partially Implemented,0.33,2.5,2026-08-20
+C004,A120,Partially Implemented,0.64,1.6,2026-08-20
+C005,A120,Implemented,0.62,3.6,2026-08-20
+C006,A120,Partially Implemented,0.67,2.2,2026-08-20
+C008,A120,Implemented,0.88,2.6,2026-08-20
+C009,A120,Implemented,0.61,4.1,2026-08-20
+C010,A120,Implemented,0.64,2.8,2026-08-20
+C001,A121,Not Implemented,0.0,0.0,2026-08-20
+C003,A121,Implemented,0.64,4.3,2026-08-20
+C004,A121,Not Implemented,0.0,0.0,2026-08-20
+C005,A121,Implemented,0.66,3.4,2026-08-20
+C006,A121,Implemented,0.7,3.0,2026-08-20
+C009,A121,Not Implemented,0.0,0.0,2026-08-20
+C010,A121,Implemented,0.72,4.2,2026-08-20
+C001,A122,Partially Implemented,0.3,1.6,2026-08-20
+C002,A122,Not Implemented,0.0,0.0,2026-08-20
+C003,A122,Implemented,0.69,4.6,2026-08-20
+C004,A122,Partially Implemented,0.3,2.7,2026-08-20
+C005,A122,Not Implemented,0.0,0.0,2026-08-20
+C006,A122,Implemented,0.72,3.0,2026-08-20
+C009,A122,Partially Implemented,0.33,2.7,2026-08-20
+C010,A122,Implemented,0.91,3.0,2026-08-20
+C001,A123,Implemented,0.74,3.0,2026-08-20
+C003,A123,Implemented,0.92,4.0,2026-08-20
+C004,A123,Implemented,0.74,3.4,2026-08-20
+C005,A123,Not Implemented,0.0,0.0,2026-08-20
+C006,A123,Not Implemented,0.0,0.0,2026-08-20
+C009,A123,Implemented,0.96,3.5,2026-08-20
+C010,A123,Implemented,0.65,2.7,2026-08-20
+C001,A124,Not Implemented,0.0,0.0,2026-08-20
+C002,A124,Implemented,0.91,4.4,2026-08-20
+C003,A124,Implemented,0.89,4.3,2026-08-20
+C004,A124,Partially Implemented,0.49,2.5,2026-08-20
+C005,A124,Not Implemented,0.0,0.0,2026-08-20
+C006,A124,Implemented,0.64,4.8,2026-08-20
+C008,A124,Not Implemented,0.0,0.0,2026-08-20
+C009,A124,Implemented,0.78,4.1,2026-08-20
+C010,A124,Partially Implemented,0.34,2.1,2026-08-20
+C001,A125,Partially Implemented,0.33,2.2,2026-08-20
+C002,A125,Implemented,0.71,4.5,2026-08-20
+C003,A125,Partially Implemented,0.47,1.8,2026-08-20
+C004,A125,Implemented,0.79,4.4,2026-08-20
+C005,A125,Partially Implemented,0.56,1.4,2026-08-20
+C006,A125,Implemented,0.77,3.9,2026-08-20
+C009,A125,Implemented,0.72,4.0,2026-08-20
+C010,A125,Implemented,1.0,3.3,2026-08-20
+C001,A126,Partially Implemented,0.51,2.6,2026-08-20
+C002,A126,Not Implemented,0.0,0.0,2026-08-20
+C003,A126,Implemented,0.65,3.1,2026-08-20
+C004,A126,Implemented,0.61,4.6,2026-08-20
+C005,A126,Partially Implemented,0.48,2.6,2026-08-20
+C006,A126,Implemented,0.77,4.7,2026-08-20
+C009,A126,Implemented,0.66,3.9,2026-08-20
+C010,A126,Not Implemented,0.0,0.0,2026-08-20
+C001,A127,Implemented,0.89,3.3,2026-08-20
+C002,A127,Partially Implemented,0.25,2.1,2026-08-20
+C003,A127,Implemented,1.0,4.1,2026-08-20
+C004,A127,Implemented,0.98,3.3,2026-08-20
+C005,A127,Not Implemented,0.0,0.0,2026-08-20
+C006,A127,Partially Implemented,0.32,1.8,2026-08-20
+C009,A127,Not Implemented,0.0,0.0,2026-08-20
+C010,A127,Implemented,0.66,3.4,2026-08-20
+C001,A128,Not Implemented,0.0,0.0,2026-08-20
+C002,A128,Implemented,0.78,4.4,2026-08-20
+C003,A128,Partially Implemented,0.44,2.8,2026-08-20
+C004,A128,Not Implemented,0.0,0.0,2026-08-20
+C005,A128,Partially Implemented,0.28,2.6,2026-08-20
+C006,A128,Not Implemented,0.0,0.0,2026-08-20
+C007,A128,Not Implemented,0.0,0.0,2026-08-20
+C009,A128,Partially Implemented,0.49,2.8,2026-08-20
+C010,A128,Not Implemented,0.0,0.0,2026-08-20
+C001,A129,Not Implemented,0.0,0.0,2026-08-20
+C002,A129,Implemented,0.64,4.1,2026-08-20
+C003,A129,Not Implemented,0.0,0.0,2026-08-20
+C004,A129,Implemented,0.79,3.2,2026-08-20
+C005,A129,Not Implemented,0.0,0.0,2026-08-20
+C006,A129,Implemented,0.82,3.9,2026-08-20
+C009,A129,Not Implemented,0.0,0.0,2026-08-20
+C010,A129,Not Implemented,0.0,0.0,2026-08-20
+C001,A130,Not Implemented,0.0,0.0,2026-08-20
+C002,A130,Implemented,0.86,3.3,2026-08-20
+C003,A130,Not Implemented,0.0,0.0,2026-08-20
+C004,A130,Not Implemented,0.0,0.0,2026-08-20
+C005,A130,Not Implemented,0.0,0.0,2026-08-20
+C006,A130,Not Implemented,0.0,0.0,2026-08-20
+C009,A130,Implemented,0.72,3.6,2026-08-20
+C010,A130,Not Implemented,0.0,0.0,2026-08-20
+C001,A131,Not Implemented,0.0,0.0,2026-08-20
+C002,A131,Not Implemented,0.0,0.0,2026-08-20
+C003,A131,Not Implemented,0.0,0.0,2026-08-20
+C004,A131,Implemented,0.77,3.0,2026-08-20
+C005,A131,Implemented,0.72,4.3,2026-08-20
+C006,A131,Implemented,0.72,3.8,2026-08-20
+C009,A131,Implemented,0.7,4.4,2026-08-20
+C010,A131,Implemented,0.95,3.4,2026-08-20
+C001,A132,Partially Implemented,0.56,1.1,2026-08-20
+C002,A132,Implemented,0.64,3.8,2026-08-20
+C003,A132,Implemented,0.75,3.2,2026-08-20
+C004,A132,Not Implemented,0.0,0.0,2026-08-20
+C005,A132,Not Implemented,0.0,0.0,2026-08-20
+C006,A132,Partially Implemented,0.6,2.9,2026-08-20
+C009,A132,Implemented,0.81,4.8,2026-08-20
+C010,A132,Partially Implemented,0.38,2.6,2026-08-20
+C001,A133,Implemented,0.97,2.8,2026-08-20
+C003,A133,Not Implemented,0.0,0.0,2026-08-20
+C004,A133,Not Implemented,0.0,0.0,2026-08-20
+C005,A133,Implemented,0.86,4.7,2026-08-20
+C006,A133,Partially Implemented,0.43,2.4,2026-08-20
+C009,A133,Partially Implemented,0.62,1.9,2026-08-20
+C010,A133,Not Implemented,0.0,0.0,2026-08-20
+C001,A134,Implemented,0.7,3.5,2026-08-20
+C002,A134,Not Implemented,0.0,0.0,2026-08-20
+C003,A134,Partially Implemented,0.43,1.1,2026-08-20
+C004,A134,Implemented,0.77,3.5,2026-08-20
+C005,A134,Not Implemented,0.0,0.0,2026-08-20
+C006,A134,Not Implemented,0.0,0.0,2026-08-20
+C007,A134,Implemented,0.91,4.3,2026-08-20
+C009,A134,Implemented,0.75,3.8,2026-08-20
+C010,A134,Partially Implemented,0.29,2.3,2026-08-20
+C001,A135,Partially Implemented,0.54,2.6,2026-08-20
+C003,A135,Implemented,0.67,4.6,2026-08-20
+C004,A135,Not Implemented,0.0,0.0,2026-08-20
+C005,A135,Implemented,0.76,4.2,2026-08-20
+C006,A135,Not Implemented,0.0,0.0,2026-08-20
+C009,A135,Partially Implemented,0.44,2.9,2026-08-20
+C010,A135,Not Implemented,0.0,0.0,2026-08-20
+C001,A136,Implemented,0.68,3.8,2026-08-20
+C002,A136,Partially Implemented,0.47,1.4,2026-08-20
+C003,A136,Implemented,0.85,3.0,2026-08-20
+C004,A136,Partially Implemented,0.56,1.4,2026-08-20
+C005,A136,Not Implemented,0.0,0.0,2026-08-20
+C006,A136,Partially Implemented,0.66,2.8,2026-08-20
+C007,A136,Implemented,0.94,4.6,2026-08-20
+C009,A136,Implemented,0.63,4.6,2026-08-20
+C010,A136,Not Implemented,0.0,0.0,2026-08-20
+C001,A137,Implemented,0.67,4.8,2026-08-20
+C002,A137,Implemented,0.64,4.1,2026-08-20
+C003,A137,Not Implemented,0.0,0.0,2026-08-20
+C004,A137,Not Implemented,0.0,0.0,2026-08-20
+C005,A137,Not Implemented,0.0,0.0,2026-08-20
+C006,A137,Partially Implemented,0.26,2.8,2026-08-20
+C007,A137,Implemented,0.6,4.6,2026-08-20
+C009,A137,Implemented,0.77,4.3,2026-08-20
+C010,A137,Partially Implemented,0.52,2.4,2026-08-20
+C001,A138,Implemented,0.91,4.4,2026-08-20
+C002,A138,Partially Implemented,0.6,2.9,2026-08-20
+C003,A138,Implemented,0.76,3.7,2026-08-20
+C004,A138,Implemented,0.87,4.6,2026-08-20
+C005,A138,Not Implemented,0.0,0.0,2026-08-20
+C006,A138,Partially Implemented,0.48,1.4,2026-08-20
+C009,A138,Partially Implemented,0.37,2.7,2026-08-20
+C010,A138,Implemented,0.87,2.9,2026-08-20
+C001,A139,Partially Implemented,0.22,2.2,2026-08-20
+C002,A139,Implemented,0.68,3.7,2026-08-20
+C003,A139,Not Implemented,0.0,0.0,2026-08-20
+C004,A139,Implemented,0.98,3.3,2026-08-20
+C005,A139,Not Implemented,0.0,0.0,2026-08-20
+C006,A139,Not Implemented,0.0,0.0,2026-08-20
+C007,A139,Partially Implemented,0.25,2.2,2026-08-20
+C009,A139,Partially Implemented,0.31,1.6,2026-08-20
+C010,A139,Not Implemented,0.0,0.0,2026-08-20
+C001,A140,Implemented,0.95,2.8,2026-08-20
+C002,A140,Implemented,0.91,4.2,2026-08-20
+C003,A140,Implemented,0.68,3.3,2026-08-20
+C004,A140,Partially Implemented,0.58,2.1,2026-08-20
+C005,A140,Implemented,0.71,2.6,2026-08-20
+C006,A140,Implemented,0.93,3.5,2026-08-20
+C009,A140,Not Implemented,0.0,0.0,2026-08-20
+C010,A140,Implemented,0.96,3.4,2026-08-20
+C001,A141,Not Implemented,0.0,0.0,2026-08-20
+C002,A141,Implemented,0.72,4.7,2026-08-20
+C003,A141,Implemented,0.64,3.8,2026-08-20
+C004,A141,Implemented,0.82,3.5,2026-08-20
+C005,A141,Implemented,0.94,3.1,2026-08-20
+C006,A141,Not Implemented,0.0,0.0,2026-08-20
+C007,A141,Implemented,0.61,3.3,2026-08-20
+C009,A141,Partially Implemented,0.31,1.5,2026-08-20
+C010,A141,Not Implemented,0.0,0.0,2026-08-20
+C001,A142,Implemented,0.76,3.6,2026-08-20
+C002,A142,Implemented,0.7,3.1,2026-08-20
+C003,A142,Not Implemented,0.0,0.0,2026-08-20
+C004,A142,Implemented,0.79,3.3,2026-08-20
+C005,A142,Implemented,0.86,4.3,2026-08-20
+C006,A142,Implemented,0.87,4.0,2026-08-20
+C009,A142,Implemented,0.76,3.8,2026-08-20
+C010,A142,Not Implemented,0.0,0.0,2026-08-20
+C001,A143,Implemented,0.92,3.3,2026-08-20
+C002,A143,Implemented,0.94,4.1,2026-08-20
+C003,A143,Implemented,0.71,4.7,2026-08-20
+C004,A143,Implemented,0.94,4.5,2026-08-20
+C005,A143,Implemented,0.63,4.6,2026-08-20
+C006,A143,Implemented,0.61,3.6,2026-08-20
+C009,A143,Partially Implemented,0.5,2.3,2026-08-20
+C010,A143,Partially Implemented,0.21,1.3,2026-08-20
+C001,A144,Implemented,0.69,4.3,2026-08-20
+C002,A144,Implemented,0.91,4.0,2026-08-20
+C003,A144,Partially Implemented,0.36,2.1,2026-08-20
+C004,A144,Implemented,0.78,3.4,2026-08-20
+C005,A144,Implemented,0.69,3.4,2026-08-20
+C006,A144,Not Implemented,0.0,0.0,2026-08-20
+C007,A144,Not Implemented,0.0,0.0,2026-08-20
+C009,A144,Implemented,0.76,3.3,2026-08-20
+C010,A144,Implemented,0.9,4.5,2026-08-20
+C001,A145,Implemented,0.78,4.0,2026-08-20
+C002,A145,Partially Implemented,0.23,2.4,2026-08-20
+C003,A145,Not Implemented,0.0,0.0,2026-08-20
+C004,A145,Implemented,0.94,3.9,2026-08-20
+C005,A145,Not Implemented,0.0,0.0,2026-08-20
+C006,A145,Implemented,0.73,2.6,2026-08-20
+C007,A145,Implemented,0.71,4.6,2026-08-20
+C009,A145,Implemented,0.93,2.9,2026-08-20
+C010,A145,Not Implemented,0.0,0.0,2026-08-20
+C001,A146,Implemented,0.6,3.8,2026-08-20
+C002,A146,Not Implemented,0.0,0.0,2026-08-20
+C003,A146,Partially Implemented,0.68,2.0,2026-08-20
+C004,A146,Partially Implemented,0.49,2.7,2026-08-20
+C005,A146,Implemented,0.63,3.4,2026-08-20
+C006,A146,Partially Implemented,0.51,1.8,2026-08-20
+C007,A146,Implemented,0.64,3.4,2026-08-20
+C009,A146,Implemented,0.97,2.7,2026-08-20
+C010,A146,Implemented,0.89,3.0,2026-08-20
+C001,A147,Not Implemented,0.0,0.0,2026-08-20
+C002,A147,Partially Implemented,0.47,1.4,2026-08-20
+C003,A147,Not Implemented,0.0,0.0,2026-08-20
+C004,A147,Partially Implemented,0.32,2.4,2026-08-20
+C005,A147,Implemented,0.92,3.0,2026-08-20
+C006,A147,Implemented,0.69,3.5,2026-08-20
+C009,A147,Partially Implemented,0.62,2.5,2026-08-20
+C010,A147,Implemented,0.85,4.3,2026-08-20
+C001,A148,Implemented,0.77,4.3,2026-08-20
+C002,A148,Partially Implemented,0.29,1.7,2026-08-20
+C003,A148,Partially Implemented,0.53,2.1,2026-08-20
+C004,A148,Partially Implemented,0.68,2.0,2026-08-20
+C005,A148,Implemented,0.83,2.6,2026-08-20
+C006,A148,Not Implemented,0.0,0.0,2026-08-20
+C009,A148,Implemented,0.77,3.8,2026-08-20
+C010,A148,Implemented,0.85,3.3,2026-08-20
+C001,A149,Partially Implemented,0.58,2.6,2026-08-20
+C002,A149,Not Implemented,0.0,0.0,2026-08-20
+C003,A149,Not Implemented,0.0,0.0,2026-08-20
+C004,A149,Implemented,0.76,3.7,2026-08-20
+C005,A149,Implemented,0.74,3.0,2026-08-20
+C006,A149,Implemented,0.71,4.1,2026-08-20
+C009,A149,Implemented,0.63,4.6,2026-08-20
+C010,A149,Not Implemented,0.0,0.0,2026-08-20
+C001,A150,Implemented,0.82,4.8,2026-08-20
+C002,A150,Not Implemented,0.0,0.0,2026-08-20
+C003,A150,Not Implemented,0.0,0.0,2026-08-20
+C004,A150,Implemented,0.78,3.4,2026-08-20
+C005,A150,Implemented,0.8,4.3,2026-08-20
+C006,A150,Implemented,0.67,2.9,2026-08-20
+C009,A150,Implemented,0.69,2.6,2026-08-20
+C010,A150,Partially Implemented,0.49,1.3,2026-08-20

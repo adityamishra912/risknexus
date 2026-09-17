@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Dict, Any, List, Optional, Union
+from app.utils.type_parsers import parse_criticality, parse_float, parse_int
 
 # Exact input contract array
 FEATURE_ORDER = [
@@ -111,7 +112,7 @@ def build_feature_vector(
         if vulnerability_age_days < 0:
             raise FeatureBuildError("vulnerability_age_days computed as negative")
     else:
-        vulnerability_age_days = int(vuln.get("days_open", vuln.get("vulnerability_age_days", 30)))
+        vulnerability_age_days = parse_int(vuln.get("days_open", vuln.get("vulnerability_age_days", 30)))
 
     # --- asset fields ---
     ie_raw = asset.get("internet_exposed", False)
@@ -121,7 +122,7 @@ def build_feature_vector(
         internet_exposed = 1 if bool(ie_raw) else 0
 
     crit_raw = asset.get("criticality", asset.get("asset_criticality", 5))
-    asset_criticality = int(_require(crit_raw, "asset_criticality"))
+    asset_criticality = parse_criticality(crit_raw)
     if not (1 <= asset_criticality <= 10):
         raise FeatureBuildError("asset_criticality out of range 1-10")
 
@@ -130,7 +131,7 @@ def build_feature_vector(
     attack_path_reachable = 1 if bool(reachable_raw) else 0
 
     length_raw = path.get("length", path.get("attack_path_length", attack_path_length))
-    attack_path_length_val = int(length_raw)
+    attack_path_length_val = parse_int(length_raw, default=2)
 
     default_strength = round(min(1.0, (cvss_score / 10.0) * 0.6 + (asset_criticality / 10.0) * 0.4), 2)
     strength_raw = path.get("path_strength", path.get("strength", default_strength))
@@ -148,13 +149,13 @@ def build_feature_vector(
                 status_str = str(c.get("status", "")).strip().lower()
                 if is_impl or status_str == "implemented":
                     implemented_count += 1
-                    cov = float(c.get("coverage", 0.85))
-                    mat = float(c.get("maturity", 4.0))
+                    cov = parse_float(c.get("coverage", 0.85))
+                    mat = parse_float(c.get("maturity", 4.0))
                     coverages.append(cov)
                     maturities.append(mat)
                 elif status_str == "partially implemented":
-                    coverages.append(float(c.get("coverage", 0.45)))
-                    maturities.append(float(c.get("maturity", 2.0)))
+                    coverages.append(parse_float(c.get("coverage", 0.45)))
+                    maturities.append(parse_float(c.get("maturity", 2.0)))
 
         control_coverage = float(len(coverages) / len(controls)) if len(controls) > 0 else 0.0
         if maturities:

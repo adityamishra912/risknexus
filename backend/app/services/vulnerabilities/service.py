@@ -5,6 +5,8 @@ import csv
 import logging
 from typing import List, Dict, Any, Optional
 
+from app.utils.type_parsers import parse_float, parse_int
+
 logger = logging.getLogger(__name__)
 
 def get_vulnerabilities_list(data_dir: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -42,9 +44,9 @@ def get_vulnerabilities_list(data_dir: Optional[str] = None) -> List[Dict[str, A
     with open(vuln_path, mode="r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            cvss = float(row.get("cvss_score", 5.0) or 5.0)
+            cvss = parse_float(row.get("cvss_score", 5.0), default=5.0)
             known_exp = str(row.get("known_exploited", "0")).strip().lower() in ("1", "true", "yes")
-            days_open = int(row.get("days_open", 30) or 30)
+            days_open = parse_int(row.get("days_open", 30), default=30)
             
             # Severity text
             if cvss >= 9.0:
@@ -79,7 +81,7 @@ def get_vulnerabilities_list(data_dir: Optional[str] = None) -> List[Dict[str, A
                 "known_exploited": known_exp,
                 "days_open": days_open,
                 "patch_available": True,
-                "affected_assets_count": max(1, min(assets_count, int(cvss))),
+                "affected_assets_count": max(1, min(assets_count, parse_int(cvss, default=1))),
                 "priority_score": priority_score,
                 "financial_exposure": base_exposure,
                 "threat_scenarios_linked": threat_rules.get(vid, []),

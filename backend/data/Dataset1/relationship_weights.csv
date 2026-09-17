@@ -1,0 +1,21 @@
+relationship,access_type,relationship_weight,access_type_weight,edge_weight,source_note
+depends_on,HTTPS,0.75,0.85,0.6375,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+depends_on,API,0.75,0.85,0.6375,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+depends_on,IAM,0.75,0.9,0.675,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+depends_on,TCP,0.75,0.75,0.5625,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+depends_on,Internal,0.75,0.7,0.525,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+accesses,HTTPS,0.8,0.85,0.68,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+accesses,API,0.8,0.85,0.68,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+accesses,IAM,0.8,0.9,0.72,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+accesses,TCP,0.8,0.75,0.6,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+accesses,Internal,0.8,0.7,0.56,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+trust_relationship,HTTPS,0.9,0.85,0.765,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+trust_relationship,API,0.9,0.85,0.765,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+trust_relationship,IAM,0.9,0.9,0.81,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+trust_relationship,TCP,0.9,0.75,0.675,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+trust_relationship,Internal,0.9,0.7,0.63,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+connects_to,HTTPS,0.65,0.85,0.5525,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+connects_to,API,0.65,0.85,0.5525,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+connects_to,IAM,0.65,0.9,0.585,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+connects_to,TCP,0.65,0.75,0.4875,Synthetic prototype traversal weight; tune with observed attack-path data in production.
+connects_to,Internal,0.65,0.7,0.455,Synthetic prototype traversal weight; tune with observed attack-path data in production.

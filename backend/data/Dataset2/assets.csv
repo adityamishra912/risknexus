@@ -1,0 +1,151 @@
+asset_id,asset_name,asset_type,service_id,criticality,internet_exposed,environment,owner
+A001,Identity Server Node 001,Container,S005,High,False,Hybrid,Platform
+A002,Application Node 002,Network Device,S009,Critical,False,Cloud,Platform
+A003,Cloud Storage Node 003,Identity Server,S005,High,True,Production,Data
+A004,Identity Server Node 004,Application,S010,High,False,Cloud,Data
+A005,Endpoint Node 005,Workstation,S003,Medium,False,Hybrid,Data
+A006,API Server Node 006,Cloud Storage,S008,Critical,False,Production,Application
+A007,Identity Server Node 007,Identity Server,S007,Critical,False,Production,Data
+A008,Container Node 008,Network Device,S003,High,False,Production,Platform
+A009,Identity Server Node 009,Identity Server,S007,High,True,Hybrid,Data
+A010,Application Node 010,Application,S002,Low,True,Hybrid,Operations
+A011,Workstation Node 011,Cloud Storage,S007,Medium,False,Production,Platform
+A012,Workstation Node 012,Container,S002,Medium,False,Production,Operations
+A013,Web Server Node 013,Network Device,S008,Medium,False,Production,Security
+A014,Database Node 014,Web Server,S008,High,False,Cloud,Application
+A015,Container Node 015,Application,S001,High,False,Production,Data
+A016,Database Node 016,Cloud Storage,S009,Medium,True,Hybrid,Platform
+A017,Identity Server Node 017,Container,S003,Medium,True,Cloud,Application
+A018,Application Node 018,Web Server,S001,High,False,Production,Platform
+A019,API Server Node 019,Cloud Storage,S002,Medium,False,Cloud,Platform
+A020,Container Node 020,Cloud Storage,S010,High,False,Cloud,Operations
+A021,Workstation Node 021,Database,S006,High,False,Production,Infrastructure
+A022,Web Server Node 022,Database,S003,Medium,True,Production,Infrastructure
+A023,API Server Node 023,Identity Server,S003,Critical,False,Production,Security
+A024,Network Device Node 024,Container,S001,Critical,True,Hybrid,Data
+A025,Container Node 025,API Server,S010,High,False,Hybrid,Platform
+A026,Endpoint Node 026,Web Server,S001,Critical,False,Production,Data
+A027,Endpoint Node 027,Workstation,S008,Low,False,Production,Data
+A028,API Server Node 028,Endpoint,S004,Medium,False,Hybrid,Application
+A029,Endpoint Node 029,Web Server,S007,High,False,Production,Data
+A030,Endpoint Node 030,Cloud Storage,S002,High,True,Production,Security
+A031,Workstation Node 031,Database,S006,Medium,False,Cloud,Security
+A032,API Server Node 032,Identity Server,S004,High,True,Production,Data
+A033,Web Server Node 033,Web Server,S002,Critical,False,Production,Operations
+A034,Identity Server Node 034,Container,S008,High,False,Production,Infrastructure
+A035,Web Server Node 035,Web Server,S009,Medium,True,Cloud,Security
+A036,Cloud Storage Node 036,Workstation,S010,Critical,False,Development,Security
+A037,Network Device Node 037,Application,S007,High,False,Cloud,Data
+A038,Application Node 038,Application,S006,Medium,False,Development,Platform
+A039,Identity Server Node 039,API Server,S009,Medium,False,Production,Platform
+A040,Network Device Node 040,Container,S008,High,True,Hybrid,Security
+A041,Application Node 041,Endpoint,S010,High,False,Cloud,Platform
+A042,Application Node 042,Web Server,S009,High,False,Production,Platform
+A043,Identity Server Node 043,Application,S001,Medium,False,Cloud,Security
+A044,Database Node 044,Container,S004,High,False,Development,Data
+A045,API Server Node 045,Network Device,S001,High,False,Production,Security
+A046,Application Node 046,API Server,S006,Low,False,Production,Security
+A047,Endpoint Node 047,Cloud Storage,S010,High,False,Development,Application
+A048,Container Node 048,Cloud Storage,S009,High,False,Hybrid,Platform
+A049,API Server Node 049,Endpoint,S008,High,False,Production,Security
+A050,Cloud Storage Node 050,Identity Server,S008,High,False,Production,Security
+A051,Endpoint Node 051,Container,S003,High,True,Production,Infrastructure
+A052,Database Node 052,Application,S005,Critical,False,Production,Application
+A053,Application Node 053,Database,S005,Medium,False,Development,Operations
+A054,Network Device Node 054,Workstation,S003,Medium,False,Production,Operations
+A055,Web Server Node 055,Web Server,S001,Critical,False,Cloud,Data
+A056,Container Node 056,Application,S005,High,True,Production,Platform
+A057,Database Node 057,Container,S004,High,False,Production,Data
+A058,Endpoint Node 058,Cloud Storage,S008,Low,False,Cloud,Platform
+A059,Cloud Storage Node 059,Endpoint,S001,High,True,Production,Security
+A060,Application Node 060,Network Device,S007,Medium,False,Hybrid,Infrastructure
+A061,Container Node 061,Application,S009,High,False,Production,Application
+A062,Endpoint Node 062,Cloud Storage,S008,Critical,False,Production,Platform
+A063,Cloud Storage Node 063,Identity Server,S003,Medium,False,Production,Security
+A064,Endpoint Node 064,Application,S003,Medium,False,Production,Data
+A065,Cloud Storage Node 065,Container,S002,Critical,False,Cloud,Application
+A066,Container Node 066,Database,S004,Critical,False,Development,Operations
+A067,Application Node 067,Endpoint,S003,High,False,Production,Application
+A068,API Server Node 068,Workstation,S007,Medium,True,Cloud,Operations
+A069,Workstation Node 069,Network Device,S009,High,False,Hybrid,Platform
+A070,Workstation Node 070,Cloud Storage,S008,Medium,False,Production,Application
+A071,Database Node 071,Identity Server,S010,High,False,Cloud,Data
+A072,Application Node 072,Network Device,S002,Medium,False,Hybrid,Application
+A073,Endpoint Node 073,Endpoint,S003,High,False,Production,Platform
+A074,Application Node 074,Identity Server,S010,Critical,True,Cloud,Data
+A075,Workstation Node 075,Container,S003,High,True,Cloud,Data
+A076,Identity Server Node 076,Database,S003,Low,False,Hybrid,Application
+A077,Application Node 077,Workstation,S006,Medium,False,Cloud,Infrastructure
+A078,API Server Node 078,Endpoint,S007,Medium,False,Cloud,Data
+A079,Identity Server Node 079,Cloud Storage,S002,Low,True,Production,Infrastructure
+A080,Application Node 080,Workstation,S002,Medium,False,Production,Operations
+A081,Container Node 081,Workstation,S008,High,False,Production,Application
+A082,Workstation Node 082,API Server,S006,High,False,Cloud,Application
+A083,Network Device Node 083,Identity Server,S002,High,False,Production,Data
+A084,Database Node 084,Application,S008,High,True,Development,Application
+A085,Identity Server Node 085,Endpoint,S008,High,False,Cloud,Platform
+A086,Identity Server Node 086,Cloud Storage,S001,Critical,False,Hybrid,Platform
+A087,Database Node 087,Identity Server,S008,High,True,Hybrid,Operations
+A088,Application Node 088,Workstation,S004,Medium,True,Production,Security
+A089,Container Node 089,Endpoint,S007,Critical,False,Production,Platform
+A090,Endpoint Node 090,Application,S006,High,True,Cloud,Security
+A091,API Server Node 091,Cloud Storage,S004,High,True,Production,Platform
+A092,API Server Node 092,Cloud Storage,S006,Critical,False,Development,Application
+A093,Application Node 093,API Server,S006,Medium,True,Cloud,Platform
+A094,Workstation Node 094,API Server,S007,High,False,Cloud,Security
+A095,Network Device Node 095,Network Device,S001,High,False,Production,Infrastructure
+A096,Endpoint Node 096,Network Device,S008,Critical,True,Cloud,Data
+A097,Workstation Node 097,Network Device,S010,High,False,Production,Infrastructure
+A098,API Server Node 098,Container,S009,Low,True,Production,Security
+A099,API Server Node 099,Application,S007,Low,True,Development,Infrastructure
+A100,Endpoint Node 100,Database,S006,Critical,False,Production,Security
+A101,Web Server Node 101,Application,S001,Critical,False,Hybrid,Application
+A102,Database Node 102,Container,S006,Low,False,Cloud,Platform
+A103,API Server Node 103,Endpoint,S006,Medium,True,Production,Infrastructure
+A104,Network Device Node 104,Network Device,S009,Critical,False,Development,Security
+A105,Identity Server Node 105,Endpoint,S006,High,True,Development,Data
+A106,Database Node 106,Network Device,S006,Critical,False,Hybrid,Application
+A107,Container Node 107,Workstation,S005,Critical,False,Cloud,Operations
+A108,Cloud Storage Node 108,Container,S001,Medium,False,Production,Data
+A109,Application Node 109,Cloud Storage,S003,Critical,True,Production,Application
+A110,Database Node 110,Network Device,S004,High,False,Development,Application
+A111,Web Server Node 111,Container,S005,High,False,Cloud,Application
+A112,Endpoint Node 112,Container,S006,Critical,False,Production,Platform
+A113,Container Node 113,Application,S001,High,False,Production,Platform
+A114,Workstation Node 114,Endpoint,S004,Critical,False,Production,Operations
+A115,Container Node 115,Web Server,S003,High,False,Hybrid,Platform
+A116,Application Node 116,Application,S005,Medium,False,Production,Platform
+A117,Database Node 117,API Server,S005,Critical,False,Production,Security
+A118,Identity Server Node 118,Application,S010,Low,False,Production,Data
+A119,Application Node 119,Endpoint,S010,Critical,False,Production,Platform
+A120,Workstation Node 120,Application,S003,High,False,Production,Platform
+A121,Web Server Node 121,Cloud Storage,S009,Low,False,Production,Operations
+A122,Application Node 122,Network Device,S005,High,True,Production,Application
+A123,Container Node 123,Container,S007,High,True,Production,Operations
+A124,Database Node 124,Network Device,S010,Medium,True,Cloud,Operations
+A125,Workstation Node 125,API Server,S007,Medium,False,Production,Infrastructure
+A126,Network Device Node 126,Application,S001,Medium,False,Production,Infrastructure
+A127,Cloud Storage Node 127,Workstation,S002,High,True,Cloud,Application
+A128,Database Node 128,Web Server,S009,High,True,Cloud,Operations
+A129,Endpoint Node 129,Workstation,S004,High,False,Development,Operations
+A130,Container Node 130,Workstation,S003,Critical,False,Development,Data
+A131,Container Node 131,Cloud Storage,S009,High,False,Production,Operations
+A132,Container Node 132,Application,S002,Medium,False,Hybrid,Platform
+A133,Workstation Node 133,Endpoint,S006,High,False,Cloud,Platform
+A134,Network Device Node 134,Workstation,S002,High,True,Production,Infrastructure
+A135,Network Device Node 135,Endpoint,S006,High,False,Cloud,Infrastructure
+A136,Database Node 136,Application,S006,High,False,Cloud,Application
+A137,Workstation Node 137,Application,S009,Medium,False,Hybrid,Application
+A138,API Server Node 138,Identity Server,S006,Medium,False,Hybrid,Platform
+A139,Identity Server Node 139,Network Device,S002,High,False,Production,Platform
+A140,Endpoint Node 140,Identity Server,S003,High,True,Cloud,Application
+A141,Cloud Storage Node 141,Cloud Storage,S002,High,False,Production,Application
+A142,Web Server Node 142,Identity Server,S005,High,True,Development,Platform
+A143,Cloud Storage Node 143,Identity Server,S010,High,True,Development,Data
+A144,Cloud Storage Node 144,Cloud Storage,S001,Critical,False,Production,Infrastructure
+A145,Database Node 145,Container,S002,Medium,False,Hybrid,Application
+A146,Database Node 146,API Server,S008,High,False,Production,Infrastructure
+A147,Network Device Node 147,Application,S003,Critical,True,Production,Platform
+A148,Workstation Node 148,Application,S005,High,False,Production,Infrastructure
+A149,Identity Server Node 149,Application,S009,High,True,Production,Application
+A150,Workstation Node 150,Identity Server,S005,High,False,Production,Application

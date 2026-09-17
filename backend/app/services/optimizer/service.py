@@ -8,6 +8,7 @@ from typing import List, Dict, Any, Optional, Tuple
 
 from app.services.attack_graph.graph_builder import resolve_data_dir
 from app.services.risk_engine.engine import quantify_all_scenarios
+from app.utils.type_parsers import parse_float, parse_int, sanitize_numeric_column
 from app.services.monte_carlo.simulator import run_enterprise_monte_carlo
 from app.services.risk_engine.exceptions import MissingOptimizerInputError
 
@@ -162,7 +163,7 @@ def get_candidate_controls(data_dir: Optional[str] = None) -> List[Dict[str, Any
                 continue
 
             stat_rows = df_status[df_status["control_id"].astype(str).str.strip() == cid]
-            current_avg_coverage = float(stat_rows["coverage"].mean()) if not stat_rows.empty else 0.0
+            current_avg_coverage = float(sanitize_numeric_column(stat_rows["coverage"]).mean()) if not stat_rows.empty else 0.0
             coverage_gap = max(0.0, 1.0 - current_avg_coverage)
             real_cost = base_cost * coverage_gap
 
@@ -266,9 +267,9 @@ def get_controls_posture(data_dir: Optional[str] = None) -> List[Dict[str, Any]]
         cid = str(c_row["control_id"]).strip()
         c_name = str(c_row.get("control_name", cid)).strip()
         category = str(c_row.get("category", "General")).strip()
-        cost = float(c_row.get("cost", 0.0))
-        impl_days = int(c_row.get("implementation_days", 30))
-        maint_cost = float(c_row.get("maintenance_cost", 0.0))
+        cost = parse_float(c_row.get("cost", 0.0))
+        impl_days = parse_int(c_row.get("implementation_days", 30))
+        maint_cost = parse_float(c_row.get("maintenance_cost", 0.0))
 
         data_incomplete = False
         incomplete_reason = None
@@ -281,8 +282,8 @@ def get_controls_posture(data_dir: Optional[str] = None) -> List[Dict[str, Any]]
             avg_mat = 0.0
             monitored_pct = 0.0
         else:
-            avg_cov = float(stat_rows["coverage"].mean())
-            avg_mat = float(stat_rows["maturity"].mean())
+            avg_cov = float(sanitize_numeric_column(stat_rows["coverage"]).mean())
+            avg_mat = float(sanitize_numeric_column(stat_rows["maturity"]).mean())
             monitored_pct = float((stat_rows["status"] == "Implemented").mean())
 
         eff_rows = df_eff[df_eff["control_id"].astype(str).str.strip() == cid]
@@ -403,7 +404,7 @@ def optimize_investment_portfolio(
             if c_status.empty:
                 candidate_ids.append(cid)
             else:
-                avg_cov = float(c_status["coverage"].mean())
+                avg_cov = float(sanitize_numeric_column(c_status["coverage"]).mean())
                 if avg_cov < 0.999:
                     candidate_ids.append(cid)
 
@@ -448,7 +449,7 @@ def optimize_investment_portfolio(
                     reason=f"Control '{cid}' has no status entry in control_status.csv",
                 )
 
-            current_avg_coverage = float(stat_rows["coverage"].mean())
+            current_avg_coverage = float(sanitize_numeric_column(stat_rows["coverage"]).mean())
             coverage_gap = max(0.0, 1.0 - current_avg_coverage)
             real_cost = base_cost * coverage_gap
 

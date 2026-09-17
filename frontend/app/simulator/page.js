@@ -42,6 +42,7 @@ export default function SimulatorPage() {
     setPatchDelayDays,
     setSelectedInitiativeIds,
     simulationData,
+    simulationLoading,
   } = useRiskContext();
 
   const toggleControl = (key) => {
@@ -85,14 +86,14 @@ export default function SimulatorPage() {
     maxTimeDays = Math.max(maxTimeDays, 14);
   }
 
-  const currentEAL = simulationData?.baseline?.total_eal ?? 16000000;
-  const currentP95 = simulationData?.baseline?.p95_loss ?? 41000000;
+  const currentEAL = simulationData?.baseline?.total_eal ?? 0;
+  const currentP95 = simulationData?.baseline?.p95_loss ?? 0;
 
-  const simulatedEAL = simulationData?.simulated?.total_eal ?? Math.max(1500000, currentEAL - simulatedRiskReduction);
-  const simulatedP95 = simulationData?.simulated?.p95_loss ?? Math.max(10000000, currentP95 - (simulatedRiskReduction * 1.35));
+  const simulatedEAL = simulationData?.simulated?.total_eal ?? 0;
+  const simulatedP95 = simulationData?.simulated?.p95_loss ?? 0;
 
   const totalReductionAmount = currentEAL - simulatedEAL;
-  const reductionPercentage = ((totalReductionAmount / currentEAL) * 100).toFixed(1);
+  const reductionPercentage = currentEAL > 0 ? ((totalReductionAmount / currentEAL) * 100).toFixed(1) : '0.0';
   const estimatedROSI = simulatedInvestment > 0 ? (totalReductionAmount / simulatedInvestment).toFixed(2) : '0.00';
 
   const chartData = [
@@ -208,34 +209,45 @@ export default function SimulatorPage() {
 
           {/* Results & Comparison Output Panel */}
           <div className="lg:col-span-7 space-y-6">
-            {/* Before vs After Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* CURRENT */}
-              <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-                <Badge variant="warning">CURRENT BASELINE</Badge>
-                <div className="pt-1">
-                  <span className="text-xs text-slate-400 block">Expected Annual Loss (EAL)</span>
-                  <span className="text-2xl font-extrabold text-amber-400 font-mono">{formatCurrency(currentEAL)}</span>
+            {simulationLoading || !simulationData ? (
+              <Card title="Simulation Engine Running">
+                <div className="p-12 flex flex-col items-center justify-center space-y-4">
+                  <Loading title="Quantifying What-If Risk Scenario..." />
+                  <p className="text-xs text-slate-400 font-mono text-center max-w-sm">
+                    Running 10,000 Monte Carlo trials across threat-mapped control coverages...
+                  </p>
                 </div>
-                <div>
-                  <span className="text-xs text-slate-400 block">P95 Extreme Exposure</span>
-                  <span className="text-lg font-bold text-red-400 font-mono">{formatCurrency(currentP95)}</span>
-                </div>
-              </div>
+              </Card>
+            ) : (
+              <>
+                {/* Before vs After Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* CURRENT */}
+                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                    <Badge variant="warning">CURRENT BASELINE</Badge>
+                    <div className="pt-1">
+                      <span className="text-xs text-slate-400 block">Expected Annual Loss (EAL)</span>
+                      <span className="text-2xl font-extrabold text-amber-400 font-mono">{formatCurrency(currentEAL)}</span>
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-400 block">P95 Extreme Exposure</span>
+                      <span className="text-lg font-bold text-red-400 font-mono">{formatCurrency(currentP95)}</span>
+                    </div>
+                  </div>
 
-              {/* SIMULATED */}
-              <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-800/60 space-y-2">
-                <Badge variant="success">SIMULATED STATE</Badge>
-                <div className="pt-1">
-                  <span className="text-xs text-slate-400 block">Simulated Annual Loss (EAL)</span>
-                  <span className="text-2xl font-extrabold text-emerald-400 font-mono">{formatCurrency(simulatedEAL)}</span>
+                  {/* SIMULATED */}
+                  <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-800/60 space-y-2">
+                    <Badge variant="success">SIMULATED STATE</Badge>
+                    <div className="pt-1">
+                      <span className="text-xs text-slate-400 block">Simulated Annual Loss (EAL)</span>
+                      <span className="text-2xl font-extrabold text-emerald-400 font-mono">{formatCurrency(simulatedEAL)}</span>
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-400 block">Simulated P95 Exposure</span>
+                      <span className="text-lg font-bold text-emerald-300 font-mono">{formatCurrency(simulatedP95)}</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-xs text-slate-400 block">Simulated P95 Exposure</span>
-                  <span className="text-lg font-bold text-emerald-300 font-mono">{formatCurrency(simulatedP95)}</span>
-                </div>
-              </div>
-            </div>
 
             {/* Simulation Result Callout Box */}
             <Card title="Modeled Risk Reduction Output">
@@ -319,7 +331,9 @@ export default function SimulatorPage() {
                 </div>
               </div>
             </Card>
-          </div>
+          </>
+        )}
+      </div>
         </div>
       </div>
     </PageContainer>

@@ -25,6 +25,7 @@ import pandas as pd
 import networkx as nx
 
 from app.services.attack_graph.graph_builder import resolve_data_dir, build_attack_graph
+from app.utils.type_parsers import parse_criticality, parse_float, parse_int
 
 logger = logging.getLogger(__name__)
 
@@ -311,7 +312,7 @@ def generate_risk_scenarios(
             asset_name       = str(asset_row.get("asset_name", asset_id)).strip()
             asset_type       = str(asset_row.get("asset_type", "Server")).strip()
             service_id       = str(asset_row.get("service_id", "")).strip()
-            criticality      = int(asset_row.get("criticality", 5))
+            criticality      = parse_criticality(asset_row.get("criticality", 5))
             internet_exposed = str(asset_row.get("internet_exposed", "No")).strip().lower() in [
                 "yes", "true", "1"
             ]
@@ -350,7 +351,7 @@ def generate_risk_scenarios(
             threat_vuln_groups: Dict[str, List[Dict]] = defaultdict(list)
 
             for vuln in asset_vulns:
-                cvss = float(vuln.get("cvss_score", 0.0))
+                cvss = parse_float(vuln.get("cvss_score", 0.0))
                 if cvss < MIN_CVSS_FOR_SCENARIO:
                     continue  # Skip trivially low-risk vulnerabilities
 
@@ -387,10 +388,10 @@ def generate_risk_scenarios(
                 # 1. Worst-case CVSS drives the primary ML feature
                 worst_entry = max(
                     entries,
-                    key=lambda e: float(e["vuln"].get("cvss_score", 0.0))
+                    key=lambda e: parse_float(e["vuln"].get("cvss_score", 0.0))
                 )
                 worst_vuln    = worst_entry["vuln"]
-                primary_cvss  = float(worst_vuln.get("cvss_score", 0.0))
+                primary_cvss  = parse_float(worst_vuln.get("cvss_score", 0.0))
                 primary_vuln_id = str(worst_vuln.get("vulnerability_id", "")).strip()
                 primary_cve_id  = str(worst_vuln.get("cve_id", "")).strip()
 
@@ -413,7 +414,7 @@ def generate_risk_scenarios(
                 )
 
                 # 4. Worst-case days open (oldest unpatched vuln)
-                max_days_open = max(int(e["vuln"].get("days_open", 0)) for e in entries)
+                max_days_open = max(parse_int(e["vuln"].get("days_open", 0)) for e in entries)
 
                 # 5. Any patch available across the group
                 any_patch_available = any(

@@ -1,0 +1,28 @@
+canonical_asset_type,source_asset_type,mapping_type
+Identity Server,Identity Server,canonical
+Identity Server,Identity Provider,canonical
+Identity Server,IdP,normalized
+Identity Server,IAM Server,canonical
+Database,Database,alias
+Database,DB,alias
+Database,Database Server,normalized
+Cloud Workload,Cloud Workload,alias
+Cloud Workload,Cloud VM,normalized
+Cloud Workload,Cloud Instance,normalized
+Cloud Workload,Cloud Resource,alias
+Network Device,Network Device,canonical
+Network Device,Firewall,canonical
+Network Device,Router,canonical
+Network Device,Switch,alias
+Web Server,Web Server,normalized
+Web Server,Web Tier,normalized
+API,API,alias
+API,API Server,alias
+API,API Gateway,normalized
+Application,Application,normalized
+Application,Business Application,canonical
+Application,Application Server,canonical
+Endpoint,Endpoint,alias
+Endpoint,User Endpoint,normalized
+Endpoint,Laptop,normalized
+Endpoint,Workstation,canonical

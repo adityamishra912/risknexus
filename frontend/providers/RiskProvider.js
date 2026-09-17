@@ -25,6 +25,7 @@ export function RiskProvider({ children }) {
   const [mfaCoverage, setMfaCoverage] = useState(62);
   const [patchDelayDays, setPatchDelayDays] = useState(14);
   const [simulationData, setSimulationData] = useState(null);
+  const [simulationLoading, setSimulationLoading] = useState(true);
 
   // Optimizer state
   const [selectedInitiativeIds, setSelectedInitiativeIds] = useState([
@@ -205,10 +206,12 @@ export function RiskProvider({ children }) {
     };
   }, [selectedInitiativeIds, budget, optimizationObjective]);
 
+
   // Fetch Backend What-If Simulation whenever controls or sliders change (debounced 150ms)
   const simulationDebounceRef = useRef(null);
   useEffect(() => {
     let isMounted = true;
+    setSimulationLoading(true);
     if (simulationDebounceRef.current) {
       clearTimeout(simulationDebounceRef.current);
     }
@@ -225,6 +228,9 @@ export function RiskProvider({ children }) {
         })
         .catch((err) => {
           console.error('[Control Simulation Error]:', err.message);
+        })
+        .finally(() => {
+          if (isMounted) setSimulationLoading(false);
         });
     }, 150);
 
@@ -283,6 +289,7 @@ export function RiskProvider({ children }) {
         patchDelayDays,
         setPatchDelayDays,
         simulationData,
+        simulationLoading,
         selectedInitiativeIds,
         setSelectedInitiativeIds,
         initiativesList,

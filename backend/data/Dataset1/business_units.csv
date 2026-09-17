@@ -1,0 +1,6 @@
+unit_id,unit_name,annual_revenue,criticality
+BU01,Digital Banking,850000000,10
+BU02,Payments,620000000,10
+BU03,Human Resources,80000000,5
+BU04,Finance,150000000,8
+BU05,Customer Support,90000000,6

@@ -5,6 +5,7 @@ import logging
 from typing import Dict, Any, List, Optional
 import pandas as pd
 import networkx as nx
+from app.utils.type_parsers import parse_criticality, parse_float, parse_int
 
 logger = logging.getLogger(__name__)
 
@@ -14,8 +15,16 @@ def resolve_data_dir(data_dir: Optional[str] = None) -> str:
     if data_dir and os.path.exists(data_dir):
         return data_dir
 
-    # Fallback paths relative to backend directory
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+
+    # Check ACTIVE_DATASET from environment or settings config
+    from app.core.config import settings
+    active_ds = os.environ.get("ACTIVE_DATASET", getattr(settings, "ACTIVE_DATASET", "Dataset2")).strip()
+    if active_ds:
+        ds_path = os.path.join(base_dir, "data", active_ds)
+        if os.path.exists(ds_path):
+            return ds_path
+
     possible_paths = [
         os.path.join(base_dir, "data"),
         os.path.join(os.getcwd(), "data"),
@@ -43,6 +52,7 @@ def build_attack_graph(data_dir: Optional[str] = None) -> nx.DiGraph:
 
     graph = nx.DiGraph()
 
+
     # 1. Load Business Services lookup
     services_map: Dict[str, Dict[str, Any]] = {}
     if os.path.exists(services_file):
@@ -51,8 +61,8 @@ def build_attack_graph(data_dir: Optional[str] = None) -> nx.DiGraph:
             s_id = str(row["service_id"]).strip()
             services_map[s_id] = {
                 "service_name": str(row.get("service_name", "")),
-                "service_criticality": int(row.get("criticality", 5)),
-                "downtime_cost_per_hour": float(row.get("downtime_cost_per_hour", 0.0)),
+                "service_criticality": parse_criticality(row.get("criticality", 5)),
+                "downtime_cost_per_hour": parse_float(row.get("downtime_cost_per_hour", 0.0)),
                 "data_sensitivity": str(row.get("data_sensitivity", "Medium")),
             }
 
@@ -64,7 +74,7 @@ def build_attack_graph(data_dir: Optional[str] = None) -> nx.DiGraph:
         svc_info = services_map.get(service_id, {})
 
         is_internet = str(row.get("internet_exposed", "")).strip().lower() in ["yes", "true", "1"]
-        criticality = int(row.get("criticality", 5))
+        criticality = parse_criticality(row.get("criticality", 5))
 
         graph.add_node(
             asset_id,
@@ -92,7 +102,7 @@ def build_attack_graph(data_dir: Optional[str] = None) -> nx.DiGraph:
         for _, row in vuln_df.iterrows():
             asset_id = str(row.get("asset_id", "")).strip()
             if asset_id in graph:
-                cvss = float(row.get("cvss_score", 0.0))
+                cvss = parse_float(row.get("cvss_score", 0.0))
                 severity = str(row.get("severity", "Low")).strip()
                 known_exp = str(row.get("known_exploited", "")).strip().lower() in ["yes", "true", "1"]
 
@@ -103,7 +113,7 @@ def build_attack_graph(data_dir: Optional[str] = None) -> nx.DiGraph:
                     "severity": severity,
                     "exploitability": str(row.get("exploitability", "Medium")),
                     "known_exploited": known_exp,
-                    "days_open": int(row.get("days_open", 0)),
+                    "days_open": parse_int(row.get("days_open", 0)),
                     "patch_available": str(row.get("patch_available", "Yes")).strip().lower() in ["yes", "true", "1"],
                 }
 

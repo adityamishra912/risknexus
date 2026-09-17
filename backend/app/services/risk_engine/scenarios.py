@@ -7,6 +7,7 @@ import pandas as pd
 from app.services.attack_graph.graph_builder import resolve_data_dir
 from app.services.risk_engine.scenario_generator import generate_risk_scenarios
 from app.services.risk_engine.exceptions import MissingLinkedRecordError
+from app.utils.type_parsers import parse_float
 
 logger = logging.getLogger(__name__)
 
@@ -49,8 +50,8 @@ def load_risk_scenarios_data(data_dir: Optional[str] = None) -> List[Dict[str, A
         vuln_df = pd.read_csv(vuln_file)
         for _, r in vuln_df.iterrows():
             a_id = str(r["asset_id"]).strip()
-            cvss = float(r.get("cvss_score", 0.0))
-            if a_id not in vulns_map or cvss > float(vulns_map[a_id].get("cvss_score", 0.0)):
+            cvss = parse_float(r.get("cvss_score", 0.0))
+            if a_id not in vulns_map or cvss > parse_float(vulns_map[a_id].get("cvss_score", 0.0)):
                 vulns_map[a_id] = r.to_dict()
 
     # 3. Services Map

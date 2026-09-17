@@ -1,0 +1,11 @@
+control_id,control_name,category,cost,implementation_days,maintenance_cost
+C001,Adaptive MFA,Identity,1700000.0,10,278585.0
+C002,Endpoint Detection,Identity,500000.0,40,56220.0
+C003,Privileged Access Mgmt,Data,800000.0,10,128476.0
+C004,Network Segmentation,Governance,2700000.0,11,447756.0
+C005,Cloud Posture Guard,Network,2500000.0,17,335493.0
+C006,Backup Isolation,Network,700000.0,13,106914.0
+C007,Email Security,Cloud,2700000.0,11,468814.0
+C008,Vulnerability Prioritization,Data,1500000.0,11,132810.0
+C009,Data Loss Prevention,Cloud,1800000.0,8,262522.0
+C010,Security Awareness,Cloud,600000.0,20,48644.0

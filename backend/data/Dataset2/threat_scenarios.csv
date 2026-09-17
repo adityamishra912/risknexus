@@ -1,0 +1,13 @@
+threat_id,threat_name,category,activity_level,attack_vector,intelligence_source,last_updated,annual_frequency_low,annual_frequency_base,annual_frequency_high,frequency_unit,frequency_source
+T001,Ransomware,Malware,Very High,External/Internet,CISA KEV + global threat intelligence,2026-07-24,0.112,0.167,0.235,events_per_year,synthetic_prototype_assumption
+T002,Credential Theft,Identity,Medium,External/Internet,MITRE ATT&CK + global threat intelligence,2026-07-29,0.06,0.227,0.289,events_per_year,synthetic_prototype_assumption
+T003,Phishing,Initial Access,High,External/Email,MITRE ATT&CK + global threat intelligence,2026-08-25,0.045,0.159,0.203,events_per_year,synthetic_prototype_assumption
+T004,Exploitation of Public-Facing Application,Initial Access,Medium,External/Internet,CISA KEV + NVD + global threat intelligence,2026-08-06,0.11,0.148,0.216,events_per_year,synthetic_prototype_assumption
+T005,Web Application Attack,Initial Access,High,External/Internet,MITRE ATT&CK + global threat intelligence,2026-07-28,0.033,0.183,0.23,events_per_year,synthetic_prototype_assumption
+T006,Data Exfiltration,Exfiltration,Medium,Internal/External,MITRE ATT&CK + global threat intelligence,2026-08-07,0.095,0.239,0.333,events_per_year,synthetic_prototype_assumption
+T007,Denial of Service,Impact,High,External/Internet,Global threat intelligence,2026-07-15,0.078,0.146,0.26,events_per_year,synthetic_prototype_assumption
+T008,Insider Threat,Initial Access,High,Internal,MITRE ATT&CK + global threat intelligence,2026-07-01,0.043,0.214,0.382,events_per_year,synthetic_prototype_assumption
+T009,Supply Chain Compromise,Initial Access,Low,Third-Party/Supply Chain,CISA + global threat intelligence,2026-07-12,0.075,0.239,0.312,events_per_year,synthetic_prototype_assumption
+T010,Cloud Account Compromise,Credential Access,Medium,External/Internet,MITRE ATT&CK + global threat intelligence,2026-08-11,0.081,0.188,0.311,events_per_year,synthetic_prototype_assumption
+T011,Privilege Escalation,Privilege Escalation,High,Internal,MITRE ATT&CK + global threat intelligence,2026-07-23,0.077,0.214,0.295,events_per_year,synthetic_prototype_assumption
+T012,Lateral Movement,Lateral Movement,Low,Internal,MITRE ATT&CK + global threat intelligence,2026-07-20,0.079,0.215,0.4,events_per_year,synthetic_prototype_assumption

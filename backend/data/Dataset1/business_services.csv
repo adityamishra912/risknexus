@@ -1,0 +1,11 @@
+service_id,unit_id,service_name,criticality,revenue_dependency,downtime_cost_per_hour,data_sensitivity
+S001,BU01,Online Banking,10,0.8,2500000,High
+S002,BU02,Payment Gateway,10,0.95,4000000,High
+S003,BU01,Customer Identity,9,0.7,1800000,High
+S004,BU04,Finance ERP,8,0.75,1200000,High
+S005,BU03,Employee Portal,5,0.2,200000,Medium
+S006,BU05,Customer Support CRM,6,0.4,350000,Medium
+S007,BU02,Settlement Platform,9,0.85,2200000,High
+S008,BU04,Treasury System,9,0.8,1800000,High
+S009,BU01,Mobile Banking,10,0.85,3000000,High
+S010,BU03,Payroll,8,0.65,700000,High

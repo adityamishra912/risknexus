@@ -1,0 +1,64 @@
+control_id,threat_id,effectiveness_low,effectiveness_base,effectiveness_high,evidence_type
+C001,T002,0.5,0.7,0.85,Research+Model Assumption
+C001,T003,0.45,0.6,0.75,Synthetic prototype assumption
+C001,T008,0.5,0.7,0.85,Research+Model Assumption
+C001,T010,0.55,0.7,0.85,Synthetic prototype assumption
+C001,T011,0.3,0.45,0.6,Synthetic prototype assumption
+C001,T012,0.2,0.35,0.5,Synthetic prototype assumption
+C002,T001,0.4,0.6,0.75,Research+Model Assumption
+C002,T003,0.4,0.6,0.75,Research+Model Assumption
+C002,T004,0.3,0.45,0.6,Synthetic prototype assumption
+C002,T011,0.4,0.55,0.7,Synthetic prototype assumption
+C002,T012,0.35,0.5,0.65,Synthetic prototype assumption
+C003,T001,0.45,0.65,0.8,Research+Model Assumption
+C003,T004,0.4,0.55,0.7,Synthetic prototype assumption
+C003,T005,0.45,0.65,0.8,Research+Model Assumption
+C003,T006,0.45,0.65,0.8,Research+Model Assumption
+C003,T007,0.45,0.6,0.75,Synthetic prototype assumption
+C003,T009,0.4,0.55,0.7,Synthetic prototype assumption
+C003,T010,0.4,0.55,0.7,Synthetic prototype assumption
+C003,T011,0.35,0.5,0.65,Synthetic prototype assumption
+C003,T012,0.6,0.75,0.9,Synthetic prototype assumption
+C004,T001,0.55,0.75,0.9,Research+Model Assumption
+C004,T006,0.2,0.35,0.5,Synthetic prototype assumption
+C004,T007,0.15,0.3,0.45,Synthetic prototype assumption
+C004,T009,0.3,0.45,0.6,Synthetic prototype assumption
+C005,T001,0.6,0.8,0.95,Research+Model Assumption
+C005,T004,0.65,0.8,0.95,Synthetic prototype assumption
+C005,T005,0.6,0.75,0.9,Synthetic prototype assumption
+C005,T006,0.6,0.8,0.95,Research+Model Assumption
+C005,T009,0.45,0.6,0.75,Synthetic prototype assumption
+C005,T010,0.4,0.55,0.7,Synthetic prototype assumption
+C005,T011,0.6,0.75,0.9,Synthetic prototype assumption
+C005,T012,0.45,0.6,0.75,Synthetic prototype assumption
+C006,T002,0.48,0.68,0.83,Research+Model Assumption
+C006,T006,0.45,0.6,0.75,Synthetic prototype assumption
+C006,T008,0.48,0.68,0.83,Research+Model Assumption
+C006,T009,0.35,0.5,0.65,Synthetic prototype assumption
+C006,T010,0.6,0.75,0.9,Synthetic prototype assumption
+C006,T011,0.65,0.8,0.95,Synthetic prototype assumption
+C006,T012,0.5,0.65,0.8,Synthetic prototype assumption
+C007,T001,0.15,0.3,0.45,Synthetic prototype assumption
+C007,T003,0.35,0.55,0.7,Research+Model Assumption
+C007,T004,0.65,0.8,0.95,Synthetic prototype assumption
+C007,T005,0.6,0.75,0.9,Synthetic prototype assumption
+C007,T006,0.35,0.55,0.7,Research+Model Assumption
+C007,T007,0.55,0.7,0.85,Synthetic prototype assumption
+C008,T007,0.38,0.58,0.73,Research+Model Assumption
+C008,T009,0.45,0.6,0.75,Synthetic prototype assumption
+C008,T010,0.65,0.8,0.95,Synthetic prototype assumption
+C009,T002,0.3,0.5,0.65,Research+Model Assumption
+C009,T003,0.6,0.75,0.9,Synthetic prototype assumption
+C009,T008,0.3,0.5,0.65,Research+Model Assumption
+C010,T001,0.2,0.4,0.55,Research+Model Assumption
+C010,T002,0.3,0.45,0.6,Synthetic prototype assumption
+C010,T003,0.2,0.4,0.55,Research+Model Assumption
+C010,T004,0.3,0.45,0.6,Synthetic prototype assumption
+C010,T005,0.2,0.4,0.55,Research+Model Assumption
+C010,T006,0.3,0.45,0.6,Synthetic prototype assumption
+C010,T007,0.3,0.45,0.6,Synthetic prototype assumption
+C010,T008,0.3,0.45,0.6,Synthetic prototype assumption
+C010,T009,0.3,0.45,0.6,Synthetic prototype assumption
+C010,T010,0.3,0.45,0.6,Synthetic prototype assumption
+C010,T011,0.3,0.45,0.6,Synthetic prototype assumption
+C010,T012,0.3,0.45,0.6,Synthetic prototype assumption

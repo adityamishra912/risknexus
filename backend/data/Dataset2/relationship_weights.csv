@@ -1,0 +1,21 @@
+relationship,access_type,relationship_weight,access_type_weight,edge_weight,source_note
+depends_on,HTTPS,0.86,0.79,0.679,Synthetic prototype assumption — alternative dataset
+depends_on,API,0.69,0.76,0.524,Synthetic prototype assumption — alternative dataset
+depends_on,IAM,0.71,0.79,0.561,Synthetic prototype assumption — alternative dataset
+depends_on,TCP,0.55,0.71,0.39,Synthetic prototype assumption — alternative dataset
+depends_on,Internal,0.8,0.54,0.432,Synthetic prototype assumption — alternative dataset
+accesses,HTTPS,0.59,0.64,0.378,Synthetic prototype assumption — alternative dataset
+accesses,API,0.65,0.61,0.396,Synthetic prototype assumption — alternative dataset
+accesses,IAM,0.66,0.89,0.587,Synthetic prototype assumption — alternative dataset
+accesses,TCP,0.71,0.6,0.426,Synthetic prototype assumption — alternative dataset
+accesses,Internal,0.55,0.63,0.347,Synthetic prototype assumption — alternative dataset
+trust_relationship,HTTPS,0.63,0.83,0.523,Synthetic prototype assumption — alternative dataset
+trust_relationship,API,0.48,0.91,0.437,Synthetic prototype assumption — alternative dataset
+trust_relationship,IAM,0.76,0.94,0.714,Synthetic prototype assumption — alternative dataset
+trust_relationship,TCP,0.82,0.56,0.459,Synthetic prototype assumption — alternative dataset
+trust_relationship,Internal,0.71,0.81,0.575,Synthetic prototype assumption — alternative dataset
+connects_to,HTTPS,0.51,0.61,0.311,Synthetic prototype assumption — alternative dataset
+connects_to,API,0.46,0.49,0.225,Synthetic prototype assumption — alternative dataset
+connects_to,IAM,0.93,0.61,0.567,Synthetic prototype assumption — alternative dataset
+connects_to,TCP,0.76,0.86,0.654,Synthetic prototype assumption — alternative dataset
+connects_to,Internal,0.59,0.65,0.384,Synthetic prototype assumption — alternative dataset

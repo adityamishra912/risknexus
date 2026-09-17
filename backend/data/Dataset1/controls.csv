@@ -1,0 +1,11 @@
+control_id,control_name,category,cost,implementation_days,maintenance_cost
+C001,MFA,Identity,1500000,7,500000
+C002,EDR,Endpoint,3000000,30,1000000
+C003,Network Segmentation,Network,5000000,90,800000
+C004,Backup Hardening,Recovery,2000000,14,400000
+C005,Critical Patching,Vulnerability,1000000,5,200000
+C006,Privileged Access Management,Identity,2500000,45,600000
+C007,Web Application Firewall,Application,2200000,21,450000
+C008,Cloud Security Posture Management,Cloud,2800000,35,700000
+C009,Email Security,Email,1800000,14,400000
+C010,24x7 Security Monitoring,Monitoring,3500000,60,1200000

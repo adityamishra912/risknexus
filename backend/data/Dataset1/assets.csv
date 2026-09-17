@@ -1,0 +1,151 @@
+asset_id,asset_name,asset_type,service_id,criticality,internet_exposed,environment,owner
+A001,IDENTITY-SERVER-001,Identity Server,S007,9,No,Production,BU02
+A002,DATABASE-002,Database,S006,6,No,Development,BU05
+A003,CLOUD-WORKLOAD-003,Cloud Workload,S010,8,Yes,Production,BU03
+A004,NETWORK-DEVICE-004,Network Device,S008,9,No,Production,BU04
+A005,WEB-SERVER-005,Web Server,S009,8,Yes,Production,BU01
+A006,DATABASE-006,Database,S004,8,No,Development,BU04
+A007,CLOUD-WORKLOAD-007,Cloud Workload,S010,9,Yes,Production,BU03
+A008,NETWORK-DEVICE-008,Network Device,S007,8,No,Production,BU02
+A009,WEB-SERVER-009,Web Server,S010,8,No,Production,BU03
+A010,API-010,API,S009,8,Yes,Production,BU01
+A011,NETWORK-DEVICE-011,Network Device,S002,10,No,Production,BU02
+A012,APPLICATION-012,Application,S010,6,No,Production,BU03
+A013,DATABASE-013,Database,S005,5,No,Production,BU03
+A014,WEB-SERVER-014,Web Server,S008,8,No,Production,BU04
+A015,DATABASE-015,Database,S007,9,No,Production,BU02
+A016,IDENTITY-SERVER-016,Identity Server,S007,7,No,Production,BU02
+A017,DATABASE-017,Database,S007,9,No,Production,BU02
+A018,DATABASE-018,Database,S003,7,No,Development,BU01
+A019,NETWORK-DEVICE-019,Network Device,S009,9,No,Development,BU01
+A020,ENDPOINT-020,Endpoint,S009,9,No,Production,BU01
+A021,NETWORK-DEVICE-021,Network Device,S001,10,No,Production,BU01
+A022,CLOUD-WORKLOAD-022,Cloud Workload,S002,10,No,Development,BU02
+A023,APPLICATION-023,Application,S009,10,No,Production,BU01
+A024,WEB-SERVER-024,Web Server,S005,3,Yes,Production,BU03
+A025,ENDPOINT-025,Endpoint,S006,7,No,Development,BU05
+A026,NETWORK-DEVICE-026,Network Device,S006,5,No,Production,BU05
+A027,CLOUD-WORKLOAD-027,Cloud Workload,S002,10,No,Production,BU02
+A028,NETWORK-DEVICE-028,Network Device,S006,4,No,Production,BU05
+A029,DATABASE-029,Database,S006,6,No,Production,BU05
+A030,NETWORK-DEVICE-030,Network Device,S001,9,No,Production,BU01
+A031,DATABASE-031,Database,S001,10,No,Production,BU01
+A032,APPLICATION-032,Application,S005,5,No,Production,BU03
+A033,DATABASE-033,Database,S007,8,No,Production,BU02
+A034,DATABASE-034,Database,S007,8,No,Production,BU02
+A035,CLOUD-WORKLOAD-035,Cloud Workload,S004,8,Yes,Production,BU04
+A036,NETWORK-DEVICE-036,Network Device,S008,7,No,Development,BU04
+A037,DATABASE-037,Database,S006,6,No,Production,BU05
+A038,CLOUD-WORKLOAD-038,Cloud Workload,S010,9,Yes,Production,BU03
+A039,DATABASE-039,Database,S004,6,No,Production,BU04
+A040,WEB-SERVER-040,Web Server,S005,6,Yes,Production,BU03
+A041,WEB-SERVER-041,Web Server,S003,10,No,Production,BU01
+A042,WEB-SERVER-042,Web Server,S004,6,Yes,Production,BU04
+A043,IDENTITY-SERVER-043,Identity Server,S001,10,No,Production,BU01
+A044,CLOUD-WORKLOAD-044,Cloud Workload,S006,5,Yes,Production,BU05
+A045,APPLICATION-045,Application,S002,10,No,Production,BU02
+A046,DATABASE-046,Database,S010,7,No,Production,BU03
+A047,WEB-SERVER-047,Web Server,S005,5,Yes,Production,BU03
+A048,APPLICATION-048,Application,S008,7,No,Production,BU04
+A049,DATABASE-049,Database,S002,10,No,Development,BU02
+A050,API-050,API,S006,7,Yes,Development,BU05
+A051,IDENTITY-SERVER-051,Identity Server,S006,4,No,Development,BU05
+A052,NETWORK-DEVICE-052,Network Device,S006,6,No,Production,BU05
+A053,CLOUD-WORKLOAD-053,Cloud Workload,S007,9,Yes,Production,BU02
+A054,ENDPOINT-054,Endpoint,S001,10,No,Production,BU01
+A055,WEB-SERVER-055,Web Server,S009,8,Yes,Production,BU01
+A056,DATABASE-056,Database,S004,8,No,Development,BU04
+A057,IDENTITY-SERVER-057,Identity Server,S001,10,No,Development,BU01
+A058,WEB-SERVER-058,Web Server,S010,8,Yes,Production,BU03
+A059,NETWORK-DEVICE-059,Network Device,S006,6,No,Production,BU05
+A060,WEB-SERVER-060,Web Server,S010,6,Yes,Production,BU03
+A061,DATABASE-061,Database,S007,10,No,Production,BU02
+A062,CLOUD-WORKLOAD-062,Cloud Workload,S004,9,Yes,Development,BU04
+A063,API-063,API,S009,8,No,Production,BU01
+A064,ENDPOINT-064,Endpoint,S007,9,No,Development,BU02
+A065,DATABASE-065,Database,S010,9,No,Production,BU03
+A066,ENDPOINT-066,Endpoint,S010,6,No,Development,BU03
+A067,IDENTITY-SERVER-067,Identity Server,S006,6,No,Production,BU05
+A068,WEB-SERVER-068,Web Server,S010,8,Yes,Production,BU03
+A069,NETWORK-DEVICE-069,Network Device,S004,8,No,Production,BU04
+A070,WEB-SERVER-070,Web Server,S009,8,Yes,Production,BU01
+A071,DATABASE-071,Database,S002,9,No,Development,BU02
+A072,IDENTITY-SERVER-072,Identity Server,S006,5,No,Development,BU05
+A073,NETWORK-DEVICE-073,Network Device,S002,8,No,Production,BU02
+A074,DATABASE-074,Database,S006,5,No,Production,BU05
+A075,DATABASE-075,Database,S003,9,No,Development,BU01
+A076,API-076,API,S004,8,Yes,Production,BU04
+A077,IDENTITY-SERVER-077,Identity Server,S002,10,No,Production,BU02
+A078,IDENTITY-SERVER-078,Identity Server,S009,10,No,Production,BU01
+A079,ENDPOINT-079,Endpoint,S008,8,No,Production,BU04
+A080,API-080,API,S009,9,Yes,Development,BU01
+A081,ENDPOINT-081,Endpoint,S001,10,No,Production,BU01
+A082,API-082,API,S004,6,Yes,Production,BU04
+A083,WEB-SERVER-083,Web Server,S006,6,Yes,Production,BU05
+A084,IDENTITY-SERVER-084,Identity Server,S007,9,No,Production,BU02
+A085,DATABASE-085,Database,S002,10,No,Development,BU02
+A086,IDENTITY-SERVER-086,Identity Server,S004,8,No,Production,BU04
+A087,API-087,API,S007,8,Yes,Production,BU02
+A088,ENDPOINT-088,Endpoint,S004,7,No,Production,BU04
+A089,IDENTITY-SERVER-089,Identity Server,S004,8,No,Development,BU04
+A090,WEB-SERVER-090,Web Server,S008,7,Yes,Production,BU04
+A091,ENDPOINT-091,Endpoint,S010,9,No,Production,BU03
+A092,NETWORK-DEVICE-092,Network Device,S009,10,No,Production,BU01
+A093,ENDPOINT-093,Endpoint,S010,8,No,Production,BU03
+A094,NETWORK-DEVICE-094,Network Device,S003,8,No,Production,BU01
+A095,ENDPOINT-095,Endpoint,S006,6,No,Production,BU05
+A096,CLOUD-WORKLOAD-096,Cloud Workload,S009,8,No,Production,BU01
+A097,APPLICATION-097,Application,S009,10,No,Production,BU01
+A098,IDENTITY-SERVER-098,Identity Server,S005,3,No,Production,BU03
+A099,DATABASE-099,Database,S007,8,No,Production,BU02
+A100,APPLICATION-100,Application,S006,6,No,Production,BU05
+A101,CLOUD-WORKLOAD-101,Cloud Workload,S008,9,Yes,Production,BU04
+A102,NETWORK-DEVICE-102,Network Device,S005,4,No,Development,BU03
+A103,DATABASE-103,Database,S008,7,No,Production,BU04
+A104,ENDPOINT-104,Endpoint,S003,7,No,Development,BU01
+A105,API-105,API,S004,8,Yes,Production,BU04
+A106,IDENTITY-SERVER-106,Identity Server,S009,8,No,Production,BU01
+A107,CLOUD-WORKLOAD-107,Cloud Workload,S005,4,Yes,Production,BU03
+A108,ENDPOINT-108,Endpoint,S008,9,No,Production,BU04
+A109,IDENTITY-SERVER-109,Identity Server,S004,7,No,Production,BU04
+A110,ENDPOINT-110,Endpoint,S007,9,No,Development,BU02
+A111,DATABASE-111,Database,S003,9,No,Production,BU01
+A112,DATABASE-112,Database,S004,9,No,Production,BU04
+A113,NETWORK-DEVICE-113,Network Device,S002,10,No,Production,BU02
+A114,WEB-SERVER-114,Web Server,S003,8,Yes,Production,BU01
+A115,ENDPOINT-115,Endpoint,S005,5,No,Production,BU03
+A116,ENDPOINT-116,Endpoint,S008,10,No,Production,BU04
+A117,NETWORK-DEVICE-117,Network Device,S001,8,No,Production,BU01
+A118,IDENTITY-SERVER-118,Identity Server,S010,8,No,Production,BU03
+A119,IDENTITY-SERVER-119,Identity Server,S008,8,No,Production,BU04
+A120,CLOUD-WORKLOAD-120,Cloud Workload,S008,9,No,Production,BU04
+A121,DATABASE-121,Database,S010,8,No,Production,BU03
+A122,ENDPOINT-122,Endpoint,S005,3,No,Production,BU03
+A123,DATABASE-123,Database,S003,10,No,Production,BU01
+A124,CLOUD-WORKLOAD-124,Cloud Workload,S004,8,Yes,Production,BU04
+A125,IDENTITY-SERVER-125,Identity Server,S006,7,No,Production,BU05
+A126,ENDPOINT-126,Endpoint,S007,10,No,Production,BU02
+A127,NETWORK-DEVICE-127,Network Device,S001,9,No,Production,BU01
+A128,WEB-SERVER-128,Web Server,S004,8,Yes,Production,BU04
+A129,APPLICATION-129,Application,S002,10,No,Production,BU02
+A130,IDENTITY-SERVER-130,Identity Server,S010,9,No,Production,BU03
+A131,NETWORK-DEVICE-131,Network Device,S004,8,No,Development,BU04
+A132,ENDPOINT-132,Endpoint,S007,7,No,Development,BU02
+A133,DATABASE-133,Database,S002,10,No,Production,BU02
+A134,API-134,API,S007,10,Yes,Production,BU02
+A135,DATABASE-135,Database,S002,8,No,Production,BU02
+A136,API-136,API,S009,10,Yes,Production,BU01
+A137,API-137,API,S003,10,Yes,Production,BU01
+A138,IDENTITY-SERVER-138,Identity Server,S010,9,No,Production,BU03
+A139,WEB-SERVER-139,Web Server,S005,4,No,Production,BU03
+A140,APPLICATION-140,Application,S009,8,No,Production,BU01
+A141,API-141,API,S003,9,Yes,Production,BU01
+A142,IDENTITY-SERVER-142,Identity Server,S009,9,No,Development,BU01
+A143,IDENTITY-SERVER-143,Identity Server,S002,10,No,Production,BU02
+A144,WEB-SERVER-144,Web Server,S009,10,Yes,Production,BU01
+A145,WEB-SERVER-145,Web Server,S004,9,Yes,Production,BU04
+A146,WEB-SERVER-146,Web Server,S009,8,Yes,Production,BU01
+A147,IDENTITY-SERVER-147,Identity Server,S006,6,No,Production,BU05
+A148,IDENTITY-SERVER-148,Identity Server,S006,5,No,Production,BU05
+A149,IDENTITY-SERVER-149,Identity Server,S007,9,No,Development,BU02
+A150,IDENTITY-SERVER-150,Identity Server,S001,8,No,Production,BU01

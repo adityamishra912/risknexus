@@ -1,0 +1,11 @@
+service_id,unit_id,service_name,criticality,revenue_dependency,downtime_cost_per_hour,data_sensitivity
+S001,BU03,Online Payments,Medium,0.9,6400000.0,Confidential
+S002,BU05,Supply Chain Hub,Critical,0.69,2800000.0,Confidential
+S003,BU05,Customer Portal,High,0.66,4400000.0,Confidential
+S004,BU05,Data Warehouse,Medium,0.38,5600000.0,Internal
+S005,BU02,Identity Services,Critical,0.95,900000.0,Confidential
+S006,BU02,Partner Gateway,High,0.54,3700000.0,Internal
+S007,BU01,Mobile Banking,Medium,0.83,1500000.0,Restricted
+S008,BU05,Analytics Platform,High,0.49,3100000.0,Restricted
+S009,BU04,HR Operations,Critical,0.47,5300000.0,Confidential
+S010,BU01,Finance ERP,Medium,0.38,3300000.0,Confidential

@@ -6,6 +6,7 @@ from typing import Dict, Any, List, Optional
 import pandas as pd
 from app.services.attack_graph.graph_builder import resolve_data_dir, build_attack_graph
 from app.services.risk_engine.engine import quantify_all_scenarios
+from app.utils.type_parsers import parse_criticality, parse_float
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +91,7 @@ def get_all_assets_with_risk(data_dir: Optional[str] = None) -> List[Dict[str, A
             "type": a_type,
             "service_id": s_id,
             "service_name": svc_info.get("service_name", "Core Infrastructure"),
-            "criticality": int(row.get("criticality", 5)),
+            "criticality": parse_criticality(row.get("criticality", 5)),
             "internet_exposed": str(row.get("internet_exposed", "")).strip().lower() in ["yes", "true", "1"],
             "environment": str(row.get("environment", "Production")),
             "owner": str(row.get("owner", "IT Team")),
@@ -147,8 +148,8 @@ def get_asset_detail_profile(asset_id: str, data_dir: Optional[str] = None) -> D
             asset_controls.append({
                 "control_id": str(r.get("control_id", "")).strip(),
                 "status": str(r.get("status", "Not Implemented")).strip(),
-                "coverage": float(r.get("coverage", 0.0)),
-                "maturity": float(r.get("maturity", 0.0)),
+                "coverage": parse_float(r.get("coverage", 0.0)),
+                "maturity": parse_float(r.get("maturity", 0.0)),
                 "last_assessed": str(r.get("last_assessed", "")).strip(),
             })
 

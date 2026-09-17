@@ -1,0 +1,6 @@
+unit_id,unit_name,annual_revenue,criticality
+BU01,Digital Commerce,3410000000.0,Critical
+BU02,Enterprise Operations,4070000000.0,Medium
+BU03,Customer Platforms,3710000000.0,Critical
+BU04,Data & Analytics,1180000000.0,High
+BU05,Corporate Services,3460000000.0,Critical

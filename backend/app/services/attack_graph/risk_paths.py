@@ -3,6 +3,7 @@
 import logging
 from typing import List, Dict, Any
 import networkx as nx
+from app.utils.type_parsers import parse_criticality, parse_float, parse_int
 
 logger = logging.getLogger(__name__)
 
@@ -34,12 +35,13 @@ def rank_attack_paths(graph: nx.DiGraph, raw_paths: List[List[str]]) -> List[Dic
         total_vulns = 0
         asset_details = []
 
+
         for node_id in path:
             node_data = graph.nodes[node_id]
-            node_cvss = float(node_data.get("max_cvss", 0.0))
-            node_crit = int(node_data.get("criticality", 5))
+            node_cvss = parse_float(node_data.get("max_cvss", 0.0))
+            node_crit = parse_criticality(node_data.get("criticality", 5))
             node_exploit = bool(node_data.get("has_known_exploited", False))
-            node_vuln_count = int(node_data.get("vuln_count", 0))
+            node_vuln_count = parse_int(node_data.get("vuln_count", 0))
 
             if node_cvss > max_cvss:
                 max_cvss = node_cvss

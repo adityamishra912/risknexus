@@ -1,0 +1,481 @@
+impact_id,threat_id,asset_type,impact_type,min_value,likely_value,max_value,unit,confidence,source,last_updated
+IA_T001_IDENTITY_SERVER_RECOVERY,T001,Identity Server,recovery,938817.0,1270184.0,2219314.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_IDENTITY_SERVER_DOWNTIME,T001,Identity Server,downtime,2.0,3.0,5.0,hours,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_IDENTITY_SERVER_DATA_LOSS,T001,Identity Server,data_loss,766713.0,1065402.0,1811888.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_IDENTITY_SERVER_REGULATORY,T001,Identity Server,regulatory,292612.0,484271.0,850099.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_IDENTITY_SERVER_REPUTATION,T001,Identity Server,reputation,591663.0,874927.0,1702493.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+I001,T001,Database,recovery,892760.0,1489960.0,2174747.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+I002,T001,Database,downtime,4.0,6.0,12.0,hours,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+I003,T001,Database,data_loss,1923603.0,3438908.0,6291552.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+I004,T001,Database,regulatory,447678.0,913686.0,1467594.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+I005,T001,Database,reputation,827743.0,1221504.0,2075551.0,INR,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_CLOUD_WORKLOAD_RECOVERY,T001,Cloud Workload,recovery,692838.0,1178197.0,1833459.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_CLOUD_WORKLOAD_DOWNTIME,T001,Cloud Workload,downtime,4.0,8.0,12.0,hours,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_CLOUD_WORKLOAD_DATA_LOSS,T001,Cloud Workload,data_loss,1657221.0,2249465.0,3553762.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_CLOUD_WORKLOAD_REGULATORY,T001,Cloud Workload,regulatory,605927.0,970879.0,1551655.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_CLOUD_WORKLOAD_REPUTATION,T001,Cloud Workload,reputation,1503952.0,2126539.0,4156829.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_NETWORK_DEVICE_RECOVERY,T001,Network Device,recovery,312624.0,466670.0,656150.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_NETWORK_DEVICE_DOWNTIME,T001,Network Device,downtime,3.0,4.0,7.0,hours,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_NETWORK_DEVICE_DATA_LOSS,T001,Network Device,data_loss,163431.0,319340.0,556039.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_NETWORK_DEVICE_REGULATORY,T001,Network Device,regulatory,72154.0,150399.0,223180.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_NETWORK_DEVICE_REPUTATION,T001,Network Device,reputation,238348.0,479457.0,884150.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+I006,T001,Web Server,recovery,598907.0,966948.0,1770437.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+I007,T001,Web Server,downtime,3.0,4.0,8.0,hours,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+I008,T001,Web Server,data_loss,225939.0,467112.0,658789.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+I009,T001,Web Server,regulatory,123429.0,206573.0,388837.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+I010,T001,Web Server,reputation,230723.0,351506.0,597714.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_API_RECOVERY,T001,API,recovery,548977.0,1091644.0,2215582.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_API_DOWNTIME,T001,API,downtime,3.0,4.0,6.0,hours,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_API_DATA_LOSS,T001,API,data_loss,604832.0,935382.0,1396453.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_API_REGULATORY,T001,API,regulatory,204141.0,378453.0,774670.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_API_REPUTATION,T001,API,reputation,366743.0,681353.0,1333686.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_APPLICATION_RECOVERY,T001,Application,recovery,458504.0,812015.0,1147044.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_APPLICATION_DOWNTIME,T001,Application,downtime,3.0,6.0,11.0,hours,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_APPLICATION_DATA_LOSS,T001,Application,data_loss,324868.0,673801.0,933039.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_APPLICATION_REGULATORY,T001,Application,regulatory,216045.0,386413.0,676562.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_APPLICATION_REPUTATION,T001,Application,reputation,290665.0,615613.0,854667.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_ENDPOINT_RECOVERY,T001,Endpoint,recovery,704358.0,1007727.0,2068285.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_ENDPOINT_DOWNTIME,T001,Endpoint,downtime,4.0,7.0,13.0,hours,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_ENDPOINT_DATA_LOSS,T001,Endpoint,data_loss,1514582.0,2432559.0,3549131.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_ENDPOINT_REGULATORY,T001,Endpoint,regulatory,876283.0,1431691.0,1975713.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T001_ENDPOINT_REPUTATION,T001,Endpoint,reputation,1433401.0,2058358.0,4192095.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_IDENTITY_SERVER_RECOVERY,T002,Identity Server,recovery,505240.0,934713.0,1939236.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_IDENTITY_SERVER_DOWNTIME,T002,Identity Server,downtime,2.0,3.0,4.0,hours,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_IDENTITY_SERVER_DATA_LOSS,T002,Identity Server,data_loss,176193.0,327536.0,443687.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_IDENTITY_SERVER_REGULATORY,T002,Identity Server,regulatory,152243.0,283842.0,418131.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_IDENTITY_SERVER_REPUTATION,T002,Identity Server,reputation,324418.0,695293.0,1327122.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+I016,T002,Database,recovery,612987.0,830723.0,1262175.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+I017,T002,Database,downtime,2.0,4.0,8.0,hours,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+I018,T002,Database,data_loss,1542765.0,2473141.0,4956746.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+I019,T002,Database,regulatory,1003427.0,1539529.0,2666522.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+I020,T002,Database,reputation,814401.0,1438700.0,2776590.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_CLOUD_WORKLOAD_RECOVERY,T002,Cloud Workload,recovery,770576.0,1244910.0,1833899.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_CLOUD_WORKLOAD_DOWNTIME,T002,Cloud Workload,downtime,4.0,6.0,11.0,hours,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_CLOUD_WORKLOAD_DATA_LOSS,T002,Cloud Workload,data_loss,1275893.0,2508886.0,3414958.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_CLOUD_WORKLOAD_REGULATORY,T002,Cloud Workload,regulatory,828318.0,1297624.0,2513257.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_CLOUD_WORKLOAD_REPUTATION,T002,Cloud Workload,reputation,913457.0,1345418.0,2748357.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_NETWORK_DEVICE_RECOVERY,T002,Network Device,recovery,512510.0,695562.0,1261090.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_NETWORK_DEVICE_DOWNTIME,T002,Network Device,downtime,1.0,2.0,3.0,hours,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_NETWORK_DEVICE_DATA_LOSS,T002,Network Device,data_loss,1066559.0,2004395.0,4078757.0,INR,0.65,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_NETWORK_DEVICE_REGULATORY,T002,Network Device,regulatory,531529.0,778254.0,1323167.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_NETWORK_DEVICE_REPUTATION,T002,Network Device,reputation,617553.0,1074343.0,2129734.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_WEB_SERVER_RECOVERY,T002,Web Server,recovery,573852.0,889095.0,1433033.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_WEB_SERVER_DOWNTIME,T002,Web Server,downtime,3.0,6.0,10.0,hours,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_WEB_SERVER_DATA_LOSS,T002,Web Server,data_loss,1073953.0,1702553.0,3322612.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_WEB_SERVER_REGULATORY,T002,Web Server,regulatory,359206.0,730357.0,1172235.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_WEB_SERVER_REPUTATION,T002,Web Server,reputation,360212.0,755183.0,1563608.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_API_RECOVERY,T002,API,recovery,230770.0,473094.0,695269.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_API_DOWNTIME,T002,API,downtime,2.0,3.0,5.0,hours,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_API_DATA_LOSS,T002,API,data_loss,173851.0,366428.0,500749.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_API_REGULATORY,T002,API,regulatory,160529.0,289507.0,421496.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_API_REPUTATION,T002,API,reputation,302796.0,470860.0,769352.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_APPLICATION_RECOVERY,T002,Application,recovery,247930.0,448032.0,618054.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_APPLICATION_DOWNTIME,T002,Application,downtime,1.0,2.0,3.0,hours,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_APPLICATION_DATA_LOSS,T002,Application,data_loss,198927.0,423367.0,626471.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_APPLICATION_REGULATORY,T002,Application,regulatory,123207.0,194021.0,308335.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_APPLICATION_REPUTATION,T002,Application,reputation,242754.0,392372.0,532298.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_ENDPOINT_RECOVERY,T002,Endpoint,recovery,825837.0,1456992.0,3003492.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_ENDPOINT_DOWNTIME,T002,Endpoint,downtime,3.0,5.0,8.0,hours,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_ENDPOINT_DATA_LOSS,T002,Endpoint,data_loss,1071518.0,1812506.0,2543158.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_ENDPOINT_REGULATORY,T002,Endpoint,regulatory,474905.0,769813.0,1216166.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T002_ENDPOINT_REPUTATION,T002,Endpoint,reputation,488388.0,857292.0,1548186.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_IDENTITY_SERVER_RECOVERY,T003,Identity Server,recovery,11115.0,18060.0,28205.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_IDENTITY_SERVER_DOWNTIME,T003,Identity Server,downtime,1.0,2.0,3.0,hours,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_IDENTITY_SERVER_DATA_LOSS,T003,Identity Server,data_loss,44693.0,65096.0,110501.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_IDENTITY_SERVER_REGULATORY,T003,Identity Server,regulatory,0.0,0.0,0.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_IDENTITY_SERVER_REPUTATION,T003,Identity Server,reputation,31066.0,62786.0,104110.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_DATABASE_RECOVERY,T003,Database,recovery,20150.0,32197.0,51384.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_DATABASE_DOWNTIME,T003,Database,downtime,1.0,2.0,4.0,hours,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_DATABASE_DATA_LOSS,T003,Database,data_loss,32016.0,56188.0,111180.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_DATABASE_REGULATORY,T003,Database,regulatory,0.0,0.0,0.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_DATABASE_REPUTATION,T003,Database,reputation,37349.0,74253.0,139043.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_CLOUD_WORKLOAD_RECOVERY,T003,Cloud Workload,recovery,19811.0,36962.0,61392.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_CLOUD_WORKLOAD_DOWNTIME,T003,Cloud Workload,downtime,0.0,1.0,2.0,hours,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_CLOUD_WORKLOAD_DATA_LOSS,T003,Cloud Workload,data_loss,25137.0,41685.0,82538.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_CLOUD_WORKLOAD_REGULATORY,T003,Cloud Workload,regulatory,0.0,0.0,0.0,INR,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_CLOUD_WORKLOAD_REPUTATION,T003,Cloud Workload,reputation,56881.0,77015.0,134722.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_NETWORK_DEVICE_RECOVERY,T003,Network Device,recovery,18421.0,26250.0,44706.0,INR,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_NETWORK_DEVICE_DOWNTIME,T003,Network Device,downtime,0.0,1.0,2.0,hours,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_NETWORK_DEVICE_DATA_LOSS,T003,Network Device,data_loss,17166.0,28850.0,47376.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_NETWORK_DEVICE_REGULATORY,T003,Network Device,regulatory,0.0,0.0,0.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_NETWORK_DEVICE_REPUTATION,T003,Network Device,reputation,31672.0,50627.0,99849.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_WEB_SERVER_RECOVERY,T003,Web Server,recovery,17206.0,28261.0,46764.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_WEB_SERVER_DOWNTIME,T003,Web Server,downtime,1.0,2.0,3.0,hours,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_WEB_SERVER_DATA_LOSS,T003,Web Server,data_loss,51837.0,69310.0,138943.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_WEB_SERVER_REGULATORY,T003,Web Server,regulatory,0.0,0.0,0.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_WEB_SERVER_REPUTATION,T003,Web Server,reputation,30902.0,41687.0,68700.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_API_RECOVERY,T003,API,recovery,28037.0,39498.0,75638.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_API_DOWNTIME,T003,API,downtime,1.0,2.0,3.0,hours,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_API_DATA_LOSS,T003,API,data_loss,30483.0,43159.0,67531.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_API_REGULATORY,T003,API,regulatory,0.0,0.0,0.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_API_REPUTATION,T003,API,reputation,20919.0,42933.0,87231.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_APPLICATION_RECOVERY,T003,Application,recovery,17309.0,31869.0,44857.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_APPLICATION_DOWNTIME,T003,Application,downtime,1.0,1.0,1.0,hours,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_APPLICATION_DATA_LOSS,T003,Application,data_loss,26490.0,46909.0,70728.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_APPLICATION_REGULATORY,T003,Application,regulatory,0.0,0.0,0.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_APPLICATION_REPUTATION,T003,Application,reputation,39892.0,64947.0,123875.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_ENDPOINT_RECOVERY,T003,Endpoint,recovery,23727.0,33216.0,57677.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_ENDPOINT_DOWNTIME,T003,Endpoint,downtime,1.0,2.0,4.0,hours,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_ENDPOINT_DATA_LOSS,T003,Endpoint,data_loss,27433.0,41711.0,58165.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_ENDPOINT_REGULATORY,T003,Endpoint,regulatory,0.0,0.0,0.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T003_ENDPOINT_REPUTATION,T003,Endpoint,reputation,37009.0,51725.0,76963.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_IDENTITY_SERVER_RECOVERY,T004,Identity Server,recovery,552443.0,910591.0,1344996.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_IDENTITY_SERVER_DOWNTIME,T004,Identity Server,downtime,3.0,4.0,8.0,hours,0.95,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_IDENTITY_SERVER_DATA_LOSS,T004,Identity Server,data_loss,746506.0,1190021.0,2304465.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_IDENTITY_SERVER_REGULATORY,T004,Identity Server,regulatory,383665.0,519898.0,1026133.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_IDENTITY_SERVER_REPUTATION,T004,Identity Server,reputation,1222565.0,1659032.0,2405900.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_DATABASE_RECOVERY,T004,Database,recovery,421155.0,665300.0,1005849.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_DATABASE_DOWNTIME,T004,Database,downtime,2.0,3.0,6.0,hours,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_DATABASE_DATA_LOSS,T004,Database,data_loss,410292.0,676135.0,1179451.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_DATABASE_REGULATORY,T004,Database,regulatory,394650.0,609439.0,838540.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_DATABASE_REPUTATION,T004,Database,reputation,683459.0,1070754.0,1844476.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_CLOUD_WORKLOAD_RECOVERY,T004,Cloud Workload,recovery,514199.0,738300.0,1312397.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_CLOUD_WORKLOAD_DOWNTIME,T004,Cloud Workload,downtime,4.0,5.0,8.0,hours,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_CLOUD_WORKLOAD_DATA_LOSS,T004,Cloud Workload,data_loss,989576.0,1386503.0,2111363.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_CLOUD_WORKLOAD_REGULATORY,T004,Cloud Workload,regulatory,269414.0,586444.0,1221446.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_CLOUD_WORKLOAD_REPUTATION,T004,Cloud Workload,reputation,733671.0,1100728.0,1525895.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_NETWORK_DEVICE_RECOVERY,T004,Network Device,recovery,287986.0,607539.0,1218666.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_NETWORK_DEVICE_DOWNTIME,T004,Network Device,downtime,2.0,5.0,9.0,hours,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_NETWORK_DEVICE_DATA_LOSS,T004,Network Device,data_loss,625948.0,1132535.0,2220578.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_NETWORK_DEVICE_REGULATORY,T004,Network Device,regulatory,170692.0,288346.0,599546.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_NETWORK_DEVICE_REPUTATION,T004,Network Device,reputation,399915.0,674642.0,1386788.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+I031,T004,Web Server,recovery,438277.0,736346.0,1298662.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+I032,T004,Web Server,downtime,3.0,6.0,10.0,hours,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+I033,T004,Web Server,data_loss,789530.0,1059209.0,1586942.0,INR,0.65,Synthetic prototype assumption — alternative dataset,2026-09-15
+I034,T004,Web Server,regulatory,316892.0,662775.0,1222808.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+I035,T004,Web Server,reputation,707993.0,1251634.0,2173151.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_API_RECOVERY,T004,API,recovery,429791.0,736718.0,1055724.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_API_DOWNTIME,T004,API,downtime,3.0,4.0,6.0,hours,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_API_DATA_LOSS,T004,API,data_loss,1083623.0,1695893.0,3178508.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_API_REGULATORY,T004,API,regulatory,255094.0,465930.0,700562.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_API_REPUTATION,T004,API,reputation,940862.0,1303346.0,2476584.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_APPLICATION_RECOVERY,T004,Application,recovery,566280.0,882978.0,1471356.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_APPLICATION_DOWNTIME,T004,Application,downtime,3.0,6.0,12.0,hours,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_APPLICATION_DATA_LOSS,T004,Application,data_loss,1344219.0,2185639.0,3429099.0,INR,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_APPLICATION_REGULATORY,T004,Application,regulatory,553437.0,948254.0,1884310.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_APPLICATION_REPUTATION,T004,Application,reputation,795888.0,1250826.0,2501833.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_ENDPOINT_RECOVERY,T004,Endpoint,recovery,466351.0,668741.0,1071646.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_ENDPOINT_DOWNTIME,T004,Endpoint,downtime,2.0,3.0,6.0,hours,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_ENDPOINT_DATA_LOSS,T004,Endpoint,data_loss,659676.0,1052871.0,1564643.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_ENDPOINT_REGULATORY,T004,Endpoint,regulatory,321371.0,579131.0,948363.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T004_ENDPOINT_REPUTATION,T004,Endpoint,reputation,979790.0,1395640.0,2024089.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_IDENTITY_SERVER_RECOVERY,T005,Identity Server,recovery,566767.0,974759.0,1815442.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_IDENTITY_SERVER_DOWNTIME,T005,Identity Server,downtime,3.0,4.0,6.0,hours,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_IDENTITY_SERVER_DATA_LOSS,T005,Identity Server,data_loss,419813.0,754279.0,1470886.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_IDENTITY_SERVER_REGULATORY,T005,Identity Server,regulatory,164237.0,227137.0,410276.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_IDENTITY_SERVER_REPUTATION,T005,Identity Server,reputation,254677.0,529480.0,1027182.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_DATABASE_RECOVERY,T005,Database,recovery,456928.0,870371.0,1210979.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_DATABASE_DOWNTIME,T005,Database,downtime,2.0,3.0,4.0,hours,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_DATABASE_DATA_LOSS,T005,Database,data_loss,266905.0,540490.0,1116060.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_DATABASE_REGULATORY,T005,Database,regulatory,337035.0,457878.0,866710.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_DATABASE_REPUTATION,T005,Database,reputation,483928.0,678818.0,1058528.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_CLOUD_WORKLOAD_RECOVERY,T005,Cloud Workload,recovery,478895.0,662846.0,1323215.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_CLOUD_WORKLOAD_DOWNTIME,T005,Cloud Workload,downtime,3.0,5.0,7.0,hours,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_CLOUD_WORKLOAD_DATA_LOSS,T005,Cloud Workload,data_loss,660004.0,921892.0,1265698.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_CLOUD_WORKLOAD_REGULATORY,T005,Cloud Workload,regulatory,143258.0,227288.0,338150.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_CLOUD_WORKLOAD_REPUTATION,T005,Cloud Workload,reputation,288810.0,520044.0,1037936.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_NETWORK_DEVICE_RECOVERY,T005,Network Device,recovery,236045.0,440229.0,712172.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_NETWORK_DEVICE_DOWNTIME,T005,Network Device,downtime,2.0,4.0,8.0,hours,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_NETWORK_DEVICE_DATA_LOSS,T005,Network Device,data_loss,360806.0,727919.0,1198282.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_NETWORK_DEVICE_REGULATORY,T005,Network Device,regulatory,153804.0,249233.0,459975.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_NETWORK_DEVICE_REPUTATION,T005,Network Device,reputation,182222.0,350072.0,616177.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+I041,T005,Web Server,recovery,585628.0,830650.0,1450865.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+I042,T005,Web Server,downtime,4.0,6.0,10.0,hours,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+I043,T005,Web Server,data_loss,298179.0,647566.0,1107729.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+I044,T005,Web Server,regulatory,126428.0,195472.0,312169.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+I045,T005,Web Server,reputation,440666.0,694717.0,1310938.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_API_RECOVERY,T005,API,recovery,396581.0,700221.0,1300871.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_API_DOWNTIME,T005,API,downtime,2.0,3.0,5.0,hours,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_API_DATA_LOSS,T005,API,data_loss,295828.0,569960.0,1043665.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_API_REGULATORY,T005,API,regulatory,99565.0,197569.0,376830.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_API_REPUTATION,T005,API,reputation,652415.0,906895.0,1255968.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_APPLICATION_RECOVERY,T005,Application,recovery,428636.0,670323.0,1140579.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_APPLICATION_DOWNTIME,T005,Application,downtime,4.0,6.0,12.0,hours,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_APPLICATION_DATA_LOSS,T005,Application,data_loss,529675.0,912646.0,1509444.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_APPLICATION_REGULATORY,T005,Application,regulatory,187491.0,340539.0,479553.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_APPLICATION_REPUTATION,T005,Application,reputation,485671.0,670854.0,1331944.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_ENDPOINT_RECOVERY,T005,Endpoint,recovery,666531.0,1068903.0,1878371.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_ENDPOINT_DOWNTIME,T005,Endpoint,downtime,4.0,6.0,10.0,hours,0.95,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_ENDPOINT_DATA_LOSS,T005,Endpoint,data_loss,330677.0,612438.0,866947.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_ENDPOINT_REGULATORY,T005,Endpoint,regulatory,116371.0,195786.0,358626.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T005_ENDPOINT_REPUTATION,T005,Endpoint,reputation,483573.0,652515.0,952135.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_IDENTITY_SERVER_RECOVERY,T006,Identity Server,recovery,626757.0,930839.0,1866954.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_IDENTITY_SERVER_DOWNTIME,T006,Identity Server,downtime,3.0,4.0,7.0,hours,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_IDENTITY_SERVER_DATA_LOSS,T006,Identity Server,data_loss,2048829.0,3296380.0,6716027.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_IDENTITY_SERVER_REGULATORY,T006,Identity Server,regulatory,1963581.0,3323793.0,5085302.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_IDENTITY_SERVER_REPUTATION,T006,Identity Server,reputation,1260753.0,1796554.0,2842015.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+I046,T006,Database,recovery,536663.0,844525.0,1712816.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+I047,T006,Database,downtime,3.0,4.0,7.0,hours,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+I048,T006,Database,data_loss,2773557.0,4287366.0,8478890.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+I049,T006,Database,regulatory,1550071.0,2777830.0,5671614.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+I050,T006,Database,reputation,1382943.0,2052031.0,3065714.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_CLOUD_WORKLOAD_RECOVERY,T006,Cloud Workload,recovery,684944.0,1074218.0,1853198.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_CLOUD_WORKLOAD_DOWNTIME,T006,Cloud Workload,downtime,2.0,4.0,8.0,hours,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_CLOUD_WORKLOAD_DATA_LOSS,T006,Cloud Workload,data_loss,2042064.0,3661849.0,6425250.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_CLOUD_WORKLOAD_REGULATORY,T006,Cloud Workload,regulatory,2185285.0,4329399.0,7009778.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_CLOUD_WORKLOAD_REPUTATION,T006,Cloud Workload,reputation,1926655.0,3541472.0,6731285.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_NETWORK_DEVICE_RECOVERY,T006,Network Device,recovery,283090.0,586957.0,985607.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_NETWORK_DEVICE_DOWNTIME,T006,Network Device,downtime,1.0,3.0,4.0,hours,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_NETWORK_DEVICE_DATA_LOSS,T006,Network Device,data_loss,2005870.0,3815780.0,5708274.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_NETWORK_DEVICE_REGULATORY,T006,Network Device,regulatory,2326149.0,3207458.0,6189205.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_NETWORK_DEVICE_REPUTATION,T006,Network Device,reputation,1823626.0,2498006.0,3480978.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_WEB_SERVER_RECOVERY,T006,Web Server,recovery,499993.0,1010967.0,1695615.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_WEB_SERVER_DOWNTIME,T006,Web Server,downtime,1.0,2.0,3.0,hours,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_WEB_SERVER_DATA_LOSS,T006,Web Server,data_loss,4505129.0,7194742.0,10530690.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_WEB_SERVER_REGULATORY,T006,Web Server,regulatory,1640552.0,2565895.0,4894303.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_WEB_SERVER_REPUTATION,T006,Web Server,reputation,1992419.0,3457645.0,6490812.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_API_RECOVERY,T006,API,recovery,450240.0,653082.0,1154701.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_API_DOWNTIME,T006,API,downtime,3.0,4.0,6.0,hours,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_API_DATA_LOSS,T006,API,data_loss,2182589.0,3955025.0,7629879.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_API_REGULATORY,T006,API,regulatory,2239751.0,3652946.0,6458827.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_API_REPUTATION,T006,API,reputation,1870310.0,3017762.0,6231959.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_APPLICATION_RECOVERY,T006,Application,recovery,826409.0,1135557.0,1732714.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_APPLICATION_DOWNTIME,T006,Application,downtime,1.0,3.0,6.0,hours,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_APPLICATION_DATA_LOSS,T006,Application,data_loss,2503515.0,4308582.0,8702103.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_APPLICATION_REGULATORY,T006,Application,regulatory,1306371.0,2391149.0,4074603.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_APPLICATION_REPUTATION,T006,Application,reputation,2041124.0,3367467.0,4931308.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_ENDPOINT_RECOVERY,T006,Endpoint,recovery,416428.0,653976.0,1139554.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_ENDPOINT_DOWNTIME,T006,Endpoint,downtime,2.0,4.0,7.0,hours,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_ENDPOINT_DATA_LOSS,T006,Endpoint,data_loss,3569870.0,6113268.0,10129636.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_ENDPOINT_REGULATORY,T006,Endpoint,regulatory,3052136.0,4100561.0,8483733.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T006_ENDPOINT_REPUTATION,T006,Endpoint,reputation,1067781.0,1814734.0,2613697.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_IDENTITY_SERVER_RECOVERY,T007,Identity Server,recovery,471007.0,646524.0,1246392.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_IDENTITY_SERVER_DOWNTIME,T007,Identity Server,downtime,4.0,5.0,9.0,hours,0.65,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_IDENTITY_SERVER_DATA_LOSS,T007,Identity Server,data_loss,93155.0,132046.0,225138.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_IDENTITY_SERVER_REGULATORY,T007,Identity Server,regulatory,0.0,0.0,0.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_IDENTITY_SERVER_REPUTATION,T007,Identity Server,reputation,298272.0,484509.0,809698.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_DATABASE_RECOVERY,T007,Database,recovery,246773.0,500440.0,822022.0,INR,0.65,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_DATABASE_DOWNTIME,T007,Database,downtime,3.0,6.0,11.0,hours,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_DATABASE_DATA_LOSS,T007,Database,data_loss,43365.0,80908.0,137381.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_DATABASE_REGULATORY,T007,Database,regulatory,0.0,0.0,0.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_DATABASE_REPUTATION,T007,Database,reputation,398186.0,550579.0,826607.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_CLOUD_WORKLOAD_RECOVERY,T007,Cloud Workload,recovery,329758.0,510629.0,781811.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_CLOUD_WORKLOAD_DOWNTIME,T007,Cloud Workload,downtime,3.0,5.0,10.0,hours,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_CLOUD_WORKLOAD_DATA_LOSS,T007,Cloud Workload,data_loss,80835.0,128886.0,218881.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_CLOUD_WORKLOAD_REGULATORY,T007,Cloud Workload,regulatory,0.0,0.0,0.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_CLOUD_WORKLOAD_REPUTATION,T007,Cloud Workload,reputation,194400.0,391582.0,574383.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_NETWORK_DEVICE_RECOVERY,T007,Network Device,recovery,167049.0,260682.0,545235.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_NETWORK_DEVICE_DOWNTIME,T007,Network Device,downtime,1.0,2.0,3.0,hours,0.65,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_NETWORK_DEVICE_DATA_LOSS,T007,Network Device,data_loss,32435.0,51274.0,96657.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_NETWORK_DEVICE_REGULATORY,T007,Network Device,regulatory,0.0,0.0,0.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_NETWORK_DEVICE_REPUTATION,T007,Network Device,reputation,292537.0,547210.0,1133416.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+I051,T007,Web Server,recovery,387312.0,653575.0,1266138.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+I052,T007,Web Server,downtime,3.0,4.0,8.0,hours,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+I053,T007,Web Server,data_loss,49637.0,77030.0,160379.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+I054,T007,Web Server,regulatory,0.0,0.0,0.0,INR,0.88,Synthetic prototype assumption — alternative dataset,2026-09-15
+I055,T007,Web Server,reputation,273312.0,570293.0,1115922.0,INR,0.95,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_API_RECOVERY,T007,API,recovery,313943.0,560433.0,1163307.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_API_DOWNTIME,T007,API,downtime,2.0,5.0,7.0,hours,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_API_DATA_LOSS,T007,API,data_loss,40868.0,61871.0,107485.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_API_REGULATORY,T007,API,regulatory,0.0,0.0,0.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_API_REPUTATION,T007,API,reputation,175526.0,306402.0,623088.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_APPLICATION_RECOVERY,T007,Application,recovery,383133.0,720756.0,1206216.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_APPLICATION_DOWNTIME,T007,Application,downtime,3.0,4.0,5.0,hours,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_APPLICATION_DATA_LOSS,T007,Application,data_loss,64918.0,131028.0,203084.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_APPLICATION_REGULATORY,T007,Application,regulatory,0.0,0.0,0.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_APPLICATION_REPUTATION,T007,Application,reputation,396167.0,577870.0,952188.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_ENDPOINT_RECOVERY,T007,Endpoint,recovery,391581.0,745848.0,1426971.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_ENDPOINT_DOWNTIME,T007,Endpoint,downtime,2.0,4.0,7.0,hours,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_ENDPOINT_DATA_LOSS,T007,Endpoint,data_loss,37273.0,67804.0,131043.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_ENDPOINT_REGULATORY,T007,Endpoint,regulatory,0.0,0.0,0.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T007_ENDPOINT_REPUTATION,T007,Endpoint,reputation,455425.0,718916.0,1024713.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_IDENTITY_SERVER_RECOVERY,T008,Identity Server,recovery,766759.0,1060052.0,1551716.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_IDENTITY_SERVER_DOWNTIME,T008,Identity Server,downtime,1.0,2.0,3.0,hours,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_IDENTITY_SERVER_DATA_LOSS,T008,Identity Server,data_loss,2007553.0,2799760.0,4260400.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_IDENTITY_SERVER_REGULATORY,T008,Identity Server,regulatory,493123.0,938770.0,1275546.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_IDENTITY_SERVER_REPUTATION,T008,Identity Server,reputation,696965.0,1254567.0,2358036.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+I056,T008,Database,recovery,406728.0,800514.0,1617415.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+I057,T008,Database,downtime,2.0,3.0,5.0,hours,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+I058,T008,Database,data_loss,1587150.0,2199470.0,3177588.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+I059,T008,Database,regulatory,1355217.0,1964454.0,2988403.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+I060,T008,Database,reputation,1227886.0,1671458.0,2331579.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_CLOUD_WORKLOAD_RECOVERY,T008,Cloud Workload,recovery,490107.0,741873.0,1308885.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_CLOUD_WORKLOAD_DOWNTIME,T008,Cloud Workload,downtime,1.0,2.0,3.0,hours,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_CLOUD_WORKLOAD_DATA_LOSS,T008,Cloud Workload,data_loss,1221224.0,2667160.0,5577949.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_CLOUD_WORKLOAD_REGULATORY,T008,Cloud Workload,regulatory,1031404.0,1665208.0,2307338.0,INR,0.65,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_CLOUD_WORKLOAD_REPUTATION,T008,Cloud Workload,reputation,569464.0,1219454.0,1995109.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_NETWORK_DEVICE_RECOVERY,T008,Network Device,recovery,473780.0,821187.0,1156830.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_NETWORK_DEVICE_DOWNTIME,T008,Network Device,downtime,1.0,1.0,2.0,hours,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_NETWORK_DEVICE_DATA_LOSS,T008,Network Device,data_loss,2217986.0,3018407.0,6220690.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_NETWORK_DEVICE_REGULATORY,T008,Network Device,regulatory,340225.0,746154.0,1504555.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_NETWORK_DEVICE_REPUTATION,T008,Network Device,reputation,548622.0,839304.0,1240241.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_WEB_SERVER_RECOVERY,T008,Web Server,recovery,734389.0,1140856.0,1570474.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_WEB_SERVER_DOWNTIME,T008,Web Server,downtime,2.0,3.0,4.0,hours,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_WEB_SERVER_DATA_LOSS,T008,Web Server,data_loss,1823115.0,3954683.0,5811503.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_WEB_SERVER_REGULATORY,T008,Web Server,regulatory,1038883.0,2101555.0,3656617.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_WEB_SERVER_REPUTATION,T008,Web Server,reputation,1052421.0,1779100.0,2624439.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_API_RECOVERY,T008,API,recovery,435816.0,593856.0,1185674.0,INR,0.65,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_API_DOWNTIME,T008,API,downtime,1.0,2.0,3.0,hours,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_API_DATA_LOSS,T008,API,data_loss,1413807.0,2760144.0,4840092.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_API_REGULATORY,T008,API,regulatory,1132169.0,1594608.0,3313803.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_API_REPUTATION,T008,API,reputation,516089.0,1019227.0,1488123.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_APPLICATION_RECOVERY,T008,Application,recovery,526768.0,778146.0,1284752.0,INR,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_APPLICATION_DOWNTIME,T008,Application,downtime,1.0,2.0,4.0,hours,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_APPLICATION_DATA_LOSS,T008,Application,data_loss,2673091.0,3770258.0,7308332.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_APPLICATION_REGULATORY,T008,Application,regulatory,743308.0,1161223.0,1952006.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_APPLICATION_REPUTATION,T008,Application,reputation,902340.0,1750845.0,2466004.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_ENDPOINT_RECOVERY,T008,Endpoint,recovery,348189.0,682481.0,1386512.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_ENDPOINT_DOWNTIME,T008,Endpoint,downtime,2.0,3.0,4.0,hours,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_ENDPOINT_DATA_LOSS,T008,Endpoint,data_loss,2615278.0,3645452.0,7287820.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_ENDPOINT_REGULATORY,T008,Endpoint,regulatory,1083384.0,2145489.0,3061340.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T008_ENDPOINT_REPUTATION,T008,Endpoint,reputation,1257678.0,2071177.0,2827507.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_IDENTITY_SERVER_RECOVERY,T009,Identity Server,recovery,566224.0,762855.0,1169158.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_IDENTITY_SERVER_DOWNTIME,T009,Identity Server,downtime,4.0,7.0,12.0,hours,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_IDENTITY_SERVER_DATA_LOSS,T009,Identity Server,data_loss,906511.0,1293962.0,1817877.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_IDENTITY_SERVER_REGULATORY,T009,Identity Server,regulatory,430099.0,586172.0,869267.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_IDENTITY_SERVER_REPUTATION,T009,Identity Server,reputation,556045.0,958797.0,1824146.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_DATABASE_RECOVERY,T009,Database,recovery,935422.0,1315767.0,2173975.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_DATABASE_DOWNTIME,T009,Database,downtime,4.0,7.0,13.0,hours,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_DATABASE_DATA_LOSS,T009,Database,data_loss,552879.0,1191177.0,2216089.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_DATABASE_REGULATORY,T009,Database,regulatory,386309.0,607556.0,1244048.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_DATABASE_REPUTATION,T009,Database,reputation,355868.0,701400.0,1029115.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_CLOUD_WORKLOAD_RECOVERY,T009,Cloud Workload,recovery,746422.0,1139632.0,2326034.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_CLOUD_WORKLOAD_DOWNTIME,T009,Cloud Workload,downtime,3.0,5.0,10.0,hours,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_CLOUD_WORKLOAD_DATA_LOSS,T009,Cloud Workload,data_loss,682361.0,1128238.0,2278531.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_CLOUD_WORKLOAD_REGULATORY,T009,Cloud Workload,regulatory,264462.0,499569.0,858981.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_CLOUD_WORKLOAD_REPUTATION,T009,Cloud Workload,reputation,329078.0,676031.0,1119784.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_NETWORK_DEVICE_RECOVERY,T009,Network Device,recovery,528641.0,1098559.0,1666671.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_NETWORK_DEVICE_DOWNTIME,T009,Network Device,downtime,2.0,4.0,7.0,hours,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_NETWORK_DEVICE_DATA_LOSS,T009,Network Device,data_loss,435197.0,695795.0,1100452.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_NETWORK_DEVICE_REGULATORY,T009,Network Device,regulatory,226406.0,318897.0,577854.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_NETWORK_DEVICE_REPUTATION,T009,Network Device,reputation,603312.0,1042004.0,1991862.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_WEB_SERVER_RECOVERY,T009,Web Server,recovery,981982.0,1477223.0,2217608.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_WEB_SERVER_DOWNTIME,T009,Web Server,downtime,3.0,6.0,12.0,hours,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_WEB_SERVER_DATA_LOSS,T009,Web Server,data_loss,616120.0,1017130.0,1799830.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_WEB_SERVER_REGULATORY,T009,Web Server,regulatory,249917.0,414231.0,657897.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_WEB_SERVER_REPUTATION,T009,Web Server,reputation,636881.0,851206.0,1750539.0,INR,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_API_RECOVERY,T009,API,recovery,498806.0,674889.0,1204224.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_API_DOWNTIME,T009,API,downtime,2.0,3.0,5.0,hours,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_API_DATA_LOSS,T009,API,data_loss,648642.0,889144.0,1689481.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_API_REGULATORY,T009,API,regulatory,330414.0,532033.0,1002952.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_API_REPUTATION,T009,API,reputation,462456.0,982126.0,1725471.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_APPLICATION_RECOVERY,T009,Application,recovery,444913.0,770549.0,1101739.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_APPLICATION_DOWNTIME,T009,Application,downtime,4.0,6.0,9.0,hours,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_APPLICATION_DATA_LOSS,T009,Application,data_loss,944977.0,1332843.0,2629165.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_APPLICATION_REGULATORY,T009,Application,regulatory,334948.0,539617.0,1038681.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_APPLICATION_REPUTATION,T009,Application,reputation,589153.0,1046301.0,2194723.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_ENDPOINT_RECOVERY,T009,Endpoint,recovery,530023.0,1176913.0,1774979.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_ENDPOINT_DOWNTIME,T009,Endpoint,downtime,3.0,5.0,10.0,hours,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_ENDPOINT_DATA_LOSS,T009,Endpoint,data_loss,536783.0,789425.0,1625216.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_ENDPOINT_REGULATORY,T009,Endpoint,regulatory,378813.0,572901.0,1161366.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T009_ENDPOINT_REPUTATION,T009,Endpoint,reputation,575796.0,798982.0,1305010.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_IDENTITY_SERVER_RECOVERY,T010,Identity Server,recovery,780058.0,1140204.0,2097145.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_IDENTITY_SERVER_DOWNTIME,T010,Identity Server,downtime,3.0,5.0,8.0,hours,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_IDENTITY_SERVER_DATA_LOSS,T010,Identity Server,data_loss,1886069.0,2710400.0,4885449.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_IDENTITY_SERVER_REGULATORY,T010,Identity Server,regulatory,669771.0,914514.0,1470295.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_IDENTITY_SERVER_REPUTATION,T010,Identity Server,reputation,830938.0,1291427.0,2085132.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_DATABASE_RECOVERY,T010,Database,recovery,771775.0,1139011.0,2217064.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_DATABASE_DOWNTIME,T010,Database,downtime,2.0,4.0,7.0,hours,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_DATABASE_DATA_LOSS,T010,Database,data_loss,2239654.0,3290968.0,4558188.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_DATABASE_REGULATORY,T010,Database,regulatory,611197.0,1004912.0,1416848.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_DATABASE_REPUTATION,T010,Database,reputation,615590.0,986576.0,1413159.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_CLOUD_WORKLOAD_RECOVERY,T010,Cloud Workload,recovery,678487.0,914345.0,1639439.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_CLOUD_WORKLOAD_DOWNTIME,T010,Cloud Workload,downtime,2.0,3.0,5.0,hours,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_CLOUD_WORKLOAD_DATA_LOSS,T010,Cloud Workload,data_loss,1440791.0,3129186.0,4376486.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_CLOUD_WORKLOAD_REGULATORY,T010,Cloud Workload,regulatory,684568.0,1139407.0,2015891.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_CLOUD_WORKLOAD_REPUTATION,T010,Cloud Workload,reputation,609673.0,1146684.0,1699098.0,INR,0.76,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_NETWORK_DEVICE_RECOVERY,T010,Network Device,recovery,592067.0,946781.0,1283765.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_NETWORK_DEVICE_DOWNTIME,T010,Network Device,downtime,2.0,3.0,6.0,hours,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_NETWORK_DEVICE_DATA_LOSS,T010,Network Device,data_loss,1475378.0,2816225.0,5382180.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_NETWORK_DEVICE_REGULATORY,T010,Network Device,regulatory,254348.0,496856.0,889849.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_NETWORK_DEVICE_REPUTATION,T010,Network Device,reputation,486926.0,676765.0,1151476.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_WEB_SERVER_RECOVERY,T010,Web Server,recovery,728742.0,1506526.0,3085868.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_WEB_SERVER_DOWNTIME,T010,Web Server,downtime,2.0,3.0,5.0,hours,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_WEB_SERVER_DATA_LOSS,T010,Web Server,data_loss,1963377.0,3471259.0,5162958.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_WEB_SERVER_REGULATORY,T010,Web Server,regulatory,449301.0,674708.0,1397609.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_WEB_SERVER_REPUTATION,T010,Web Server,reputation,399987.0,796081.0,1520973.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_API_RECOVERY,T010,API,recovery,725245.0,1000160.0,1931774.0,INR,0.95,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_API_DOWNTIME,T010,API,downtime,1.0,3.0,4.0,hours,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_API_DATA_LOSS,T010,API,data_loss,2392739.0,3215713.0,4424407.0,INR,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_API_REGULATORY,T010,API,regulatory,343608.0,618644.0,877545.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_API_REPUTATION,T010,API,reputation,498001.0,1001406.0,1436310.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_APPLICATION_RECOVERY,T010,Application,recovery,422728.0,742661.0,1384590.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_APPLICATION_DOWNTIME,T010,Application,downtime,2.0,3.0,6.0,hours,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_APPLICATION_DATA_LOSS,T010,Application,data_loss,1201206.0,2059372.0,3245478.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_APPLICATION_REGULATORY,T010,Application,regulatory,526834.0,869580.0,1342779.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_APPLICATION_REPUTATION,T010,Application,reputation,549190.0,1078743.0,2194615.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_ENDPOINT_RECOVERY,T010,Endpoint,recovery,365453.0,736748.0,1110179.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_ENDPOINT_DOWNTIME,T010,Endpoint,downtime,3.0,5.0,7.0,hours,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_ENDPOINT_DATA_LOSS,T010,Endpoint,data_loss,1235828.0,2589681.0,5081552.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_ENDPOINT_REGULATORY,T010,Endpoint,regulatory,414120.0,653792.0,1232752.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T010_ENDPOINT_REPUTATION,T010,Endpoint,reputation,341099.0,650503.0,1355794.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_IDENTITY_SERVER_RECOVERY,T011,Identity Server,recovery,298230.0,535535.0,987202.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_IDENTITY_SERVER_DOWNTIME,T011,Identity Server,downtime,1.0,2.0,4.0,hours,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_IDENTITY_SERVER_DATA_LOSS,T011,Identity Server,data_loss,279110.0,377882.0,512210.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_IDENTITY_SERVER_REGULATORY,T011,Identity Server,regulatory,122290.0,187501.0,260150.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_IDENTITY_SERVER_REPUTATION,T011,Identity Server,reputation,210640.0,461345.0,774348.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_DATABASE_RECOVERY,T011,Database,recovery,650290.0,1050442.0,1810796.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_DATABASE_DOWNTIME,T011,Database,downtime,3.0,4.0,7.0,hours,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_DATABASE_DATA_LOSS,T011,Database,data_loss,814016.0,1330603.0,2142393.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_DATABASE_REGULATORY,T011,Database,regulatory,435834.0,598934.0,1110940.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_DATABASE_REPUTATION,T011,Database,reputation,598861.0,1047671.0,1540140.0,INR,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_CLOUD_WORKLOAD_RECOVERY,T011,Cloud Workload,recovery,788446.0,1058782.0,1538325.0,INR,0.66,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_CLOUD_WORKLOAD_DOWNTIME,T011,Cloud Workload,downtime,3.0,4.0,6.0,hours,0.77,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_CLOUD_WORKLOAD_DATA_LOSS,T011,Cloud Workload,data_loss,924115.0,1610270.0,2205916.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_CLOUD_WORKLOAD_REGULATORY,T011,Cloud Workload,regulatory,462809.0,656943.0,1370847.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_CLOUD_WORKLOAD_REPUTATION,T011,Cloud Workload,reputation,505411.0,938758.0,1953590.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_NETWORK_DEVICE_RECOVERY,T011,Network Device,recovery,361612.0,554027.0,919176.0,INR,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_NETWORK_DEVICE_DOWNTIME,T011,Network Device,downtime,1.0,2.0,3.0,hours,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_NETWORK_DEVICE_DATA_LOSS,T011,Network Device,data_loss,661698.0,948898.0,1899501.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_NETWORK_DEVICE_REGULATORY,T011,Network Device,regulatory,578336.0,825474.0,1506201.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_NETWORK_DEVICE_REPUTATION,T011,Network Device,reputation,459271.0,763007.0,1049582.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_WEB_SERVER_RECOVERY,T011,Web Server,recovery,455887.0,869832.0,1259671.0,INR,0.65,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_WEB_SERVER_DOWNTIME,T011,Web Server,downtime,2.0,4.0,7.0,hours,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_WEB_SERVER_DATA_LOSS,T011,Web Server,data_loss,1504455.0,2226073.0,3849173.0,INR,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_WEB_SERVER_REGULATORY,T011,Web Server,regulatory,501200.0,955829.0,1898629.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_WEB_SERVER_REPUTATION,T011,Web Server,reputation,312670.0,576346.0,799863.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_API_RECOVERY,T011,API,recovery,209703.0,344192.0,529647.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_API_DOWNTIME,T011,API,downtime,2.0,3.0,6.0,hours,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_API_DATA_LOSS,T011,API,data_loss,128058.0,256362.0,394003.0,INR,0.73,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_API_REGULATORY,T011,API,regulatory,70676.0,128260.0,226121.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_API_REPUTATION,T011,API,reputation,120154.0,216978.0,295126.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_APPLICATION_RECOVERY,T011,Application,recovery,399450.0,532622.0,876166.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_APPLICATION_DOWNTIME,T011,Application,downtime,2.0,3.0,4.0,hours,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_APPLICATION_DATA_LOSS,T011,Application,data_loss,205204.0,372608.0,534841.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_APPLICATION_REGULATORY,T011,Application,regulatory,145868.0,237231.0,428087.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_APPLICATION_REPUTATION,T011,Application,reputation,225507.0,320063.0,659293.0,INR,0.87,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_ENDPOINT_RECOVERY,T011,Endpoint,recovery,721078.0,1130320.0,1842875.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_ENDPOINT_DOWNTIME,T011,Endpoint,downtime,2.0,3.0,4.0,hours,0.8,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_ENDPOINT_DATA_LOSS,T011,Endpoint,data_loss,1162005.0,2223894.0,3199383.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_ENDPOINT_REGULATORY,T011,Endpoint,regulatory,336742.0,650123.0,1002062.0,INR,0.83,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T011_ENDPOINT_REPUTATION,T011,Endpoint,reputation,228396.0,496559.0,776010.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_IDENTITY_SERVER_RECOVERY,T012,Identity Server,recovery,401425.0,610405.0,830272.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_IDENTITY_SERVER_DOWNTIME,T012,Identity Server,downtime,2.0,3.0,5.0,hours,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_IDENTITY_SERVER_DATA_LOSS,T012,Identity Server,data_loss,494783.0,773939.0,1310588.0,INR,0.74,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_IDENTITY_SERVER_REGULATORY,T012,Identity Server,regulatory,135955.0,298722.0,516782.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_IDENTITY_SERVER_REPUTATION,T012,Identity Server,reputation,522486.0,705863.0,1407637.0,INR,0.7,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_DATABASE_RECOVERY,T012,Database,recovery,717667.0,1053022.0,1982289.0,INR,0.92,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_DATABASE_DOWNTIME,T012,Database,downtime,3.0,6.0,11.0,hours,0.85,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_DATABASE_DATA_LOSS,T012,Database,data_loss,1494540.0,2741085.0,4548111.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_DATABASE_REGULATORY,T012,Database,regulatory,544483.0,728485.0,1174915.0,INR,0.72,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_DATABASE_REPUTATION,T012,Database,reputation,591765.0,868515.0,1386148.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_CLOUD_WORKLOAD_RECOVERY,T012,Cloud Workload,recovery,921541.0,1771666.0,3225319.0,INR,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_CLOUD_WORKLOAD_DOWNTIME,T012,Cloud Workload,downtime,2.0,3.0,6.0,hours,0.91,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_CLOUD_WORKLOAD_DATA_LOSS,T012,Cloud Workload,data_loss,1318181.0,2379293.0,4528813.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_CLOUD_WORKLOAD_REGULATORY,T012,Cloud Workload,regulatory,403658.0,781966.0,1119128.0,INR,0.84,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_CLOUD_WORKLOAD_REPUTATION,T012,Cloud Workload,reputation,526480.0,894685.0,1784106.0,INR,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_NETWORK_DEVICE_RECOVERY,T012,Network Device,recovery,182349.0,340778.0,461326.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_NETWORK_DEVICE_DOWNTIME,T012,Network Device,downtime,2.0,3.0,6.0,hours,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_NETWORK_DEVICE_DATA_LOSS,T012,Network Device,data_loss,189274.0,318710.0,470511.0,INR,0.68,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_NETWORK_DEVICE_REGULATORY,T012,Network Device,regulatory,70013.0,138759.0,272617.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_NETWORK_DEVICE_REPUTATION,T012,Network Device,reputation,142686.0,299898.0,448852.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_WEB_SERVER_RECOVERY,T012,Web Server,recovery,300608.0,654925.0,1043453.0,INR,0.75,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_WEB_SERVER_DOWNTIME,T012,Web Server,downtime,2.0,3.0,6.0,hours,0.82,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_WEB_SERVER_DATA_LOSS,T012,Web Server,data_loss,164246.0,276245.0,549921.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_WEB_SERVER_REGULATORY,T012,Web Server,regulatory,93850.0,205585.0,321074.0,INR,0.86,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_WEB_SERVER_REPUTATION,T012,Web Server,reputation,380330.0,560748.0,822081.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_API_RECOVERY,T012,API,recovery,271982.0,459978.0,702930.0,INR,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_API_DOWNTIME,T012,API,downtime,2.0,3.0,4.0,hours,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_API_DATA_LOSS,T012,API,data_loss,457139.0,867316.0,1678592.0,INR,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_API_REGULATORY,T012,API,regulatory,203116.0,307613.0,501992.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_API_REPUTATION,T012,API,reputation,314019.0,491094.0,683339.0,INR,0.94,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_APPLICATION_RECOVERY,T012,Application,recovery,424329.0,703265.0,1146902.0,INR,0.78,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_APPLICATION_DOWNTIME,T012,Application,downtime,2.0,3.0,5.0,hours,0.67,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_APPLICATION_DATA_LOSS,T012,Application,data_loss,641578.0,1007412.0,2063097.0,INR,0.81,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_APPLICATION_REGULATORY,T012,Application,regulatory,371480.0,576499.0,807663.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_APPLICATION_REPUTATION,T012,Application,reputation,220515.0,440144.0,617132.0,INR,0.89,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_ENDPOINT_RECOVERY,T012,Endpoint,recovery,488536.0,897023.0,1213638.0,INR,0.71,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_ENDPOINT_DOWNTIME,T012,Endpoint,downtime,4.0,7.0,13.0,hours,0.93,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_ENDPOINT_DATA_LOSS,T012,Endpoint,data_loss,1094509.0,2059945.0,3113570.0,INR,0.69,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_ENDPOINT_REGULATORY,T012,Endpoint,regulatory,393973.0,735301.0,1000988.0,INR,0.79,Synthetic prototype assumption — alternative dataset,2026-09-15
+IA_T012_ENDPOINT_REPUTATION,T012,Endpoint,reputation,530976.0,957318.0,1922296.0,INR,0.9,Synthetic prototype assumption — alternative dataset,2026-09-15

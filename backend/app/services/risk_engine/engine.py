@@ -8,10 +8,12 @@ from app.services.risk_engine.impact import resolve_triangular_financial_impact
 from app.services.monte_carlo.simulator import run_monte_carlo_simulation, run_enterprise_monte_carlo
 from app.services.risk_engine.scenario_generator import generate_risk_scenarios
 from app.services.risk_engine.loss_event_consolidator import consolidate_scenarios_into_loss_events
+from app.services.attack_graph.graph_builder import resolve_data_dir
 from app.services.risk_engine.exceptions import (
     MissingImpactDataError,
     MissingLinkedRecordError,
 )
+from app.utils.type_parsers import parse_int, parse_float
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,7 @@ def quantify_scenario(scenario_data: Dict[str, Any], data_dir: Optional[str] = N
         service_data = scenario_data.get("service_data", {})
         threat_data = scenario_data.get("threat_data", {})
         control_list = scenario_data.get("control_status_list", [])
-        path_len = int(scenario_data.get("attack_path_length", 2))
+        path_len = parse_int(scenario_data.get("attack_path_length", 2), default=2)
         path_info = scenario_data.get("attack_path_info", {})
     else:
         scen_row = scenario_data
@@ -69,7 +71,7 @@ def quantify_scenario(scenario_data: Dict[str, Any], data_dir: Optional[str] = N
             {"control_id": cid, "status": "Implemented", "coverage": 0.85, "maturity": 4.0}
             for cid in active_controls
         ]
-        path_len = int(scenario_data.get("attack_path_length", 2))
+        path_len = parse_int(scenario_data.get("attack_path_length", 2), default=2)
         path_info = {
             "reachable": scenario_data.get("attack_path_reachable", True),
             "length": path_len,
@@ -193,7 +195,8 @@ def quantify_all_scenarios(data_dir: Optional[str] = None, force_refresh: bool =
     with in-memory caching. Call clear_scenario_cache() to force a re-run.
     """
     global _quantified_scenarios_cache
-    cache_key = data_dir or "default"
+    resolved_dir = resolve_data_dir(data_dir)
+    cache_key = resolved_dir
     if not force_refresh and cache_key in _quantified_scenarios_cache:
         return _quantified_scenarios_cache[cache_key]
 
@@ -259,7 +262,21 @@ def quantify_all_scenarios(data_dir: Optional[str] = None, force_refresh: bool =
         logger.warning("%d of %d scenarios could not be quantified (%d succeeded)",
                         len(failed), len(scenarios_input), len(results))
 
+    # Enterprise Monte Carlo Summary calculation
+    mc_input = loss_events if loss_events else results
+    enterprise_mc = run_enterprise_monte_carlo(mc_input) if mc_input else {}
+    tech_exposure = sum(r.get("eal", 0.0) for r in results)
+
+    summary_dict = {
+        "total_eal": round(tech_exposure, 2),
+        "mean_eal": round(enterprise_mc.get("mean_eal", 0.0), 2),
+        "p90_loss": round(enterprise_mc.get("p90", 0.0), 2),
+        "p95_loss": round(enterprise_mc.get("p95", 0.0), 2),
+        "p99_loss": round(enterprise_mc.get("p99", 0.0), 2),
+    }
+
     output = {
+        "summary": summary_dict,
         "scenarios": results,
         "loss_events": loss_events,
         "failed": failed,

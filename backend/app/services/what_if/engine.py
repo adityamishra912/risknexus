@@ -85,6 +85,8 @@ def apply_changes(
         
     return modified
 
+from app.utils.type_parsers import parse_float
+
 def compute_delta(
     baseline: Dict[str, Any],
     simulated: Dict[str, Any],
@@ -92,8 +94,8 @@ def compute_delta(
     metrics = ["probability", "eal", "mean_eal", "p90", "p95", "p99"]
     delta = {}
     for m in metrics:
-        b = float(baseline.get(m, 0.0))
-        s = float(simulated.get(m, 0.0))
+        b = parse_float(baseline.get(m, 0.0))
+        s = parse_float(simulated.get(m, 0.0))
         d = round(s - b, 4)
         pct = round((d / b * 100), 2) if b != 0.0 else 0.0
         delta[m] = ScenarioDelta(baseline=b, simulated=s, delta=d, delta_pct=pct)
