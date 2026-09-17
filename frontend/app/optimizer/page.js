@@ -153,8 +153,8 @@ export default function OptimizerPage() {
                 disabled={isOptimizing}
                 className="w-full h-9 gap-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-mono font-bold text-xs shadow-md shadow-cyan-950/50"
               >
-                <Zap className="w-4 h-4" />
-                <span>{isOptimizing ? 'Optimizing...' : 'Run 0/1 Knapsack Solver'}</span>
+                {/* <Zap className="w-4 h-4" /> */}
+                <span>{isOptimizing ? 'Optimizing...' : 'Optimize Investement'}</span>
               </Button>
             </div>
           </div>

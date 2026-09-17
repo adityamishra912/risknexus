@@ -44,3 +44,13 @@ export async function getRiskTrend(days = 30) {
 export async function getLossDistribution(buckets = 30) {
   return apiClient.get('/risk/loss-distribution', { buckets });
 }
+
+/**
+ * Security Control Posture — calculated metrics across enterprise security controls.
+ * Returns { status: "success", count: N, controls: [...] }
+ */
+export async function getControlsPosture(params = {}) {
+  return apiClient.get('/risk/controls-posture', params);
+}
+
+

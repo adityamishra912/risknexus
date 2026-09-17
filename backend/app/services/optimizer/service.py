@@ -211,6 +211,128 @@ def get_candidate_controls(data_dir: Optional[str] = None) -> List[Dict[str, Any
     return candidates
 
 
+_controls_posture_cache: Dict[str, List[Dict[str, Any]]] = {}
+
+
+def clear_controls_posture_cache() -> None:
+    """Clears the in-memory controls posture cache."""
+    global _controls_posture_cache
+    _controls_posture_cache.clear()
+
+
+def get_controls_posture(data_dir: Optional[str] = None) -> List[Dict[str, Any]]:
+    """
+    Returns security control posture data across enterprise security controls.
+    Reuses candidate controls calculation from get_candidate_controls() as the single
+    source of truth for marginal risk reduction and cost.
+
+    Caches results in memory per data_dir for fast dashboard loads.
+    Flags controls with incomplete assessment or effectiveness data using data_incomplete: True.
+    """
+    resolved_dir = resolve_data_dir(data_dir)
+    if resolved_dir in _controls_posture_cache:
+        return _controls_posture_cache[resolved_dir]
+
+    controls_path = os.path.join(resolved_dir, "controls.csv")
+    status_path = os.path.join(resolved_dir, "control_status.csv")
+    eff_path = os.path.join(resolved_dir, "control_effectiveness.csv")
+    threats_path = os.path.join(resolved_dir, "threat_scenarios.csv")
+
+    for path in [controls_path, status_path, eff_path]:
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Required CSV file not found: {path}")
+
+    df_controls = pd.read_csv(controls_path)
+    df_status = pd.read_csv(status_path)
+    df_eff = pd.read_csv(eff_path)
+    df_threats = pd.read_csv(threats_path) if os.path.exists(threats_path) else pd.DataFrame()
+
+    threat_name_map = {}
+    if not df_threats.empty and "threat_id" in df_threats.columns and "threat_name" in df_threats.columns:
+        threat_name_map = dict(
+            zip(
+                df_threats["threat_id"].astype(str).str.strip(),
+                df_threats["threat_name"].astype(str).str.strip(),
+            )
+        )
+
+    # Single source of truth for marginal risk reduction numbers
+    candidates = get_candidate_controls(data_dir=data_dir)
+    cand_map = {c["control_id"]: c for c in candidates}
+
+    result = []
+    for _, c_row in df_controls.iterrows():
+        cid = str(c_row["control_id"]).strip()
+        c_name = str(c_row.get("control_name", cid)).strip()
+        category = str(c_row.get("category", "General")).strip()
+        cost = float(c_row.get("cost", 0.0))
+        impl_days = int(c_row.get("implementation_days", 30))
+        maint_cost = float(c_row.get("maintenance_cost", 0.0))
+
+        data_incomplete = False
+        incomplete_reason = None
+
+        stat_rows = df_status[df_status["control_id"].astype(str).str.strip() == cid]
+        if stat_rows.empty:
+            data_incomplete = True
+            incomplete_reason = "No asset assessment records found in control_status.csv"
+            avg_cov = 0.0
+            avg_mat = 0.0
+            monitored_pct = 0.0
+        else:
+            avg_cov = float(stat_rows["coverage"].mean())
+            avg_mat = float(stat_rows["maturity"].mean())
+            monitored_pct = float((stat_rows["status"] == "Implemented").mean())
+
+        eff_rows = df_eff[df_eff["control_id"].astype(str).str.strip() == cid]
+        if eff_rows.empty and not data_incomplete:
+            data_incomplete = True
+            incomplete_reason = "No threat effectiveness mapping found in control_effectiveness.csv"
+
+        t_ids = eff_rows["threat_id"].astype(str).str.strip().unique() if not eff_rows.empty else []
+        t_names = [threat_name_map.get(tid, tid) for tid in t_ids]
+        threats_str = ", ".join(t_names) if t_names else "General Cyber Threats"
+
+        # Documented business rule for control status classification based on coverage
+        if avg_cov >= 0.70:
+            status_label = "Optimal"
+        elif avg_cov >= 0.40:
+            status_label = "In Progress"
+        else:
+            status_label = "Needs Investment"
+
+        cand = cand_map.get(cid)
+        if cand:
+            potential_reduction = cand["risk_reduction"]
+        else:
+            potential_reduction = 0.0
+            if not data_incomplete:
+                data_incomplete = True
+                incomplete_reason = "Insufficient data to calculate Monte Carlo risk reduction"
+
+        result.append({
+            "control_id": cid,
+            "name": c_name,
+            "category": category,
+            "coverage": round(avg_cov * 100),
+            "monitored_pct": round(monitored_pct * 100),
+            "maturity": f"{avg_mat:.1f} / 5",
+            "maturity_num": round(avg_mat, 1),
+            "potentialReduction": potential_reduction,
+            "cost": cost,
+            "implementationTime": f"{impl_days} days",
+            "maintenanceCost": maint_cost,
+            "applicableThreats": threats_str,
+            "status": status_label,
+            "data_incomplete": data_incomplete,
+            "incomplete_reason": incomplete_reason,
+        })
+
+    _controls_posture_cache[resolved_dir] = result
+    return result
+
+
+
 def optimize_investment_portfolio(
     budget: float = 10000000.0,
     data_dir: Optional[str] = None,

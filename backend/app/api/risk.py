@@ -24,6 +24,7 @@ from app.schemas.scenario_generator import (
     PaginatedScenariosResponseSchema,
 )
 from app.services.risk_engine.exceptions import MissingImpactDataError, MissingLinkedRecordError
+from app.services.optimizer.service import get_controls_posture
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/risk", tags=["risk"])
@@ -40,6 +41,32 @@ def format_inr(val: float) -> str:
     elif val >= 100000:
         return f"₹{val / 100000:.0f}L"
     return f"₹{val:,.0f}"
+
+
+@router.get("/controls-posture")
+def get_security_controls_posture_endpoint(
+    data_dir: Optional[str] = Query(None, description="Custom data directory path")
+):
+    """
+    Returns enterprise security control posture metrics calculated from
+    controls.csv, control_status.csv, control_effectiveness.csv, and threat_scenarios.csv.
+
+    Reuses marginal Monte Carlo risk reduction calculated by the Optimizer service to ensure 100%
+    metric consistency across screens.
+    """
+    try:
+        posture = get_controls_posture(data_dir=data_dir)
+        return {
+            "status": "success",
+            "count": len(posture),
+            "controls": posture,
+        }
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.exception("Error computing controls posture")
+        raise HTTPException(status_code=500, detail=f"Failed to calculate controls posture: {str(e)}")
+
 
 
 @router.get("", response_model=RiskEngineResponseSchema)
