@@ -205,25 +205,34 @@ export function RiskProvider({ children }) {
     };
   }, [selectedInitiativeIds, budget, optimizationObjective]);
 
-  // Fetch Backend What-If Simulation whenever controls or sliders change
+  // Fetch Backend What-If Simulation whenever controls or sliders change (debounced 150ms)
+  const simulationDebounceRef = useRef(null);
   useEffect(() => {
     let isMounted = true;
-    simulateControlToggles({
-      simulated_controls: simulatedControls,
-      mfa_coverage: mfaCoverage,
-      patch_delay_days: patchDelayDays,
-    })
-      .then((res) => {
-        if (isMounted && res) {
-          setSimulationData(res);
-        }
+    if (simulationDebounceRef.current) {
+      clearTimeout(simulationDebounceRef.current);
+    }
+    simulationDebounceRef.current = setTimeout(() => {
+      simulateControlToggles({
+        simulated_controls: simulatedControls,
+        mfa_coverage: mfaCoverage,
+        patch_delay_days: patchDelayDays,
       })
-      .catch((err) => {
-        console.error('[Control Simulation Error]:', err.message);
-      });
+        .then((res) => {
+          if (isMounted && res) {
+            setSimulationData(res);
+          }
+        })
+        .catch((err) => {
+          console.error('[Control Simulation Error]:', err.message);
+        });
+    }, 150);
 
     return () => {
       isMounted = false;
+      if (simulationDebounceRef.current) {
+        clearTimeout(simulationDebounceRef.current);
+      }
     };
   }, [simulatedControls, mfaCoverage, patchDelayDays]);
 

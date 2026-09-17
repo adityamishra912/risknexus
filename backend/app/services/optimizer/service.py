@@ -182,7 +182,8 @@ def get_candidate_controls(data_dir: Optional[str] = None) -> List[Dict[str, Any
             for item in hypothetical_input:
                 t_id = str(item.get("threat_id", "")).strip()
                 if t_id in threat_eff_map:
-                    eff_pct = threat_eff_map[t_id]
+                    # Scale effectiveness by coverage gap to model marginal gain of closing the gap
+                    eff_pct = threat_eff_map[t_id] * coverage_gap
                     orig_prob = float(item.get("probability", 0.0))
                     item["probability"] = orig_prob * (1.0 - eff_pct)
 
@@ -461,7 +462,7 @@ def optimize_investment_portfolio(
                 if "evidence_type" in r and pd.notna(r["evidence_type"]):
                     source_citations.add(str(r["evidence_type"]).strip())
 
-            candidate_eff_maps[cid] = threat_eff_map
+            candidate_eff_maps[cid] = (threat_eff_map, coverage_gap)
             source_citation = ", ".join(source_citations) if source_citations else "Reference Table"
             avg_eff_pct = float(sum(threat_eff_map.values()) / len(threat_eff_map)) if threat_eff_map else 0.0
 
@@ -470,7 +471,7 @@ def optimize_investment_portfolio(
             for item in hypothetical_input:
                 t_id = str(item.get("threat_id", "")).strip()
                 if t_id in threat_eff_map:
-                    eff_pct = threat_eff_map[t_id]
+                    eff_pct = threat_eff_map[t_id] * coverage_gap
                     orig_prob = float(item.get("probability", 0.0))
                     item["probability"] = orig_prob * (1.0 - eff_pct)
 
@@ -516,7 +517,7 @@ def optimize_investment_portfolio(
         if not selected_list:
             return 0.0, baseline_enterprise_mean_eal
         combined_portfolio_input = copy.deepcopy(mc_input)
-        selected_eff_maps = [
+        selected_eff_tuples = [
             candidate_eff_maps[c["control_id"]]
             for c in selected_list
             if c["control_id"] in candidate_eff_maps
@@ -525,9 +526,9 @@ def optimize_investment_portfolio(
             t_id = str(item.get("threat_id", "")).strip()
             orig_prob = float(item.get("probability", 0.0))
             prob_multiplier = 1.0
-            for t_map in selected_eff_maps:
+            for t_map, c_gap in selected_eff_tuples:
                 if t_id in t_map:
-                    prob_multiplier *= (1.0 - t_map[t_id])
+                    prob_multiplier *= (1.0 - (t_map[t_id] * c_gap))
             item["probability"] = orig_prob * prob_multiplier
 
         portfolio_mc = run_enterprise_monte_carlo(combined_portfolio_input, iterations=iters)

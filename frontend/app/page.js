@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import NetworkGraphBackground from '../components/landing/NetworkGraphBackground';
 import Badge from '../components/ui/Badge';
+import Image from 'next/image';
 import {
   ShieldCheck,
   ArrowRight,
@@ -41,15 +42,7 @@ export default function MarketingHomePage() {
   ];
   const [headlineIndex, setHeadlineIndex] = useState(0);
 
-  // Live ticking counter in corner
-  const [liveEAL, setLiveEAL] = useState(2.4);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLiveEAL((prev) => +(prev + (Math.random() * 0.12 - 0.06)).toFixed(2));
-    }, 2800);
-    return () => clearInterval(interval);
-  }, []);
 
   // Pipeline stages for Section 3
   const pipelineStages = [
@@ -89,17 +82,9 @@ export default function MarketingHomePage() {
   return (
     <div className="bg-[#05070A] text-slate-100 font-sans min-h-screen overflow-x-hidden relative selection:bg-cyan-500 selection:text-black">
       {/* GLOBAL NAVBAR */}
-      <header className="sticky top-0 z-50 bg-[#05070A]/80 backdrop-blur-md border-b border-slate-800/80 px-6 py-3.5 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#05070A]/80 backdrop-blur-md border-b border-slate-800/80 px-2 py-1 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-950/60">
-            <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
-          </div>
-          <div>
-            <span className="font-extrabold text-base tracking-wider text-white font-mono">RiskNexus</span>
-            <span className="text-[10px] text-cyan-400 font-medium tracking-wide uppercase block -mt-1 font-mono">
-              Risk Intelligence
-            </span>
-          </div>
+          <Image src="/risknexus_logo_v2.svg" alt="Logo" width={300} height={300} />
         </div>
 
         <nav className="hidden md:flex items-center gap-6 text-xs text-slate-300 font-medium">
@@ -111,8 +96,8 @@ export default function MarketingHomePage() {
 
         <div className="flex items-center gap-3">
           <Link href="/dashboard">
-            <button className="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-lg shadow-cyan-950/50 border border-cyan-400/30 transition-all flex items-center gap-1.5">
-              <span>Launch Platform</span>
+            <button className="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-lg shadow-cyan-950/50 border border-cyan-400/30 transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>Go to Dashboard</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </Link>
@@ -124,21 +109,7 @@ export default function MarketingHomePage() {
         {/* Animated Network Graph Canvas Background */}
         <NetworkGraphBackground density={70} interactive={true} />
 
-        {/* Floating Live Recalculating EAL Badge (Top Right Corner) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="absolute top-8 right-6 z-20 hidden lg:flex items-center gap-3 p-3 rounded-xl bg-slate-900/80 border border-cyan-500/40 backdrop-blur-md shadow-2xl shadow-cyan-950/40"
-        >
-          <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></div>
-          <div>
-            <span className="text-[10px] text-slate-400 font-mono block">Sample EAL — updates every simulation</span>
-            <span className="text-base font-extrabold text-cyan-300 font-mono tracking-tight">
-              ₹{liveEAL} Cr
-            </span>
-          </div>
-        </motion.div>
+
 
         {/* Hero Central Content */}
         <div className="max-w-4xl mx-auto text-center space-y-8 z-10 relative">
@@ -217,7 +188,7 @@ export default function MarketingHomePage() {
             className="pt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400 font-mono"
           >
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-cyan-400" /> FAIR Model Compliant</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-cyan-400" /> RBI & SEBI Ready</span>
+           
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-cyan-400" /> 100% On-Premise Data Sovereignty</span>
           </motion.div>
         </div>
@@ -650,7 +621,7 @@ export default function MarketingHomePage() {
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-cyan-400" />
             <span className="font-bold text-white">RiskNexus Risk Intelligence</span>
-            <span>• © 2026 IndoBank Financial Services</span>
+            <span>• © 2026 RiskNexus Platform</span>
           </div>
 
           <div className="flex items-center gap-6 text-slate-400">

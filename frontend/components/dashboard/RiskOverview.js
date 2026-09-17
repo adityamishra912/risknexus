@@ -29,15 +29,15 @@ export default function RiskOverview() {
   const totalEvents       = apiSummary.total_loss_events ?? 0;
 
   const kpis = [
-    // {
-    //   title:   'Technical Scenario Exposure',
-    //   value:   formatCurrency(technicalExposure),
-    //   subtext: `Σ(P×Impact) across ${totalScenarios} canonical scenarios`,
-    //   icon:    TrendingDown,
-    //   color:   'text-amber-400',
-    //   bgColor: 'bg-amber-950/40 border-amber-800/40',
-    //   badge:   'Baseline',
-    // },
+    {
+      title:   'Technical Scenario Exposure',
+      value:   formatCurrency(technicalExposure),
+      subtext: `Σ(P×Impact) across ${totalScenarios} canonical scenarios`,
+      icon:    TrendingDown,
+      color:   'text-amber-400',
+      bgColor: 'bg-amber-950/40 border-amber-800/40',
+      badge:   'Baseline',
+    },
     {
       title:   'Enterprise EAL',
       value:   formatCurrency(enterpriseEAL),

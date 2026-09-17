@@ -296,7 +296,7 @@ export default function DataSourcesPage() {
         {/* Telemetry & Asset Monitoring Coverage Banner */}
         <Card
           title="Enterprise Asset Telemetry Coverage & Blindspot Signal"
-          subtitle="Continuous monitoring health across IndoBank's total asset registry"
+          subtitle="Continuous monitoring health across total asset registry"
           headerAction={<Badge variant="warning font-mono">22 Unmonitored Assets (6.1% Blindspot)</Badge>}
         >
           <div className="space-y-4 text-xs">

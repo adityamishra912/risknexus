@@ -99,10 +99,10 @@ export default function Sidebar() {
           <div className="flex items-center gap-2 overflow-hidden">
             <Building2 className="w-4 h-4 text-cyan-400 shrink-0" />
             <div className="truncate">
-              <p className="text-[11px] font-semibold text-white truncate">IndoBank Financial</p>
+              <p className="text-[11px] font-semibold text-white truncate">Enterprise Security</p>
               <p className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                Prod Environment
+                Active System
               </p>
             </div>
           </div>

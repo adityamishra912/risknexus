@@ -64,7 +64,7 @@ export default function SecuritySettingsPage() {
         {/* SECTION 14: Platform Security & Data Protection */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Security Principles */}
-          <Card title="Platform Data Isolation & Encryption" subtitle="How RiskNexus protects IndoBank's sensitive cybersecurity data">
+          <Card title="Platform Data Isolation & Encryption" subtitle="How RiskNexus protects sensitive enterprise cybersecurity data">
             <div className="space-y-3 text-xs">
               <div className="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
                 <span className="font-semibold text-cyan-300 block flex items-center gap-1.5">
@@ -114,7 +114,7 @@ export default function SecuritySettingsPage() {
                   <span className="font-bold text-white block">Private Cloud (Dedicated VPC)</span>
                   <span className="text-[11px] text-slate-400">Isolated AWS/Azure instance with customer-managed keys (BYOK)</span>
                 </div>
-                <Badge variant="success">Active (IndoBank)</Badge>
+                <Badge variant="success">Active Enterprise</Badge>
               </div>
 
               <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">

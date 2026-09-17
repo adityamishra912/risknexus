@@ -24,7 +24,7 @@ export default function DashboardPage() {
   return (
     <PageContainer
       title="Enterprise Cyber Risk"
-      subtitle="Financial exposure, risk drivers, and investment opportunities for IndoBank Financial Services"
+      subtitle="Financial exposure, risk drivers, and investment opportunities across enterprise assets"
       action={
         <div className="flex items-center gap-2">
           {/* Last fetched timestamp */}

@@ -41,44 +41,12 @@ export default function SimulatorPage() {
     patchDelayDays,
     setPatchDelayDays,
     setSelectedInitiativeIds,
+    simulationData,
   } = useRiskContext();
 
   const toggleControl = (key) => {
     setSimulatedControls(prev => ({ ...prev, [key]: !prev[key] }));
   };
-
-  const [apiResult, setApiResult] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  React.useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-    setError(null);
-    import('../../lib/api/whatIf').then(({ simulateWhatIfPortfolio }) => {
-      simulateWhatIfPortfolio({
-        changes: {
-          patch_critical: simulatedControls.patching,
-          enable_mfa: simulatedControls.mfa,
-          enable_edr: simulatedControls.edr,
-        },
-        iterations: 1000,
-      })
-        .then((res) => {
-          if (isMounted && res) {
-            setApiResult(res);
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          if (isMounted) {
-            setError(err.message || 'Failed to execute What-If simulation on backend.');
-            setLoading(false);
-          }
-        });
-    });
-    return () => { isMounted = false; };
-  }, [simulatedControls, mfaCoverage, patchDelayDays]);
 
   // Dynamic calculations based on active checkboxes and sliders
   let simulatedInvestment = 0;
@@ -117,11 +85,11 @@ export default function SimulatorPage() {
     maxTimeDays = Math.max(maxTimeDays, 14);
   }
 
-  const currentEAL = apiResult?.pre_change?.total_eal ?? 16000000;
-  const currentP95 = apiResult?.pre_change?.p95 ?? 41000000;
+  const currentEAL = simulationData?.baseline?.total_eal ?? 16000000;
+  const currentP95 = simulationData?.baseline?.p95_loss ?? 41000000;
 
-  const simulatedEAL = apiResult?.post_change?.total_eal ?? Math.max(1500000, currentEAL - simulatedRiskReduction);
-  const simulatedP95 = apiResult?.post_change?.p95 ?? Math.max(10000000, currentP95 - (simulatedRiskReduction * 1.35));
+  const simulatedEAL = simulationData?.simulated?.total_eal ?? Math.max(1500000, currentEAL - simulatedRiskReduction);
+  const simulatedP95 = simulationData?.simulated?.p95_loss ?? Math.max(10000000, currentP95 - (simulatedRiskReduction * 1.35));
 
   const totalReductionAmount = currentEAL - simulatedEAL;
   const reductionPercentage = ((totalReductionAmount / currentEAL) * 100).toFixed(1);
@@ -240,12 +208,6 @@ export default function SimulatorPage() {
 
           {/* Results & Comparison Output Panel */}
           <div className="lg:col-span-7 space-y-6">
-            {loading ? (
-              <Loading message="Running FAIR & Monte Carlo What-If simulation engine on backend..." />
-            ) : error ? (
-              <ErrorState title="Simulator API Error" message={error} />
-            ) : (
-              <>
             {/* Before vs After Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* CURRENT */}
@@ -357,8 +319,6 @@ export default function SimulatorPage() {
                 </div>
               </div>
             </Card>
-            </>
-            )}
           </div>
         </div>
       </div>

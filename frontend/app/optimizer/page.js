@@ -112,21 +112,55 @@ export default function OptimizerPage() {
         <Card>
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
             {/* Budget Input / Slider */}
-            <div className="sm:col-span-2">
-              <label className="text-xs font-semibold text-slate-300 flex justify-between mb-1 font-mono">
-                <span>Maximum Available Budget:</span>
-                <span className="text-cyan-400 font-bold">{formatCurrency(budget)}</span>
-              </label>
+            <div className="sm:col-span-2 space-y-1.5">
+              <div className="flex items-center justify-between font-mono text-xs">
+                <label className="font-semibold text-slate-300">
+                  Maximum Available Budget:
+                </label>
+                <div className="flex items-center gap-1 bg-slate-950 border border-slate-700 rounded-md px-2 py-1 focus-within:border-cyan-500 transition-colors">
+                  <span className="text-slate-400 text-xs font-bold">₹</span>
+                  <input
+                    type="number"
+                    min="100000"
+                    max="100000000"
+                    step="500000"
+                    value={budget || ''}
+                    onChange={(e) => setBudget(Math.max(0, Number(e.target.value)))}
+                    className="w-28 bg-transparent text-right font-bold text-cyan-400 focus:outline-none text-xs"
+                    placeholder="Enter amount..."
+                  />
+                </div>
+              </div>
               <input
                 type="range"
-                min="2000000"
-                max="30000000"
+                min="1000000"
+                max="50000000"
                 step="500000"
                 value={budget}
                 onChange={(e) => setBudget(Number(e.target.value))}
                 className="w-full accent-cyan-500 h-2 bg-slate-950 rounded-lg cursor-pointer"
               />
+              <div className="flex justify-between items-center text-[10px] text-slate-400 font-mono pt-0.5">
+                <span>Value: <strong className="text-cyan-300">{formatCurrency(budget)}</strong></span>
+                <div className="flex gap-1">
+                  {[5000000, 10000000, 20000000, 30000000].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setBudget(preset)}
+                      className={`px-1.5 py-0.5 rounded border text-[10px] transition-colors ${
+                        budget === preset
+                          ? 'bg-cyan-950 text-cyan-300 border-cyan-500/50'
+                          : 'bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700'
+                      }`}
+                    >
+                      {formatCurrency(preset)}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
+
 
             {/* Optimization Objective Dropdown */}
             <div>

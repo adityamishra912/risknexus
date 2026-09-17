@@ -1,5 +1,5 @@
 export const ORG_INFO = {
-  name: 'IndoBank Financial Services',
+  name: 'Enterprise Security Platform',
   environment: 'Production',
   lastUpdated: '2 minutes ago',
   currency: '₹',
