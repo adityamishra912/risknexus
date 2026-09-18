@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     DATA_SOURCE_CACHE_DIR: str = ".data_sources"
     SUPABASE_PRIMARY_DATABASE_URL: str = ""
     SUPABASE_SECONDARY_DATABASE_URL: str = ""
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-2.5-flash"
 
     @property
     def cors_origins_list(self) -> List[str]:

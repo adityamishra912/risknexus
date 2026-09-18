@@ -6,6 +6,7 @@ import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import { formatCurrency } from '../../lib/utils/formatCurrency';
+import { askCopilot } from '../../lib/api/copilot';
 import { Bot, Send, Sparkles, ArrowRight, ShieldAlert, GitFork, Server, CheckCircle, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
@@ -28,6 +29,8 @@ export default function CopilotPage() {
   ]);
 
   const [inputQuery, setInputQuery] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState(null);
 
   const suggestedQuestions = [
     'What is our highest financial cyber risk today?',
@@ -39,65 +42,28 @@ export default function CopilotPage() {
     'What risks affect our payment services?',
   ];
 
-  const handleSend = (textToSend) => {
+  const handleSend = async (textToSend) => {
     const query = textToSend || inputQuery;
-    if (!query.trim()) return;
+    if (!query.trim() || isSending) return;
 
+    const history = messages.map((message) => ({
+      role: message.sender === 'assistant' ? 'assistant' : 'user',
+      content: message.text,
+    }));
     const newMsg = { sender: 'user', text: query };
     setMessages(prev => [...prev, newMsg]);
     setInputQuery('');
+    setError(null);
+    setIsSending(true);
 
-    // Generate analytical realistic answer
-    setTimeout(() => {
-      let reply = {};
-      if (query.includes('highest financial cyber risk') || query.includes('payment services')) {
-        reply = {
-          sender: 'assistant',
-          text: 'The Payment Gateway API (PAY-API-01) represents our highest financial risk exposure at ₹42L EAL. It processes core banking transactions and is currently vulnerable to CVE-2024-3094 without full MFA enforcement.',
-          metrics: {
-            primaryContributor: 'Payment API (PAY-API-01)',
-            asset: 'PAY-API-01',
-            additionalExposure: 4200000,
-            currentEAL: 16000000,
-          },
-          affectedAssets: ['PAY-API-01', 'CUST-DB-02'],
-          attackPaths: ['Internet → Payment API → Customer Database'],
-          assumptions: 'FAIR Model v4.2 Monte Carlo simulation under 100K iterations',
-          recommendedAction: 'Deploy Critical Patching (₹10L) and MFA Enforcement (₹15L).',
-        };
-      } else if (query.includes('delay remediation') || query.includes('30 days')) {
-        reply = {
-          sender: 'assistant',
-          text: 'Delaying remediation by 30 days increases modeled EAL by ₹34L due to elevated threat actor scanning and exploit availability for CVE-2024-3094.',
-          metrics: {
-            primaryContributor: '30-Day Patch Delay',
-            asset: 'Enterprise Scope',
-            additionalExposure: 3400000,
-            currentEAL: 19400000,
-          },
-          affectedAssets: ['PAY-API-01', 'AWS-CLOUD-01'],
-          attackPaths: ['Internet → Web Server → Payment API'],
-          assumptions: 'Exploitability window expansion factor = 1.65x',
-          recommendedAction: 'Execute Critical Patching within standard 14-day SLA window.',
-        };
-      } else {
-        reply = {
-          sender: 'assistant',
-          text: 'Critical Patching (₹10L cost) yields the highest ROSI at 2.50x, providing ₹25L in EAL reduction within 14 days.',
-          metrics: {
-            primaryContributor: 'Critical Patching Initiative',
-            asset: 'Multi-Asset',
-            additionalExposure: -2500000,
-            currentEAL: 13500000,
-          },
-          affectedAssets: ['PAY-API-01', 'CUST-DB-02', 'AUTH-ID-01'],
-          attackPaths: ['Neutralizes 3 active attack vectors'],
-          assumptions: 'Patching efficacy = 80% baseline risk elimination',
-          recommendedAction: 'Approve ₹10L budget allocation in Investment Optimizer.',
-        };
-      }
-      setMessages(prev => [...prev, reply]);
-    }, 400);
+    try {
+      const response = await askCopilot(query, history);
+      setMessages(prev => [...prev, { sender: 'assistant', text: response.answer }]);
+    } catch (requestError) {
+      setError(requestError.message || 'The assistant could not answer right now.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -198,6 +164,19 @@ export default function CopilotPage() {
                 )}
               </div>
             ))}
+            {isSending && (
+              <div className="flex items-center gap-3 text-xs text-slate-400">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white shrink-0 shadow-md">
+                  <Bot className="w-4.5 h-4.5" />
+                </div>
+                <span>Analyzing the current risk context...</span>
+              </div>
+            )}
+            {error && (
+              <div className="text-xs text-red-300 bg-red-950/40 border border-red-800/60 rounded-lg px-3 py-2">
+                {error}
+              </div>
+            )}
           </div>
 
           {/* Input Text Box */}
@@ -207,11 +186,12 @@ export default function CopilotPage() {
               value={inputQuery}
               onChange={(e) => setInputQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              disabled={isSending}
               placeholder="Ask Copilot anything about financial risk, attack paths, or investment trade-offs..."
               className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
             />
-            <Button onClick={() => handleSend()} variant="primary" size="md" className="rounded-xl px-4">
-              <Send className="w-4 h-4" />
+            <Button onClick={() => handleSend()} variant="primary" size="md" className="rounded-xl px-4" disabled={isSending}>
+              {isSending ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             </Button>
           </div>
         </Card>
