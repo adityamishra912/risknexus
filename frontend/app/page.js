@@ -84,7 +84,15 @@ export default function MarketingHomePage() {
       {/* GLOBAL NAVBAR */}
       <header className="sticky top-0 z-50 bg-[#05070A]/80 backdrop-blur-md border-b border-slate-800/80 px-2 py-1 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Image src="/risknexus_logo_v2.svg" alt="Logo" width={300} height={300} />
+          <Image
+            src="/risknexus_logo_v2.svg"
+            alt="Logo"
+            width={300}
+            height={300}
+            className="h-10 w-auto"
+            loading="eager"
+            priority
+          />
         </div>
 
         <nav className="hidden md:flex items-center gap-6 text-xs text-slate-300 font-medium">

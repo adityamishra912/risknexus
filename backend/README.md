@@ -16,6 +16,21 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
+## Data Source Modes
+
+The default `sample` mode continues to use the checked-in CSV dataset. The additional Supabase modes load canonical tables into a private backend cache and reuse the existing CSV-compatible risk engine.
+
+Set these Railway variables for one or both Supabase connections:
+
+```env
+SUPABASE_PRIMARY_DATABASE_URL=postgresql://...
+SUPABASE_SECONDARY_DATABASE_URL=postgresql://...
+DATA_SOURCE_CACHE_DIR=.data_sources
+CORS_ORIGINS=https://your-frontend.vercel.app
+```
+
+Each Supabase database must expose these public tables: `assets`, `vulnerabilities`, `asset_relationships`, `business_services`, `control_status`, `risk_scenarios`, and `threat_scenarios`. The frontend activates a source with `POST /api/v1/data-sources/run` and checks availability with `GET /api/v1/data-sources/status`.
+
 ## What-If Simulation
 
 The what-if simulation feature allows you to test hypothetical changes to the environment and see the impact on risk quantification, without persisting the changes to the underlying data.

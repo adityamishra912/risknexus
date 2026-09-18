@@ -15,6 +15,12 @@ def resolve_data_dir(data_dir: Optional[str] = None) -> str:
     if data_dir and os.path.exists(data_dir):
         return data_dir
 
+    from app.services.data_sources.service import get_active_data_dir
+
+    active_data_dir = get_active_data_dir()
+    if active_data_dir:
+        return active_data_dir
+
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
     # Check ACTIVE_DATASET from environment or settings config

@@ -11,6 +11,7 @@ from app.api.optimizer import router as optimizer_router
 from app.api.ml import router as ml_router
 from app.api.compliance import router as compliance_router
 from app.api.copilot import router as copilot_router
+from app.api.data_sources import router as data_sources_router
 
 api_router = APIRouter()
 api_router.include_router(ingestion_router)
@@ -25,4 +26,5 @@ api_router.include_router(optimizer_router)
 api_router.include_router(ml_router)
 api_router.include_router(compliance_router)
 api_router.include_router(copilot_router)
+api_router.include_router(data_sources_router)
 

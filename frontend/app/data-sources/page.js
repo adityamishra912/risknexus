@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PageContainer from '../../components/layout/PageContainer';
 import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
@@ -35,11 +35,79 @@ import {
   Radio,
   FileText,
 } from 'lucide-react';
+import {
+  DATA_SOURCE_MODES,
+  DATA_SOURCE_MODE_OPTIONS,
+  getActiveDataSourceMode,
+  getDataSourceModeLabel,
+  readCachedDataSource,
+  setActiveDataSourceMode,
+  writeCachedDataSource,
+} from '../../lib/data-source-modes';
+import apiClient from '../../lib/api/client';
 
 export default function DataSourcesPage() {
   const [connectors, setConnectors] = useState(DATA_SOURCES);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedCatalogItem, setSelectedCatalogItem] = useState(null);
+  const [selectedDataSourceMode, setSelectedDataSourceMode] = useState(DATA_SOURCE_MODES.SAMPLE);
+  const [sourceRunStatus, setSourceRunStatus] = useState('Ready');
+  const [sourceLastRunAt, setSourceLastRunAt] = useState(null);
+  const [isRunningSource, setIsRunningSource] = useState(false);
+
+  useEffect(() => {
+    const savedMode = getActiveDataSourceMode();
+    setSelectedDataSourceMode(savedMode);
+  }, []);
+
+  const sourceModeSummary = useMemo(() => {
+    const selected = DATA_SOURCE_MODE_OPTIONS.find((option) => option.value === selectedDataSourceMode);
+    return selected || DATA_SOURCE_MODE_OPTIONS[0];
+  }, [selectedDataSourceMode]);
+
+  const handleSourceModeChange = (nextMode) => {
+    setSelectedDataSourceMode(nextMode);
+    setActiveDataSourceMode(nextMode);
+    const cachedData = readCachedDataSource(nextMode);
+    if (cachedData) {
+      setSourceRunStatus('Loaded from saved source');
+      setSourceLastRunAt(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      return;
+    }
+    setSourceRunStatus('Mode selected');
+    setSourceLastRunAt(null);
+  };
+
+  const handleRunSelectedSource = async () => {
+    setIsRunningSource(true);
+    setSourceRunStatus('Loading source');
+
+    try {
+      await apiClient.post('/data-sources/run', { mode: selectedDataSourceMode });
+    } catch (error) {
+      setSourceRunStatus(error.message || 'Source load failed');
+      setIsRunningSource(false);
+      return;
+    }
+
+    const payload = {
+      mode: selectedDataSourceMode,
+      selectedAt: new Date().toISOString(),
+      sourceLabel: getDataSourceModeLabel(selectedDataSourceMode),
+      readiness: readinessPercent,
+      uploadedRequiredCount,
+      requiredSources: 5,
+    };
+
+    writeCachedDataSource(selectedDataSourceMode, payload);
+    setSourceRunStatus(
+      selectedDataSourceMode === DATA_SOURCE_MODES.SAMPLE
+        ? 'Sample data refreshed'
+        : 'Supabase source loaded successfully'
+    );
+    setSourceLastRunAt(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    setIsRunningSource(false);
+  };
 
   // New connector form state
   const [newConnectorName, setNewConnectorName] = useState('');
@@ -257,6 +325,69 @@ export default function DataSourcesPage() {
       }
     >
       <div className="space-y-6">
+        <Card
+          title="Data Source Mode"
+          subtitle="Use the current sample workflow or switch to a Supabase-backed source without removing the built-in default."
+          headerAction={
+            <Badge variant="info" className="text-[11px] font-mono">
+              {getDataSourceModeLabel(selectedDataSourceMode)}
+            </Badge>
+          }
+        >
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+              {DATA_SOURCE_MODE_OPTIONS.map((option) => {
+                const isSelected = selectedDataSourceMode === option.value;
+
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => handleSourceModeChange(option.value)}
+                    className={`text-left rounded-xl border p-3 transition-all ${
+                      isSelected
+                        ? 'border-cyan-500 bg-cyan-950/40 shadow-lg shadow-cyan-950/20'
+                        : 'border-slate-800 bg-slate-950/40 hover:border-slate-700 hover:bg-slate-900/50'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-xs font-bold text-white">{option.label}</span>
+                      {isSelected && <CheckCircle2 className="w-4 h-4 text-cyan-400" />}
+                    </div>
+                    <p className="mt-2 text-[11px] leading-relaxed text-slate-400">{option.description}</p>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex flex-col gap-3 rounded-xl border border-slate-800 bg-slate-950/40 p-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">Current mode</p>
+                <p className="text-sm font-semibold text-white">{sourceModeSummary.label}</p>
+                <p className="text-[11px] text-slate-400">{sourceModeSummary.description}</p>
+              </div>
+
+              <div className="flex flex-col items-start gap-1 sm:items-end">
+                <span className="text-[10px] font-mono uppercase text-cyan-300">Status</span>
+                <span className="text-xs text-slate-200">{sourceRunStatus}</span>
+                {sourceLastRunAt && <span className="text-[10px] text-slate-500 font-mono">Last run: {sourceLastRunAt}</span>}
+              </div>
+
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                onClick={handleRunSelectedSource}
+                disabled={isRunningSource}
+                className="gap-1.5 shadow-lg shadow-cyan-950"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isRunningSource ? 'animate-spin' : ''}`} />
+                <span>{isRunningSource ? 'Loading Source...' : 'Run Selected Source'}</span>
+              </Button>
+            </div>
+          </div>
+        </Card>
+
         {/* TOP PROGRESS INDICATOR: Risk Quantification Readiness */}
         <Card>
           <div className="space-y-3">

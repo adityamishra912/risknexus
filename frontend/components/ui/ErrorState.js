@@ -6,7 +6,7 @@ import Button from './Button';
 
 export default function ErrorState({
   title = 'Backend Connection Error',
-  message = 'Failed to fetch live data from RiskNexus API. Please ensure the backend server is running on http://localhost:8000.',
+  message = 'Failed to fetch live data from RiskNexus API. Please ensure the backend server is running and the NEXT_PUBLIC_API_URL environment variable is configured correctly.',
   onRetry,
 }) {
   return (

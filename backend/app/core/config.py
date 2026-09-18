@@ -1,5 +1,8 @@
+import os
+import json
+from typing import List
+
 from pydantic_settings import BaseSettings
-from typing import List, Union
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "RiskNexus Risk Intelligence Engine"
@@ -8,8 +11,32 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "risknexus-secret-key-change-in-production"
     ENVIRONMENT: str = "development"
     DATABASE_URL: str = "sqlite:///./risknexus.db"
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
+    CORS_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000"
+    CORS_ORIGIN_REGEX: str = r"https://.*\.vercel\.app"
     ACTIVE_DATASET: str = "Dataset1"
+    DATA_SOURCE_CACHE_DIR: str = ".data_sources"
+    SUPABASE_PRIMARY_DATABASE_URL: str = ""
+    SUPABASE_SECONDARY_DATABASE_URL: str = ""
+
+    @property
+    def cors_origins_list(self) -> List[str]:
+        raw_value = os.getenv("CORS_ORIGINS", self.CORS_ORIGINS)
+        if isinstance(raw_value, list):
+            return [str(origin).strip() for origin in raw_value if str(origin).strip()]
+
+        normalized_value = str(raw_value).strip()
+        if not normalized_value:
+            return []
+
+        try:
+            parsed_value = json.loads(normalized_value)
+        except json.JSONDecodeError:
+            parsed_value = None
+
+        if isinstance(parsed_value, list):
+            return [str(origin).strip() for origin in parsed_value if str(origin).strip()]
+
+        return [origin.strip() for origin in normalized_value.split(",") if origin.strip()]
 
     class Config:
         case_sensitive = True
