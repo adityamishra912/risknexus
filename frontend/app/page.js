@@ -103,7 +103,7 @@ export default function MarketingHomePage() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/dashboard">
+          <Link href="/data-sources">
             <button className="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-lg shadow-cyan-950/50 border border-cyan-400/30 transition-all flex items-center gap-1.5 cursor-pointer">
               <span>Go to Dashboard</span>
               <ArrowRight className="w-3.5 h-3.5" />

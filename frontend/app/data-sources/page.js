@@ -325,6 +325,8 @@ export default function DataSourcesPage() {
       }
     >
       <div className="space-y-6">
+
+        <div className='hidden'>
         <Card
           title="Data Source Mode"
           subtitle="Use the current sample workflow or switch to a Supabase-backed source without removing the built-in default."
@@ -387,6 +389,7 @@ export default function DataSourcesPage() {
             </div>
           </div>
         </Card>
+        </div>
 
         {/* TOP PROGRESS INDICATOR: Risk Quantification Readiness */}
         <Card>

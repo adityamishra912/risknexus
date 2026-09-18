@@ -20,13 +20,15 @@ import {
   Building2,
   ChevronRight,
   ShieldCheck,
+  Summary,
 } from 'lucide-react';
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
+    { label: 'Data Sources', href: '/data-sources', icon: LayoutDashboard },
+    { label: 'Overview', href: '/dashboard', icon: Summary },
     { label: 'Risk Quantification', href: '/risk', icon: TrendingDown },
     { label: 'Attack Paths', href: '/attack-paths', icon: GitFork },
     { label: 'Assets', href: '/assets', icon: Server },
@@ -36,7 +38,6 @@ export default function Sidebar() {
     { label: 'Investment Optimizer', href: '/optimizer', icon: PieChart, highlight: true },
     { label: 'AI Copilot', href: '/copilot', icon: Bot, badge: 'AI' },
     { label: 'Compliance', href: '/compliance', icon: FileCheck },
-    { label: 'Data Sources', href: '/data-sources', icon: Database },
     { label: 'Settings & Security', href: '/settings', icon: Settings },
   ];
 
@@ -45,8 +46,8 @@ export default function Sidebar() {
       {/* Brand Header */}
       <div className="p-4 border-b border-slate-800 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-950/50 group-hover:scale-105 transition-transform">
-            <ShieldCheck className="w-5.5 h-5.5 stroke-[2.5]" />
+          <div className="w-9 h-9 rounded-lg  flex items-center justify-center text-white shadow-lg shadow-cyan-950/50 group-hover:scale-105 transition-transform">
+            <img src="/risknexus_icon.png" className="w-10 h-10 stroke-[2.5]" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
