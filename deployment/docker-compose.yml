@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      context: ../backend
+    env_file:
+      - ../.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  frontend:
+    build:
+      context: ../frontend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    command: npm run start
+
+# GLPI and MySQL remain host-managed for this milestone. This avoids creating a
+# second database that could conflict with an existing GLPI installation.

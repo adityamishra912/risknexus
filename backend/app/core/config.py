@@ -19,6 +19,12 @@ class Settings(BaseSettings):
     SUPABASE_SECONDARY_DATABASE_URL: str = ""
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
+    MYSQL_HOST: str = "127.0.0.1"
+    MYSQL_PORT: int = 3306
+    MYSQL_DATABASE: str = "glpi"
+    MYSQL_USER: str = ""
+    MYSQL_PASSWORD: str = ""
+    GLPI_ENABLED: bool = False
 
     @property
     def cors_origins_list(self) -> List[str]:
@@ -42,6 +48,6 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = True
-        env_file = ".env"
+        env_file = (".env", "../.env")
 
 settings = Settings()

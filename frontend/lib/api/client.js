@@ -14,12 +14,19 @@ export async function fetchAPI(endpoint, options = {}) {
   try {
     const response = await fetch(url, config);
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.detail || `API error (${response.status}): ${response.statusText}`);
+      const responseText = await response.text();
+      let detail = responseText;
+      try {
+        const parsed = JSON.parse(responseText);
+        detail = parsed.detail || parsed.error || responseText;
+      } catch {
+        // Preserve non-JSON server responses in the diagnostic message.
+      }
+      throw new Error(`API ${response.status} ${response.statusText} at ${url}: ${detail || 'empty response'}`);
     }
     return await response.json();
   } catch (error) {
-    console.warn(`[API Client Warning] Request to ${url} failed:`, error.message);
+    console.error(`[API Client Error] Request to ${url} failed:`, error);
     throw error;
   }
 }
