@@ -2,17 +2,23 @@ package main
 
 import (
 	"context"
+	"bytes"
 	"errors"
 	"flag"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/cybernexus/cli/internal/config"
 	mysqlcheck "github.com/cybernexus/cli/internal/mysql"
+	"github.com/cybernexus/cli/internal/glpi"
+	"github.com/cybernexus/cli/internal/system"
 	"golang.org/x/term"
 )
 
@@ -28,9 +34,9 @@ func main() {
 	}
 	var err error
 	switch flag.Arg(0) {
-	case "configure", "install": err = configure()
+	case "configure": err = configure()
+	case "install", "start": err = start()
 	case "status": err = status()
-	case "start": err = compose("up", "-d")
 	case "stop": err = compose("down")
 	case "logs": err = compose("logs", "--tail=100")
 	default: err = fmt.Errorf("unknown command %q", flag.Arg(0))
@@ -75,6 +81,137 @@ func configure() error {
 	}
 }
 
+func start() error {
+	fmt.Println("CyberNexus Startup")
+	fmt.Println("[1/10] Detecting system...")
+	info, err := system.Detect()
+	if err != nil { return err }
+	fmt.Printf("✓ %s %s\n✓ %s\n✓ %s RAM\n✓ %s available disk space\n✓ Elevated privileges available\n", info.Distribution, info.Version, info.Architecture, info.RAMGB, info.DiskGB)
+
+	fmt.Println("[2/10] Checking dependencies...")
+	dependencies := system.Dependencies()
+	missing := system.Missing(dependencies)
+	for _, dependency := range dependencies {
+		if containsDependency(missing, dependency.Name) { fmt.Printf("✗ %-22s missing (required: %s)\n", dependency.Name, dependency.Required) } else { fmt.Printf("✓ %-22s installed (required: %s)\n", dependency.Name, dependency.Required) }
+	}
+	if len(missing) > 0 {
+		fmt.Println("The following required components are missing:")
+		for _, dependency := range missing { fmt.Printf("- %s\n", dependency.Name) }
+		if !askYesNo("Install these components now? [y/N]: ", false) { return errors.New("installation cancelled by user; no dependency changes were made") }
+		if err := installDependencies(missing); err != nil { return stageError("dependency installation", err) }
+	}
+
+	fmt.Println("[3/10] Configuring MySQL...")
+	path := config.DefaultPath()
+	value, err := configuredMySQL(path)
+	if err != nil { return stageError("MySQL configuration", err) }
+	settings := glpi.FromEnvironment()
+	if value.GLPIURL != "" { settings.URL = value.GLPIURL }
+	if value.GLPIInventoryURL != "" { settings.InventoryURL = value.GLPIInventoryURL }
+	value.GLPIURL = settings.URL
+	value.GLPIInventoryURL = settings.InventoryURL
+	if err := config.Save(path, value); err != nil { return stageError("environment configuration", err) }
+	fmt.Printf("✓ Secure configuration saved at %s\n", path)
+
+	fmt.Println("[4/10] Configuring GLPI...")
+	databaseState, err := mysqlcheck.Check(context.Background(), value)
+	if err != nil { return stageError("GLPI database inspection", err) }
+	if !glpi.Detect(settings) {
+		fmt.Printf("⚠ GLPI was not detected at %s.\n", settings.InstallPath)
+		if !askYesNo("Download and install the latest official GLPI release now? [Y/n]: ", true) { return errors.New("GLPI installation cancelled by user") }
+		if err := installGLPI(settings, value, !databaseState.LooksLikeGLPI); err != nil { return stageError("GLPI installation", err) }
+	} else {
+		fmt.Printf("✓ Existing GLPI installation found at %s\n", settings.InstallPath)
+		if !databaseState.LooksLikeGLPI {
+			if err := installGLPI(settings, value, true); err != nil { return stageError("GLPI database initialization", err) }
+		}
+	}
+	if err := configureApache(settings); err != nil { return stageError("Apache configuration", err) }
+	if err := glpi.VerifyHTTP(context.Background(), settings); err != nil { return stageError("GLPI health check", err) }
+
+	fmt.Println("[5/10] Configuring GLPI Inventory...")
+	if err := runCommand(settings.InstallPath, "php", "bin/console", "glpi:inventory:enable"); err != nil { return stageError("GLPI Inventory configuration", err) }
+
+	fmt.Println("[6/10] Configuring GLPI Agent...")
+	if _, err := exec.LookPath("glpi-agent"); err != nil {
+		if err := runCommand("/", "apt-get", "install", "-y", "glpi-agent"); err != nil { return stageError("GLPI Agent installation", err) }
+	}
+	if err := glpi.WriteAgentConfig(settings); err != nil { return stageError("GLPI Agent configuration", err) }
+	if err := runCommand("/", "systemctl", "enable", "--now", "glpi-agent"); err != nil { return stageError("GLPI Agent startup", err) }
+
+	fmt.Println("[7/10] Collecting and verifying inventory...")
+	if err := runCommand("/", "glpi-agent", "--debug", "--force"); err != nil { return stageError("inventory collection", err) }
+	counts, err := mysqlcheck.Inventory(context.Background(), value)
+	if err != nil { return stageError("inventory verification", err) }
+	if counts.Computers == 0 { return stageError("inventory verification", errors.New("no computer inventory was received; inspect glpi-agent and Apache logs")) }
+	fmt.Printf("✓ Computers: %d\n✓ Software: %d\n✓ Software versions: %d\n", counts.Computers, counts.Softwares, counts.SoftwareVersions)
+
+	fmt.Println("[8/10] Starting FastAPI and Next.js...")
+	if err := compose("up", "-d", "--build"); err != nil { return stageError("application services", err) }
+
+	fmt.Println("[9/10] Running health checks...")
+	if err := waitHTTP("http://localhost:8000/", 30); err != nil { return stageError("FastAPI health check", err) }
+	if err := waitHTTP("http://localhost:3000/", 30); err != nil { return stageError("Next.js health check", err) }
+	if err := checkDockerServices(); err != nil { return stageError("Docker service health check", err) }
+
+	fmt.Println("[10/10] CyberNexus is ready")
+	fmt.Println("Dashboard: http://localhost:3000")
+	fmt.Printf("GLPI:     %s\nAPI:      http://localhost:8000\n", settings.URL)
+	return nil
+}
+
+func configuredMySQL(path string) (config.MySQLConfig, error) {
+	if current, err := config.Load(path); err == nil {
+		if result, checkErr := mysqlcheck.Check(context.Background(), current); checkErr == nil {
+			if result.DatabaseExists { fmt.Println("✓ Existing MySQL configuration is valid") ; return current, nil }
+		}
+	}
+	for {
+		value, err := config.Prompt(os.Stdin, os.Stdout, nil, readPassword)
+		if err != nil { return config.MySQLConfig{}, err }
+		fmt.Println("→ Testing MySQL connection...")
+		result, err := mysqlcheck.Check(context.Background(), value)
+		if err != nil { fmt.Printf("✗ MySQL connection failed: %v\n", err); if askYesNo("Retry configuration? [Y/n]: ", true) { continue }; return config.MySQLConfig{}, errors.New("MySQL configuration cancelled") }
+		if !result.DatabaseExists {
+			fmt.Printf("⚠ Database %q does not exist.\n", value.Database)
+			if !askYesNo("Create it? [y/N]: ", false) { return config.MySQLConfig{}, errors.New("database creation declined") }
+			if err := mysqlcheck.CreateDatabase(context.Background(), value); err != nil { return config.MySQLConfig{}, err }
+		}
+		return value, nil
+	}
+}
+
+func installDependencies(missing []system.Dependency) error {
+	packages := make([]string, 0, len(missing)+5)
+	for _, dependency := range missing { packages = append(packages, dependency.Package) }
+	packages = append(packages, "php-curl", "php-gd", "php-xml", "php-mbstring", "php-zip", "php-intl", "unzip")
+	if err := runCommand("/", "apt-get", "update"); err != nil { return err }
+	return runCommand("/", "apt-get", append([]string{"install", "-y"}, unique(packages)...)...)
+}
+
+func installGLPI(settings glpi.Settings, value config.MySQLConfig, initializeDatabase bool) error {
+	tag := settings.Version
+	archiveURL := fmt.Sprintf("https://github.com/glpi-project/glpi/releases/download/%s/glpi-%s.tgz", tag, strings.TrimPrefix(tag, "v"))
+	archive := filepath.Join(os.TempDir(), "glpi-"+strings.TrimPrefix(tag, "v")+".tgz")
+	if _, err := os.Stat(settings.InstallPath); os.IsNotExist(err) {
+		if err := runCommand("/", "curl", "--fail", "--location", "--output", archive, archiveURL); err != nil { return err }
+		if err := runCommand("/var/www", "tar", "-xzf", archive); err != nil { return err }
+		if err := runCommand("/", "chown", "-R", "www-data:www-data", settings.InstallPath); err != nil { return err }
+	}
+	if !initializeDatabase { return nil }
+	passwordArg := "--db-password=" + value.Password
+	displayPasswordArg := "--db-password=********"
+	return runCommandDisplayed(settings.InstallPath, []string{"php", "bin/console", "db:install", "--no-interaction", "--db-host=" + value.Host, "--db-name=" + value.Database, "--db-user=" + value.Username, passwordArg}, []string{"php", "bin/console", "db:install", "--no-interaction", "--db-host=" + value.Host, "--db-name=" + value.Database, "--db-user=" + value.Username, displayPasswordArg})
+}
+
+func configureApache(settings glpi.Settings) error {
+	content := fmt.Sprintf("<VirtualHost *:80>\n    DocumentRoot %s/public\n    <Directory %s/public>\n        AllowOverride All\n        Require all granted\n    </Directory>\n</VirtualHost>\n", settings.InstallPath, settings.InstallPath)
+	if err := os.WriteFile("/etc/apache2/sites-available/cybernexus-glpi.conf", []byte(content), 0644); err != nil { return fmt.Errorf("write Apache site: %w", err) }
+	if err := runCommand("/", "a2enmod", "rewrite"); err != nil { return err }
+	if err := runCommand("/", "a2ensite", "cybernexus-glpi.conf"); err != nil { return err }
+	return runCommand("/", "systemctl", "reload", "apache2")
+}
+
 func status() error {
 	path := config.DefaultPath()
 	value, err := config.Load(path)
@@ -87,31 +224,86 @@ func status() error {
 }
 
 func compose(args ...string) error {
-	root, err := os.Getwd()
+	root, err := repositoryRoot()
 	if err != nil { return err }
 	composeFile := filepath.Join(root, "deployment", "docker-compose.yml")
-	if _, err := os.Stat(composeFile); err != nil {
-		root = filepath.Dir(root)
-		composeFile = filepath.Join(root, "deployment", "docker-compose.yml")
-	}
-	if _, err := os.Stat(composeFile); err != nil { return fmt.Errorf("deployment compose file is unavailable at %s: %w", composeFile, err) }
-	return runCommand(root, "docker", append([]string{"compose", "-f", composeFile}, args...)...)
+	configPath, err := filepath.Abs(config.DefaultPath())
+	if err != nil { return fmt.Errorf("resolve configuration path: %w", err) }
+	return runCommand(root, "docker", append([]string{"compose", "--env-file", configPath, "-f", composeFile}, args...)...)
 }
 
 func currentDirectory() string { value, err := os.Getwd(); if err != nil { return "<unknown>" }; return value }
 
 func runCommand(dir, name string, args ...string) error {
-	fmt.Printf("→ Running: %s %s\n", name, strings.Join(args, " "))
-	command := exec.Command(name, args...)
+	return runCommandDisplayed(dir, append([]string{name}, args...), append([]string{name}, args...))
+}
+
+func runCommandDisplayed(dir string, actual, display []string) error {
+	if len(actual) == 0 { return errors.New("empty command") }
+	fmt.Printf("→ Running: %s\n", strings.Join(display, " "))
+	command := exec.Command(actual[0], actual[1:]...)
 	command.Dir = dir
-	command.Stdout = os.Stdout
-	command.Stderr = os.Stderr
+	var stdout, stderr bytes.Buffer
+	command.Stdout = io.MultiWriter(os.Stdout, &stdout)
+	command.Stderr = io.MultiWriter(os.Stderr, &stderr)
 	err := command.Run()
 	if err == nil { return nil }
 	var exitErr *exec.ExitError
-	if errors.As(err, &exitErr) { return fmt.Errorf("command failed with exit code %d: %w", exitErr.ExitCode(), err) }
+	if errors.As(err, &exitErr) { return fmt.Errorf("command failed with exit code %d\nSTDOUT:\n%s\nSTDERR:\n%s\n%w", exitErr.ExitCode(), stdout.String(), stderr.String(), err) }
 	return fmt.Errorf("could not execute command: %w", err)
 }
+
+func waitHTTP(url string, attempts int) error {
+	client := &http.Client{Timeout: 2 * time.Second}
+	var last error
+	for attempt := 0; attempt < attempts; attempt++ {
+		response, err := client.Get(url)
+		if err == nil {
+			response.Body.Close()
+			if response.StatusCode < 500 { return nil }
+			last = fmt.Errorf("HTTP %d", response.StatusCode)
+		} else { last = err }
+		time.Sleep(time.Second)
+	}
+	return fmt.Errorf("%s did not become healthy: %w", url, last)
+}
+
+func checkDockerServices() error {
+	root, err := repositoryRoot()
+	if err != nil { return err }
+	composeFile := filepath.Join(root, "deployment", "docker-compose.yml")
+	configPath, err := filepath.Abs(config.DefaultPath())
+	if err != nil { return err }
+	output, err := commandOutputInDir(root, "docker", "compose", "--env-file", configPath, "-f", composeFile, "ps", "--format", "json")
+	if err != nil { return err }
+	if !strings.Contains(strings.ToLower(output), "running") && !strings.Contains(strings.ToLower(output), "up") { return fmt.Errorf("Docker Compose reports no running application services: %s", strings.TrimSpace(output)) }
+	return nil
+}
+
+func commandOutput(name string, args ...string) (string, error) {
+	return commandOutputInDir("", name, args...)
+}
+
+func commandOutputInDir(dir, name string, args ...string) (string, error) {
+	command := exec.Command(name, args...)
+	if dir != "" { command.Dir = dir }
+	output, err := command.CombinedOutput()
+	if err != nil { return string(output), fmt.Errorf("%s %s failed: %w\nOutput:\n%s", name, strings.Join(args, " "), err, output) }
+	return string(output), nil
+}
+
+func repositoryRoot() (string, error) {
+	root, err := os.Getwd()
+	if err != nil { return "", err }
+	if _, statErr := os.Stat(filepath.Join(root, "deployment", "docker-compose.yml")); statErr == nil { return root, nil }
+	parent := filepath.Dir(root)
+	if _, statErr := os.Stat(filepath.Join(parent, "deployment", "docker-compose.yml")); statErr == nil { return parent, nil }
+	return "", fmt.Errorf("could not locate repository deployment directory from %s", root)
+}
+
+func containsDependency(values []system.Dependency, name string) bool { for _, value := range values { if value.Name == name { return true } }; return false }
+func unique(values []string) []string { result := []string{}; seen := map[string]bool{}; for _, value := range values { if !seen[value] { result = append(result, value); seen[value] = true } }; return result }
+func stageError(stage string, err error) error { return fmt.Errorf("installation failed at %s: %w; logs: run cybernexus logs", stage, err) }
 
 func readPassword() ([]byte, error) {
 	if !term.IsTerminal(int(os.Stdin.Fd())) { return nil, errors.New("password input requires an interactive terminal") }

@@ -18,6 +18,8 @@ type MySQLConfig struct {
 	Database string
 	Username string
 	Password string
+	GLPIURL string
+	GLPIInventoryURL string
 }
 
 func DefaultPath() string {
@@ -42,7 +44,7 @@ func Load(path string) (MySQLConfig, error) {
 			return MySQLConfig{}, fmt.Errorf("MYSQL_PORT must be a number: %w", err)
 		}
 	}
-	return MySQLConfig{Host: values["MYSQL_HOST"], Port: port, Database: values["MYSQL_DATABASE"], Username: values["MYSQL_USER"], Password: values["MYSQL_PASSWORD"]}, nil
+	return MySQLConfig{Host: values["MYSQL_HOST"], Port: port, Database: values["MYSQL_DATABASE"], Username: values["MYSQL_USER"], Password: values["MYSQL_PASSWORD"], GLPIURL: values["GLPI_URL"], GLPIInventoryURL: values["GLPI_INVENTORY_URL"]}, nil
 }
 
 func Prompt(in io.Reader, out io.Writer, existing *MySQLConfig, passwordReader func() ([]byte, error)) (MySQLConfig, error) {
@@ -98,7 +100,9 @@ func Save(path string, value MySQLConfig) error {
 		return errors.New("refusing to save incomplete MySQL configuration")
 	}
 	if err := os.MkdirAll(filepath.Dir(path), 0700); err != nil { return fmt.Errorf("create config directory: %w", err) }
-	contents := fmt.Sprintf("MYSQL_HOST=%s\nMYSQL_PORT=%d\nMYSQL_DATABASE=%s\nMYSQL_USER=%s\nMYSQL_PASSWORD=%s\n", quote(value.Host), value.Port, quote(value.Database), quote(value.Username), quote(value.Password))
+	containerHost := value.Host
+	if value.Host == "127.0.0.1" || value.Host == "localhost" { containerHost = "host.docker.internal" }
+	contents := fmt.Sprintf("MYSQL_HOST=%s\nMYSQL_HOST_CONTAINER=%s\nMYSQL_PORT=%d\nMYSQL_DATABASE=%s\nMYSQL_USER=%s\nMYSQL_PASSWORD=%s\nGLPI_URL=%s\nGLPI_INVENTORY_URL=%s\nCYBERNEXUS_CONFIG_FILE=%s\n", quote(value.Host), quote(containerHost), value.Port, quote(value.Database), quote(value.Username), quote(value.Password), quote(value.GLPIURL), quote(value.GLPIInventoryURL), quote(path))
 	if err := os.WriteFile(path, []byte(contents), 0600); err != nil { return fmt.Errorf("write config %s: %w", path, err) }
 	return nil
 }

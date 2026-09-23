@@ -18,6 +18,12 @@ type CheckResult struct {
 	LooksLikeGLPI  bool
 }
 
+type InventoryCounts struct {
+	Computers        int
+	Softwares        int
+	SoftwareVersions int
+}
+
 func Check(ctx context.Context, value config.MySQLConfig) (CheckResult, error) {
 	if !validIdentifier.MatchString(value.Database) { return CheckResult{}, fmt.Errorf("invalid database name %q", value.Database) }
 	baseDSN := fmt.Sprintf("%s:%s@tcp(%s:%d)/?timeout=5s&readTimeout=5s&writeTimeout=5s", value.Username, value.Password, value.Host, value.Port)
@@ -45,4 +51,22 @@ func CreateDatabase(ctx context.Context, value config.MySQLConfig) error {
 	_, err = db.ExecContext(ctx, "CREATE DATABASE IF NOT EXISTS `"+value.Database+"` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
 	if err != nil { return fmt.Errorf("create database %q: %w", value.Database, err) }
 	return nil
+}
+
+func Inventory(ctx context.Context, value config.MySQLConfig) (InventoryCounts, error) {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=5s&readTimeout=5s", value.Username, value.Password, value.Host, value.Port, value.Database)
+	db, err := sql.Open("mysql", dsn)
+	if err != nil { return InventoryCounts{}, fmt.Errorf("open GLPI database: %w", err) }
+	defer db.Close()
+	var result InventoryCounts
+	for _, query := range []struct { target *int; name string }{
+		{&result.Computers, "glpi_computers"},
+		{&result.Softwares, "glpi_softwares"},
+		{&result.SoftwareVersions, "glpi_softwareversions"},
+	} {
+		if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM `"+query.name+"`").Scan(query.target); err != nil {
+			return InventoryCounts{}, fmt.Errorf("count %s: %w", query.name, err)
+		}
+	}
+	return result, nil
 }
