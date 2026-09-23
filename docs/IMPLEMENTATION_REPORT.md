@@ -20,7 +20,7 @@ Go CLI orchestrates all stages
 
 The browser never receives database credentials and never connects directly to MySQL. On Linux, Compose maps `host.docker.internal` to the host gateway and generated configuration sets `MYSQL_HOST_CONTAINER` for the backend container while retaining the real host value for CLI and GLPI operations.
 
-`CYBERNEXUS_HOST` is the browser-facing hostname or IP. For example, `192.168.201.129` generates `http://192.168.201.129/glpi`, `http://192.168.201.129/glpi/front/inventory.php`, and `http://192.168.201.129:8000/api/v1`. `MYSQL_HOST` remains the host-side database address; it is not replaced with `CYBERNEXUS_HOST`.
+`CYBERNEXUS_HOST` is the browser-facing hostname or IP. For example, `192.168.201.129` generates `http://192.168.201.129/glpi`, `http://192.168.201.129/glpi/front/inventory.php`, and `http://192.168.201.129:8000/api/v1`. `MYSQL_HOST` remains the host-side database address in the protected file; Compose overrides the backend container's `MYSQL_HOST` from `MYSQL_HOST_CONTAINER` without changing the host-side value.
 
 ## `cybernexus start` Workflow
 
@@ -102,7 +102,7 @@ Table names are validated against `information_schema.tables` and an identifier 
 
 `/glpi-data` discovers all tables dynamically and renders selected columns and rows with bounded requests. Existing CRQ routes and the Data Sources page remain unchanged; the sidebar adds GLPI Data and the page includes `Main | GLPI Data | Assets`.
 
-`deployment/docker-compose.yml` builds the existing backend and frontend. MySQL and GLPI stay host-managed to avoid creating a conflicting second database. Backend Compose configuration uses the generated environment file, passes `MYSQL_HOST_CONTAINER`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, and `MYSQL_PASSWORD`, and maps `host.docker.internal:host-gateway`. `NEXT_PUBLIC_API_URL` is supplied as a frontend build argument so it is embedded in the Next.js client bundle.
+`deployment/docker-compose.yml` builds the existing backend and frontend. MySQL and GLPI stay host-managed to avoid creating a conflicting second database. Backend Compose configuration uses the generated environment file, maps backend `MYSQL_HOST` from `MYSQL_HOST_CONTAINER`, passes the remaining MySQL variables, and maps `host.docker.internal:host-gateway`. `NEXT_PUBLIC_API_URL` is supplied as a frontend build argument so it is embedded in the Next.js client bundle.
 
 ## Development Commands
 
