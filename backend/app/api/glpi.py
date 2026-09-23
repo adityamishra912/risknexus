@@ -16,8 +16,9 @@ def _connection():
         raise HTTPException(status_code=503, detail="GLPI MySQL is not configured; run cybernexus configure")
     try:
         import pymysql
+        mysql_host = settings.MYSQL_HOST_CONTAINER or settings.MYSQL_HOST
         return pymysql.connect(
-            host=settings.MYSQL_HOST,
+            host=mysql_host,
             port=settings.MYSQL_PORT,
             user=settings.MYSQL_USER,
             password=settings.MYSQL_PASSWORD,
@@ -28,7 +29,7 @@ def _connection():
             write_timeout=10,
         )
     except Exception as exc:
-        logger.exception("GLPI MySQL connection failed for %s:%s/%s", settings.MYSQL_HOST, settings.MYSQL_PORT, settings.MYSQL_DATABASE)
+        logger.exception("GLPI MySQL connection failed for %s:%s/%s", mysql_host, settings.MYSQL_PORT, settings.MYSQL_DATABASE)
         raise HTTPException(status_code=503, detail="Unable to connect to the configured GLPI database") from exc
 
 

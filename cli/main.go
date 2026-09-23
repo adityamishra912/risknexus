@@ -58,6 +58,14 @@ func configure() error {
 	for {
 		value, err := config.Prompt(os.Stdin, os.Stdout, existing, readPassword)
 		if err != nil { return err }
+		value.CyberNexusHost, err = config.PromptCyberNexusHost(os.Stdin, os.Stdout, "")
+		if err != nil { return err }
+		browserURLs, err := config.GenerateBrowserURLs(value.CyberNexusHost)
+		if err != nil { return err }
+		value.GLPIURL = browserURLs.GLPIURL
+		value.GLPIInventoryURL = browserURLs.GLPIInventoryURL
+		value.NextPublicAPIURL = browserURLs.NextPublicAPIURL
+		value.MySQLHostContainer = "host.docker.internal"
 		fmt.Println("\n→ Testing MySQL connection...")
 		result, err := mysqlcheck.Check(context.Background(), value)
 		if err != nil {
@@ -105,9 +113,21 @@ func start() error {
 	path := config.DefaultPath()
 	value, err := configuredMySQL(path)
 	if err != nil { return stageError("MySQL configuration", err) }
+	if value.CyberNexusHost == "" {
+		value.CyberNexusHost, err = config.PromptCyberNexusHost(os.Stdin, os.Stdout, "")
+		if err != nil { return stageError("CyberNexus host configuration", err) }
+	} else if err := config.ValidateCyberNexusHost(value.CyberNexusHost); err != nil {
+		return stageError("CyberNexus host configuration", err)
+	}
+	browserURLs, err := config.GenerateBrowserURLs(value.CyberNexusHost)
+	if err != nil { return stageError("CyberNexus host configuration", err) }
+	value.GLPIURL = browserURLs.GLPIURL
+	value.GLPIInventoryURL = browserURLs.GLPIInventoryURL
+	value.NextPublicAPIURL = browserURLs.NextPublicAPIURL
+	value.MySQLHostContainer = "host.docker.internal"
 	settings := glpi.FromEnvironment()
-	if value.GLPIURL != "" { settings.URL = value.GLPIURL }
-	if value.GLPIInventoryURL != "" { settings.InventoryURL = value.GLPIInventoryURL }
+	settings.URL = value.GLPIURL
+	settings.InventoryURL = value.GLPIInventoryURL
 	value.GLPIURL = settings.URL
 	value.GLPIInventoryURL = settings.InventoryURL
 	if err := config.Save(path, value); err != nil { return stageError("environment configuration", err) }
@@ -118,7 +138,7 @@ func start() error {
 	if err != nil { return stageError("GLPI database inspection", err) }
 	if !glpi.Detect(settings) {
 		fmt.Printf("⚠ GLPI was not detected at %s.\n", settings.InstallPath)
-		if !askYesNo("Download and install the latest official GLPI release now? [Y/n]: ", true) { return errors.New("GLPI installation cancelled by user") }
+		if !askYesNo("Download and install the configured GLPI release now? [Y/n]: ", true) { return errors.New("GLPI installation cancelled by user") }
 		if err := installGLPI(settings, value, !databaseState.LooksLikeGLPI); err != nil { return stageError("GLPI installation", err) }
 	} else {
 		fmt.Printf("✓ Existing GLPI installation found at %s\n", settings.InstallPath)
@@ -158,8 +178,7 @@ func start() error {
 	if err := checkDockerServices(); err != nil { return stageError("Docker service health check", err) }
 
 	fmt.Println("[10/10] CyberNexus is ready")
-	fmt.Println("Dashboard: http://localhost:3000")
-	fmt.Printf("GLPI:     %s\nAPI:      http://localhost:8000\n", settings.URL)
+	fmt.Printf("Dashboard: http://%s:3000\nGLPI:     %s\nAPI:      %s\n", value.CyberNexusHost, settings.URL, value.NextPublicAPIURL)
 	return nil
 }
 

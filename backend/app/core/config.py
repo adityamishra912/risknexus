@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
     MYSQL_HOST: str = "127.0.0.1"
+    MYSQL_HOST_CONTAINER: str = ""
     MYSQL_PORT: int = 3306
     MYSQL_DATABASE: str = "glpi"
     MYSQL_USER: str = ""
