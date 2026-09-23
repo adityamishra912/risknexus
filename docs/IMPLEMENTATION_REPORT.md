@@ -31,7 +31,7 @@ The browser never receives database credentials and never connects directly to M
 5. Save the protected environment file and derive `GLPI_URL` and `GLPI_INVENTORY_URL`.
 6. Detect GLPI at `CYBERNEXUS_GLPI_PATH` or `/var/www/glpi`. If absent, ask for confirmation, download the pinned GLPI `v10.0.20` release (or the explicit `CYBERNEXUS_GLPI_VERSION` override), extract it, set ownership, and initialize the database only when GLPI tables are not already present.
 7. Write an Apache virtual host, enable rewrite, reload Apache, and verify the GLPI URL responds.
-8. Run GLPI's inventory enable command.
+8. Query `glpi_configs` for the existing `inventory`/`enabled_inventory` row. If its value is not `1`, update only that row with parameterized SQL and verify the resulting value. A missing row is treated as a configuration error; no row is inserted.
 9. Install the GLPI Agent package if missing, write `/etc/glpi-agent/agent.cfg`, enable/start its systemd service, and run `glpi-agent --debug --force`.
 10. Count `glpi_computers`, `glpi_softwares`, and `glpi_softwareversions`. Startup fails if no computers were received.
 11. Build/start the FastAPI and Next.js Compose services.
@@ -168,6 +168,7 @@ go build -o cybernexus .
 ## Error and Log Behavior
 
 - CLI command failures include the command and exit code; child stdout/stderr is streamed.
+- GLPI inventory configuration uses the existing MySQL connection and never invokes a GLPI console inventory command.
 - FastAPI GLPI connection and query failures use `logger.exception`, preserving traceback in server logs.
 - Frontend request failures include the endpoint, status, and response body where available.
 - Compose logs remain available through `docker compose logs` and `cybernexus logs`.

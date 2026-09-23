@@ -130,7 +130,10 @@ func start() error {
 	if err := glpi.VerifyHTTP(context.Background(), settings); err != nil { return stageError("GLPI health check", err) }
 
 	fmt.Println("[5/10] Configuring GLPI Inventory...")
-	if err := runCommand(settings.InstallPath, "php", "bin/console", "glpi:inventory:enable", "--allow-superuser"); err != nil { return stageError("GLPI Inventory configuration", err) }
+	fmt.Println("→ Checking GLPI inventory configuration")
+	if err := mysqlcheck.ConfigureInventory(context.Background(), value, func(format string, args ...any) { fmt.Printf(format+"\n", args...) }); err != nil {
+		return stageError("GLPI Inventory configuration", err)
+	}
 
 	fmt.Println("[6/10] Configuring GLPI Agent...")
 	if _, err := exec.LookPath("glpi-agent"); err != nil {
