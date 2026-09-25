@@ -184,6 +184,12 @@ func start() error {
 	fmt.Printf("[Trivy] Results found: %d\n", parseStats.ResultsFound)
 	fmt.Printf("[Trivy] Vulnerabilities found: %d\n", parseStats.VulnerabilitiesFound)
 	fmt.Printf("[Trivy] Records skipped: %d (missing ID: %d, invalid: %d, duplicate: %d)\n", parseStats.Skipped, parseStats.MissingVulnerabilityID, parseStats.InvalidRecord, parseStats.Duplicate)
+	fmt.Printf("[Trivy] Valid records: %d\n", len(records))
+	if len(parseStats.MalformedFields) > 0 {
+		limit := len(parseStats.MalformedFields)
+		if limit > 3 { limit = 3 }
+		fmt.Printf("[Trivy] Malformed field examples: %s\n", strings.Join(parseStats.MalformedFields[:limit], "; "))
+	}
 	if err := mysqlcheck.EnsureTrivyTable(context.Background(), value); err != nil { return stageError("Trivy table setup", err) }
 	fmt.Println("[Trivy] MySQL table ready")
 	count, err := mysqlcheck.ImportTrivyVulnerabilities(context.Background(), value, records)

@@ -43,28 +43,58 @@ type TrivyPackage struct {
 }
 
 type TrivyVulnerability struct {
-	VulnerabilityID  string          `json:"VulnerabilityID"`
-	PkgID            string          `json:"PkgID"`
-	PkgName          string          `json:"PkgName"`
-	PkgIdentifier    string          `json:"PkgIdentifier"`
-	InstalledVersion string          `json:"InstalledVersion"`
-	FixedVersion     string          `json:"FixedVersion"`
-	Severity         string          `json:"Severity"`
-	SeveritySource   string          `json:"SeveritySource"`
-	CVSS             json.RawMessage `json:"CVSS"`
-	CWEIDs           []string        `json:"CWEIDs"`
-	Description      string          `json:"Description"`
-	Title            string          `json:"Title"`
-	References       []string        `json:"References"`
-	PublishedDate    string          `json:"PublishedDate"`
-	LastModifiedDate string          `json:"LastModifiedDate"`
-	PrimaryURL       string          `json:"PrimaryURL"`
-	DataSource       json.RawMessage `json:"DataSource"`
-	VendorIDs        []string        `json:"VendorIDs"`
-	VendorSeverity   string          `json:"VendorSeverity"`
-	Status           string          `json:"Status"`
-	Fingerprint      string          `json:"Fingerprint"`
-	RawJSON          json.RawMessage `json:"-"`
+	VulnerabilityID  json.RawMessage `json:"VulnerabilityID"`
+	PkgID            json.RawMessage `json:"PkgID"`
+	PkgName          json.RawMessage `json:"PkgName"`
+	PkgIdentifier    *PackageIdentifier `json:"PkgIdentifier"`
+	InstalledVersion json.RawMessage `json:"InstalledVersion"`
+	FixedVersion     json.RawMessage `json:"FixedVersion"`
+	Severity         json.RawMessage `json:"Severity"`
+	SeveritySource   json.RawMessage `json:"SeveritySource"`
+	CVSS             map[string]CVSSSource `json:"CVSS"`
+	CWEIDs           StringList `json:"CweIDs"`
+	Description      json.RawMessage `json:"Description"`
+	Title            json.RawMessage `json:"Title"`
+	References       StringList `json:"References"`
+	PublishedDate    json.RawMessage `json:"PublishedDate"`
+	LastModifiedDate json.RawMessage `json:"LastModifiedDate"`
+	PrimaryURL       json.RawMessage `json:"PrimaryURL"`
+	DataSource       *TrivyDataSource `json:"DataSource"`
+	VendorIDs        json.RawMessage `json:"VendorIDs"`
+	VendorSeverity   map[string]*float64 `json:"VendorSeverity"`
+	Status           json.RawMessage `json:"Status"`
+	Fingerprint      json.RawMessage `json:"Fingerprint"`
+}
+
+type PackageIdentifier struct {
+	PURL string `json:"PURL"`
+	UID  string `json:"UID"`
+}
+
+type TrivyDataSource struct {
+	ID   string `json:"ID"`
+	Name string `json:"Name"`
+	URL  string `json:"URL"`
+}
+
+type CVSSSource struct {
+	V2Score  *float64 `json:"V2Score"`
+	V2Vector string   `json:"V2Vector"`
+	V3Score  *float64 `json:"V3Score"`
+	V3Vector string   `json:"V3Vector"`
+	V40Score *float64 `json:"V40Score"`
+	V40Vector string  `json:"V40Vector"`
+}
+
+type StringList []string
+
+func (list *StringList) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" { *list = nil; return nil }
+	var values []string
+	if err := json.Unmarshal(data, &values); err == nil { *list = values; return nil }
+	var value string
+	if err := json.Unmarshal(data, &value); err == nil { *list = []string{value}; return nil }
+	return fmt.Errorf("expected string or array of strings")
 }
 
 type ParseStats struct {
@@ -75,6 +105,7 @@ type ParseStats struct {
 	InvalidRecord          int
 	Duplicate              int
 	TrivyVersion           string
+	MalformedFields        []string
 }
 
 type VulnerabilityRecord struct {
@@ -149,22 +180,33 @@ func ParseTrivyResultsWithStats(data []byte) ([]VulnerabilityRecord, ParseStats,
 				stats.Skipped++
 				continue
 			}
-			if strings.TrimSpace(vuln.VulnerabilityID) == "" {
+			vulnerabilityID, fieldErr := requiredString(vuln.VulnerabilityID, "VulnerabilityID")
+			if fieldErr != "" {
+				stats.InvalidRecord++
+				stats.Skipped++
+				stats.MalformedFields = append(stats.MalformedFields, fieldErr)
+				continue
+			}
+			if strings.TrimSpace(vulnerabilityID) == "" {
 				stats.Skipped++
 				stats.MissingVulnerabilityID++
 				continue
 			}
-			pkg := packages[vuln.PkgID]
+			vulnerabilityPkgName := optionalString(vuln.PkgName)
+			vulnerabilityInstalledVersion := optionalString(vuln.InstalledVersion)
+			pkgID := optionalString(vuln.PkgID)
+			pkg := packages[pkgID]
 			if pkg.Name == "" {
-				pkg = packagesByNameVersion[vuln.PkgName+"\x00"+vuln.InstalledVersion]
+				pkg = packagesByNameVersion[vulnerabilityPkgName+"\x00"+vulnerabilityInstalledVersion]
 			}
-			pkgName := vuln.PkgName
+			pkgName := vulnerabilityPkgName
 			if pkgName == "" { pkgName = pkg.Name }
-			pkgIdentifier := vuln.PkgIdentifier
+			pkgIdentifier := ""
+			if vuln.PkgIdentifier != nil { pkgIdentifier = vuln.PkgIdentifier.PURL }
 			if pkgIdentifier == "" { pkgIdentifier = pkg.Identifier }
-			installedVersion := vuln.InstalledVersion
+			installedVersion := vulnerabilityInstalledVersion
 			if installedVersion == "" { installedVersion = pkg.Version }
-			identity := strings.Join([]string{result.Target, vuln.VulnerabilityID, pkgName, installedVersion}, "\x00")
+			identity := strings.Join([]string{result.Target, vulnerabilityID, pkgName, installedVersion}, "\x00")
 			if _, exists := seen[identity]; exists {
 				stats.Duplicate++
 				stats.Skipped++
@@ -172,13 +214,13 @@ func ParseTrivyResultsWithStats(data []byte) ([]VulnerabilityRecord, ParseStats,
 			}
 			seen[identity] = struct{}{}
 			records = append(records, VulnerabilityRecord{
-				VulnerabilityID: vuln.VulnerabilityID, PkgID: vuln.PkgID, PkgName: pkgName,
+				VulnerabilityID: vulnerabilityID, PkgID: pkgID, PkgName: pkgName,
 				PkgIdentifier: pkgIdentifier, InstalledVersion: installedVersion,
-				FixedVersion: vuln.FixedVersion, Status: vuln.Status, Severity: vuln.Severity,
-				SeveritySource: vuln.SeveritySource, CVSSScore: extractCVSSScore(vuln.CVSS),
-				Title: vuln.Title, Description: vuln.Description, PrimaryURL: vuln.PrimaryURL,
-				References: vuln.References, PublishedDate: vuln.PublishedDate,
-				LastModifiedDate: vuln.LastModifiedDate, Target: result.Target,
+				FixedVersion: optionalString(vuln.FixedVersion), Status: optionalString(vuln.Status), Severity: optionalString(vuln.Severity),
+				SeveritySource: optionalString(vuln.SeveritySource), CVSSScore: extractCVSSScore(vuln.CVSS),
+				Title: optionalString(vuln.Title), Description: optionalString(vuln.Description), PrimaryURL: optionalString(vuln.PrimaryURL),
+				References: []string(vuln.References), PublishedDate: optionalString(vuln.PublishedDate),
+				LastModifiedDate: optionalString(vuln.LastModifiedDate), Target: result.Target,
 				Class: result.Class, Type: result.Type,
 				RawJSON: append(json.RawMessage(nil), rawVulnerability...),
 			})
@@ -187,23 +229,29 @@ func ParseTrivyResultsWithStats(data []byte) ([]VulnerabilityRecord, ParseStats,
 	return records, stats, nil
 }
 
-func extractCVSSScore(raw json.RawMessage) *float64 {
-	if len(raw) == 0 || string(raw) == "null" { return nil }
-	var value any
-	if json.Unmarshal(raw, &value) != nil { return nil }
-	var find func(any) *float64
-	find = func(candidate any) *float64 {
-		if object, ok := candidate.(map[string]any); ok {
-			for _, key := range []string{"V4Score", "V3Score", "V2Score", "Score"} {
-				if score, exists := object[key]; exists {
-					if parsed := parseCVSSNumber(score); parsed != nil { return parsed }
-				}
-			}
-			for _, child := range object { if parsed := find(child); parsed != nil { return parsed } }
+func requiredString(raw json.RawMessage, field string) (string, string) {
+	if len(raw) == 0 || string(raw) == "null" { return "", field + " is missing or null" }
+	var value string
+	if err := json.Unmarshal(raw, &value); err != nil { return "", field + " has unexpected type" }
+	return value, ""
+}
+
+func optionalString(raw json.RawMessage) string {
+	if len(raw) == 0 || string(raw) == "null" { return "" }
+	var value string
+	if json.Unmarshal(raw, &value) == nil { return value }
+	return ""
+}
+
+func extractCVSSScore(sources map[string]CVSSSource) *float64 {
+	for _, source := range []string{"nvd", "redhat", "ghsa", "bitnami", "julia"} {
+		cvss, ok := sources[source]
+		if !ok { continue }
+		for _, score := range []*float64{cvss.V40Score, cvss.V3Score, cvss.V2Score} {
+			if score != nil && *score >= 0 && *score <= 10 { return score }
 		}
-		return nil
 	}
-	return find(value)
+	return nil
 }
 
 func parseCVSSNumber(value any) *float64 {

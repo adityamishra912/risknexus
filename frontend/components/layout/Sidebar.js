@@ -15,7 +15,6 @@ import {
   Bot,
   FileCheck,
   FileText,
-  Database,
   Settings,
   Building2,
   ChevronRight,
@@ -28,7 +27,6 @@ export default function Sidebar() {
 
   const navItems = [
     { label: 'Data Sources', href: '/data-sources', icon: LayoutDashboard },
-    { label: 'GLPI Data', href: '/glpi-data', icon: Database },
     { label: 'Overview', href: '/dashboard', icon: Summary },
     { label: 'Risk Quantification', href: '/risk', icon: TrendingDown },
     { label: 'Attack Paths', href: '/attack-paths', icon: GitFork },

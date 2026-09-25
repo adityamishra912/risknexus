@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 DATA_SOURCE_MODES = {
     "sample": "sample",
+    "mysql": "mysql",
     "supabase-primary": "supabase-primary",
     "supabase-secondary": "supabase-secondary",
 }
@@ -58,7 +59,10 @@ def activate_mode(mode: str) -> Dict[str, Any]:
     if mode not in DATA_SOURCE_MODES:
         raise ValueError(f"Unsupported data source mode: {mode}")
     with _activation_lock:
-        if mode != "sample":
+        if mode == "mysql":
+            from app.services.data_sources.mysql_provider import materialize_mysql_data_dir
+            _materialized_paths[mode] = Path(materialize_mysql_data_dir())
+        elif mode != "sample":
             _materialize_supabase_mode(mode)
         _active_mode = mode
     return get_mode_status(mode)

@@ -31,7 +31,7 @@ func TestParseScanFileHandlesNestedResults(t *testing.T) {
 					"References": ["https://example.com/ref"],
 					"PublishedDate": "2024-01-01T00:00:00Z",
 					"LastModifiedDate": "2024-02-01T00:00:00Z",
-					"PkgIdentifier": "pkg:deb/ubuntu/openssl@3.0.0?os=linux",
+					"PkgIdentifier": {"PURL": "pkg:deb/ubuntu/openssl@3.0.0?os=linux", "UID": "openssl@3.0.0"},
 					"Target": "ubuntu:22.04",
 					"Class": "os-pkgs"
 				}
@@ -80,9 +80,13 @@ func TestParseTrivyResultsHandlesObjectEnvelope(t *testing.T) {
 			"Vulnerabilities": [{
 				"VulnerabilityID": "CVE-2024-0001",
 				"PkgName": "openssl",
+				"PkgIdentifier": {"PURL": "pkg:deb/ubuntu/openssl@3.0.0", "UID": "openssl@3.0.0"},
 				"InstalledVersion": "3.0.0",
 				"Severity": "HIGH",
-				"CVSS": {"nvd": {"V3Score": 7.8}}
+				"CVSS": {"nvd": {"V3Score": 7.8}},
+				"References": null,
+				"CWEIDs": null,
+				"VendorIDs": null
 			}]
 		}]
 	}`)
@@ -100,8 +104,35 @@ func TestParseTrivyResultsHandlesObjectEnvelope(t *testing.T) {
 	if records[0].CVSSScore == nil || *records[0].CVSSScore != 7.8 {
 		t.Fatalf("expected CVSS score 7.8, got %v", records[0].CVSSScore)
 	}
+	if records[0].PkgIdentifier != "pkg:deb/ubuntu/openssl@3.0.0" {
+		t.Fatalf("unexpected package identifier: %s", records[0].PkgIdentifier)
+	}
 	if string(records[0].RawJSON) == "" {
 		t.Fatal("expected raw vulnerability JSON to be preserved")
+	}
+}
+
+func TestParseCopiedTrivyReport(t *testing.T) {
+	path := filepath.Join("..", "..", "..", "trivy-vulnerabilities.json")
+	if _, err := os.Stat(path); err != nil {
+		t.Skipf("copied source-of-truth report unavailable: %v", err)
+	}
+
+	records, stats, err := ParseScanFile(path)
+	if err != nil {
+		t.Fatalf("ParseScanFile(real report) returned error: %v", err)
+	}
+	if stats.ResultsFound == 0 {
+		t.Fatal("expected at least one Result in the real report")
+	}
+	if stats.VulnerabilitiesFound == 0 {
+		t.Fatal("expected at least one vulnerability in the real report")
+	}
+	if len(records) == 0 {
+		t.Fatalf("expected valid vulnerability records, got stats %+v", stats)
+	}
+	if records[0].RawJSON == nil || len(records[0].RawJSON) == 0 {
+		t.Fatal("expected original vulnerability JSON to be preserved")
 	}
 }
 

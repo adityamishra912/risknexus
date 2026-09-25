@@ -3,13 +3,8 @@ const API_BASE_URL =
 
 export async function fetchAPI(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : '/' + endpoint}`;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-    ...options,
-  };
+  const isForm = typeof FormData !== 'undefined' && options.body instanceof FormData;
+  const config = { ...options, headers: { ...(isForm ? {} : { 'Content-Type': 'application/json' }), ...options.headers } };
 
   try {
     const response = await fetch(url, config);
@@ -45,6 +40,11 @@ export const apiClient = {
       body: JSON.stringify(body),
     });
   },
+  postForm: (endpoint, formData) => fetchAPI(endpoint, {
+    method: 'POST',
+    body: formData,
+    headers: {},
+  }),
 };
 
 export default apiClient;
