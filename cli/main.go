@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"bytes"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -171,6 +172,27 @@ func start() error {
 
 	fmt.Println("[8/10] Starting FastAPI and Next.js...")
 	if err := compose("up", "-d", "--build"); err != nil { return stageError("application services", err) }
+	root, err := repositoryRoot()
+	if err != nil { return stageError("Docker network discovery", err) }
+	composeFile := filepath.Join(root, "deployment", "docker-compose.yml")
+	configPath, err := filepath.Abs(config.DefaultPath())
+	if err != nil { return stageError("Docker network discovery", err) }
+	subnet, err := dockerNetworkSubnet(root, composeFile, configPath)
+	if err != nil { return stageError("Docker network discovery", err) }
+	fmt.Printf("→ Docker network subnet: %s\n", subnet)
+	var adminRequired *mysqlcheck.AdminCredentialsRequiredError
+	if err := mysqlcheck.EnsureDockerNetworkAccess(context.Background(), value, subnet); err != nil {
+		if !errors.As(err, &adminRequired) { return stageError("MySQL Docker network authorization", err) }
+		fmt.Printf("⚠ %v\n", err)
+		admin, promptErr := promptMySQLAdminCredentials()
+		if promptErr != nil { return stageError("MySQL Docker network authorization", promptErr) }
+		if err := mysqlcheck.ProvisionDockerNetworkAccess(context.Background(), value, subnet, admin); err != nil {
+			admin.Password = ""
+			return stageError("MySQL Docker network authorization", err)
+		}
+		admin.Password = ""
+	}
+	fmt.Println("✓ MySQL access for the CyberNexus Docker network is configured")
 
 	fmt.Println("[9/10] Running health checks...")
 	if err := waitHTTP("http://localhost:8000/", 30); err != nil { return stageError("FastAPI health check", err) }
@@ -201,6 +223,18 @@ func configuredMySQL(path string) (config.MySQLConfig, error) {
 		}
 		return value, nil
 	}
+}
+
+func promptMySQLAdminCredentials() (mysqlcheck.AdminCredentials, error) {
+	fmt.Println("MySQL administrative credentials are required only to authorize the backend Docker network.")
+	username := readLine("MySQL administrative username: ")
+	if username == "" { return mysqlcheck.AdminCredentials{}, errors.New("MySQL administrative username is required") }
+	fmt.Print("MySQL administrative password: ")
+	password, err := readPassword()
+	fmt.Println()
+	if err != nil { return mysqlcheck.AdminCredentials{}, fmt.Errorf("read MySQL administrative password: %w", err) }
+	if len(password) == 0 { return mysqlcheck.AdminCredentials{}, errors.New("MySQL administrative password is required") }
+	return mysqlcheck.AdminCredentials{Username: username, Password: string(password)}, nil
 }
 
 func installDependencies(missing []system.Dependency) error {
@@ -312,6 +346,27 @@ func commandOutputInDir(dir, name string, args ...string) (string, error) {
 	output, err := command.CombinedOutput()
 	if err != nil { return string(output), fmt.Errorf("%s %s failed: %w\nOutput:\n%s", name, strings.Join(args, " "), err, output) }
 	return string(output), nil
+}
+
+func dockerNetworkSubnet(root, composeFile, configPath string) (string, error) {
+	composeArgs := []string{"compose", "--env-file", configPath, "-f", composeFile, "ps", "-q", "backend"}
+	containerIDOutput, err := commandOutputInDir(root, "docker", composeArgs...)
+	if err != nil { return "", err }
+	containerID := strings.TrimSpace(containerIDOutput)
+	if containerID == "" { return "", errors.New("Docker Compose did not return a backend container ID") }
+	networksJSON, err := commandOutput("docker", "inspect", "--format", "{{json .NetworkSettings.Networks}}", containerID)
+	if err != nil { return "", err }
+	var networks map[string]struct{ NetworkID string `json:"NetworkID"` }
+	if err := json.Unmarshal([]byte(strings.TrimSpace(networksJSON)), &networks); err != nil { return "", fmt.Errorf("decode backend Docker networks: %w", err) }
+	for _, network := range networks {
+		if network.NetworkID == "" { continue }
+		ipamJSON, err := commandOutput("docker", "network", "inspect", "--format", "{{json .IPAM.Config}}", network.NetworkID)
+		if err != nil { return "", err }
+		var configs []struct{ Subnet string `json:"Subnet"` }
+		if err := json.Unmarshal([]byte(strings.TrimSpace(ipamJSON)), &configs); err != nil { return "", fmt.Errorf("decode Docker network IPAM: %w", err) }
+		for _, config := range configs { if config.Subnet != "" { return config.Subnet, nil } }
+	}
+	return "", errors.New("Docker backend network has no IPv4 subnet")
 }
 
 func repositoryRoot() (string, error) {

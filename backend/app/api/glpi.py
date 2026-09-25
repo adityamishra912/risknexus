@@ -14,9 +14,9 @@ _IDENTIFIER = re.compile(r"^[A-Za-z0-9_]+$")
 def _connection():
     if not settings.MYSQL_USER or not settings.MYSQL_PASSWORD:
         raise HTTPException(status_code=503, detail="GLPI MySQL is not configured; run cybernexus configure")
+    mysql_host = settings.MYSQL_HOST_CONTAINER or settings.MYSQL_HOST
     try:
         import pymysql
-        mysql_host = settings.MYSQL_HOST_CONTAINER or settings.MYSQL_HOST
         return pymysql.connect(
             host=mysql_host,
             port=settings.MYSQL_PORT,
@@ -36,7 +36,13 @@ def _connection():
 def _tables(connection) -> list[str]:
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT table_name FROM information_schema.tables WHERE table_schema = %s ORDER BY table_name",
+                        """
+                        SELECT TABLE_NAME AS table_name
+                        FROM information_schema.tables
+                        WHERE TABLE_SCHEMA = %s
+                            AND TABLE_TYPE = 'BASE TABLE'
+                        ORDER BY TABLE_NAME
+                        """,
             (settings.MYSQL_DATABASE,),
         )
         return [row["table_name"] for row in cursor.fetchall()]
@@ -45,8 +51,9 @@ def _tables(connection) -> list[str]:
 @router.get("/tables")
 def list_tables() -> dict[str, Any]:
     started = time.perf_counter()
-    connection = _connection()
+    connection = None
     try:
+        connection = _connection()
         tables = _tables(connection)
         return {"database": settings.MYSQL_DATABASE, "tables": tables, "count": len(tables)}
     except HTTPException:
@@ -55,7 +62,8 @@ def list_tables() -> dict[str, Any]:
         logger.exception("Failed to list GLPI tables")
         raise HTTPException(status_code=500, detail="Failed to inspect GLPI tables") from exc
     finally:
-        connection.close()
+        if connection is not None:
+            connection.close()
         logger.info("GET /glpi/tables completed in %.0fms", (time.perf_counter() - started) * 1000)
 
 
@@ -68,8 +76,9 @@ def read_table(
     if not _IDENTIFIER.fullmatch(table_name):
         raise HTTPException(status_code=400, detail="Invalid table name")
     started = time.perf_counter()
-    connection = _connection()
+    connection = None
     try:
+        connection = _connection()
         if table_name not in _tables(connection):
             raise HTTPException(status_code=404, detail=f"GLPI table {table_name!r} was not found")
         offset = (page - 1) * limit
@@ -86,7 +95,8 @@ def read_table(
         logger.exception("Failed to read GLPI table %s page=%s limit=%s", table_name, page, limit)
         raise HTTPException(status_code=500, detail="Failed to read the GLPI table") from exc
     finally:
-        connection.close()
+        if connection is not None:
+            connection.close()
         logger.info("GET /glpi/tables/%s completed in %.0fms", table_name, (time.perf_counter() - started) * 1000)
 
 

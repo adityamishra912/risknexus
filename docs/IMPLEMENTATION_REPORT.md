@@ -37,7 +37,8 @@ The browser never receives database credentials and never connects directly to M
 9. Install the GLPI Agent package if missing, write `/etc/glpi-agent/agent.cfg`, enable/start its systemd service, and run `glpi-agent --debug --force`.
 10. Count `glpi_computers`, `glpi_softwares`, and `glpi_softwareversions`. Startup fails if no computers were received.
 11. Build/start the FastAPI and Next.js Compose services.
-12. Check FastAPI, Next.js, and Compose service health, then print local URLs.
+12. Inspect the running backend container's actual Docker network subnet and ensure the configured MySQL user has restricted read access from that network without altering `user@localhost`.
+13. Check FastAPI, Next.js, and Compose service health, then print local URLs.
 
 Existing GLPI files and a database containing GLPI tables are reused. Database initialization is skipped in that case.
 
@@ -103,6 +104,10 @@ Table names are validated against `information_schema.tables` and an identifier 
 `/glpi-data` discovers all tables dynamically and renders selected columns and rows with bounded requests. Existing CRQ routes and the Data Sources page remain unchanged; the sidebar adds GLPI Data and the page includes `Main | GLPI Data | Assets`.
 
 `deployment/docker-compose.yml` builds the existing backend and frontend. MySQL and GLPI stay host-managed to avoid creating a conflicting second database. Backend Compose configuration uses the generated environment file, maps backend `MYSQL_HOST` from `MYSQL_HOST_CONTAINER`, passes the remaining MySQL variables, and maps `host.docker.internal:host-gateway`. `NEXT_PUBLIC_API_URL` is supplied as a frontend build argument so it is embedded in the Next.js client bundle.
+
+After Compose starts, the CLI discovers the backend container's actual IPAM subnet. It derives an octet-aligned MySQL host pattern such as `172.19.%`, checks `mysql.user`, creates only the restricted network account if absent, and grants database `SELECT` access. It never creates `user@%`, deletes `user@localhost`, or hard-codes a Docker subnet. Non-octet-aligned subnets fail safely rather than being broadened.
+
+The normal GLPI account is not assumed to have administrative privileges. If the restricted account is missing, or the normal account cannot inspect/grant the required access, the CLI prompts for MySQL administrative credentials with hidden password input. Those credentials exist only in memory for the provisioning call, are not added to the protected runtime environment, and are cleared immediately afterward. Existing restricted accounts are not assigned a new password; the CLI only ensures their database `SELECT` grant. New-user DDL uses a safely escaped MySQL string literal because the password is not passed as a DDL parameter marker.
 
 ## Development Commands
 
