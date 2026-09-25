@@ -1,0 +1,5 @@
+[33m11332ee[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Ignore generated Trivy scan output
+[33mad2a97a[m[33m ([m[1;32mbackup-before-trivy-cleanup[m[33m)[m go 14
+[33m2d0d4e2[m go 13
+[33m8e9bb00[m[33m ([m[1;31mGO/main[m[33m)[m go 12
+[33md76c92a[m go 11
