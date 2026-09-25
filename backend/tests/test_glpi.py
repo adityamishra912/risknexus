@@ -30,7 +30,14 @@ class FakeCursor:
         return self.rows
 
     def fetchone(self):
-        return self.rows[0]
+        if not self.rows:
+            return {}
+        row = self.rows[0]
+        if isinstance(row, dict) and "total" in row:
+            return row
+        if self.executed and "COUNT(*) AS total" in self.executed[-1][0]:
+            return {"total": len(self.rows)}
+        return row
 
 
 class FakeConnection:

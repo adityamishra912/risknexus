@@ -20,6 +20,7 @@ import (
 	mysqlcheck "github.com/cybernexus/cli/internal/mysql"
 	"github.com/cybernexus/cli/internal/glpi"
 	"github.com/cybernexus/cli/internal/system"
+	"github.com/cybernexus/cli/internal/trivy"
 	"golang.org/x/term"
 )
 
@@ -170,7 +171,23 @@ func start() error {
 	if counts.Computers == 0 { return stageError("inventory verification", errors.New("no computer inventory was received; inspect glpi-agent and Apache logs")) }
 	fmt.Printf("✓ Computers: %d\n✓ Software: %d\n✓ Software versions: %d\n", counts.Computers, counts.Softwares, counts.SoftwareVersions)
 
-	fmt.Println("[8/10] Starting FastAPI and Next.js...")
+	fmt.Println("[8/10] Running Trivy vulnerability scan...")
+	if _, err := exec.LookPath("trivy"); err != nil { return stageError("Trivy detection", errors.New("Trivy executable not found.")) }
+	if err := runCommand("/", "sudo", "trivy", "fs", "--scanners", "vuln", "--offline-scan", "--skip-dirs", "/var/lib/containerd", "--format", "json", "--output", "/tmp/trivy-vulnerabilities.json", "/"); err != nil { return stageError("Trivy scan", err) }
+	if _, err := os.Stat("/tmp/trivy-vulnerabilities.json"); err != nil { return stageError("Trivy scan", errors.New("[Trivy] Scan completed but JSON output was not found.")) }
+	if err := mysqlcheck.EnsureTrivyTable(context.Background(), value); err != nil { return stageError("Trivy table setup", err) }
+	records, err := trivy.ParseScanFile("/tmp/trivy-vulnerabilities.json")
+	if err != nil { return stageError("Trivy JSON parsing", err) }
+	count, err := mysqlcheck.ImportTrivyVulnerabilities(context.Background(), value, records)
+	if err != nil { return stageError("Trivy MySQL import", err) }
+	fmt.Printf("✓ Imported %d Trivy vulnerabilities into MySQL\n", count)
+	if err := os.Remove("/tmp/trivy-vulnerabilities.json"); err != nil {
+		fmt.Printf("⚠ Database import succeeded but temporary Trivy JSON cleanup failed: %v\n", err)
+	} else {
+		fmt.Println("✓ Temporary Trivy JSON deleted")
+	}
+
+	fmt.Println("[9/10] Starting FastAPI and Next.js...")
 	if err := compose("up", "-d", "--build"); err != nil { return stageError("application services", err) }
 	root, err := repositoryRoot()
 	if err != nil { return stageError("Docker network discovery", err) }
@@ -194,7 +211,7 @@ func start() error {
 	}
 	fmt.Println("✓ MySQL access for the CyberNexus Docker network is configured")
 
-	fmt.Println("[9/10] Running health checks...")
+	fmt.Println("[10/10] Running health checks...")
 	if err := waitHTTP("http://localhost:8000/", 30); err != nil { return stageError("FastAPI health check", err) }
 	if err := waitHTTP("http://localhost:3000/", 30); err != nil { return stageError("Next.js health check", err) }
 	if err := checkDockerServices(); err != nil { return stageError("Docker service health check", err) }
