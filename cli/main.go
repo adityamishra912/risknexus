@@ -172,6 +172,7 @@ func start() error {
 	fmt.Printf("✓ Computers: %d\n✓ Software: %d\n✓ Software versions: %d\n", counts.Computers, counts.Softwares, counts.SoftwareVersions)
 
 	fmt.Println("[8/10] Importing existing Trivy vulnerability results...")
+	fmt.Println("[Trivy] Using Trivy JSON importer v2")
 	trivyPath := trivy.TempOutputPath
 	fmt.Printf("[Trivy] Using existing scan result:\n%s\n", trivyPath)
 	data, err := trivy.LoadTrivyJSON(trivyPath)
@@ -179,9 +180,10 @@ func start() error {
 	fmt.Println("[Trivy] JSON loaded successfully")
 	records, parseStats, err := trivy.ParseTrivyResultsWithStats(data)
 	if err != nil { return stageError("Trivy JSON parsing", err) }
+	if parseStats.TrivyVersion != "" { fmt.Printf("[Trivy] Trivy version in report: %s\n", parseStats.TrivyVersion) }
 	fmt.Printf("[Trivy] Results found: %d\n", parseStats.ResultsFound)
 	fmt.Printf("[Trivy] Vulnerabilities found: %d\n", parseStats.VulnerabilitiesFound)
-	if parseStats.Skipped > 0 { fmt.Printf("[Trivy] Skipped: %d vulnerabilities without an identifier\n", parseStats.Skipped) }
+	fmt.Printf("[Trivy] Records skipped: %d (missing ID: %d, invalid: %d, duplicate: %d)\n", parseStats.Skipped, parseStats.MissingVulnerabilityID, parseStats.InvalidRecord, parseStats.Duplicate)
 	if err := mysqlcheck.EnsureTrivyTable(context.Background(), value); err != nil { return stageError("Trivy table setup", err) }
 	fmt.Println("[Trivy] MySQL table ready")
 	count, err := mysqlcheck.ImportTrivyVulnerabilities(context.Background(), value, records)
@@ -190,9 +192,9 @@ func start() error {
 	verification, err := mysqlcheck.VerifyTrivyImport(context.Background(), value)
 	if err != nil { return stageError("Trivy import verification", err) }
 	fmt.Printf("[Trivy] SELECT COUNT(*) FROM trivy_vulnerabilities: %d\n", verification.Total)
-	fmt.Println("[Trivy] Sample: vulnerability_id, asset_id, cve_id, severity, cvss_score")
+	fmt.Println("[Trivy] Sample: vulnerability_id, target, package_name, installed_version, severity")
 	for _, sample := range verification.Sample {
-		fmt.Printf("[Trivy] %s, %s, %s, %s, %v\n", sample.VulnerabilityID, sample.Target, sample.CVEID, sample.Severity, sample.CVSSScore)
+		fmt.Printf("[Trivy] %s, %s, %s, %s, %s\n", sample.VulnerabilityID, sample.Target, sample.PackageName, sample.InstalledVersion, sample.Severity)
 	}
 
 	fmt.Println("[9/10] Starting FastAPI and Next.js...")

@@ -47,15 +47,16 @@ func EnsureTrivyTable(ctx context.Context, value config.MySQLConfig) error {
 	if _, err := db.ExecContext(ctx, trivyVulnerabilitiesSchema); err != nil {
 		return fmt.Errorf("create trivy_vulnerabilities table: %w", err)
 	}
-	var uniqueIndexExists int
+	var needsIndexMigration int
 	if err := db.QueryRowContext(ctx, `SELECT COUNT(*)
 		FROM information_schema.statistics
 		WHERE table_schema = DATABASE()
 		  AND table_name = 'trivy_vulnerabilities'
-		  AND index_name = 'uq_trivy_vulnerability'`).Scan(&uniqueIndexExists); err != nil {
+		  AND index_name = 'uq_trivy_vulnerability'
+		  AND sub_part IS NULL`).Scan(&needsIndexMigration); err != nil {
 		return fmt.Errorf("inspect trivy_vulnerabilities indexes: %w", err)
 	}
-	if uniqueIndexExists > 0 {
+	if needsIndexMigration > 0 {
 		if _, err := db.ExecContext(ctx, `ALTER TABLE trivy_vulnerabilities
 			DROP INDEX uq_trivy_vulnerability,
 			ADD UNIQUE KEY uq_trivy_vulnerability (target(191), vulnerability_id, package_name(191), installed_version(191))`); err != nil {
@@ -176,9 +177,9 @@ type TrivyImportVerification struct {
 	Sample []struct {
 		VulnerabilityID string
 		Target          string
-		CVEID           string
+		PackageName     string
+		InstalledVersion string
 		Severity        string
-		CVSSScore       interface{}
 	}
 }
 
@@ -192,11 +193,11 @@ func VerifyTrivyImport(ctx context.Context, value config.MySQLConfig) (TrivyImpo
 	if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM trivy_vulnerabilities").Scan(&verification.Total); err != nil {
 		return TrivyImportVerification{}, fmt.Errorf("count imported Trivy vulnerabilities: %w", err)
 	}
-	rows, err := db.QueryContext(ctx, `SELECT vulnerability_id AS vulnerability_id,
-		target AS asset_id,
-		vulnerability_id AS cve_id,
-		severity,
-		NULL AS cvss_score
+	rows, err := db.QueryContext(ctx, `SELECT vulnerability_id,
+		target,
+		package_name,
+		installed_version,
+		severity
 		FROM trivy_vulnerabilities ORDER BY id LIMIT 10`)
 	if err != nil {
 		return TrivyImportVerification{}, fmt.Errorf("sample imported Trivy vulnerabilities: %w", err)
@@ -206,11 +207,11 @@ func VerifyTrivyImport(ctx context.Context, value config.MySQLConfig) (TrivyImpo
 		var sample struct {
 			VulnerabilityID string
 			Target          string
-			CVEID           string
+			PackageName     string
+			InstalledVersion string
 			Severity        string
-			CVSSScore       interface{}
 		}
-		if err := rows.Scan(&sample.VulnerabilityID, &sample.Target, &sample.CVEID, &sample.Severity, &sample.CVSSScore); err != nil {
+		if err := rows.Scan(&sample.VulnerabilityID, &sample.Target, &sample.PackageName, &sample.InstalledVersion, &sample.Severity); err != nil {
 			return TrivyImportVerification{}, fmt.Errorf("read sampled Trivy vulnerability: %w", err)
 		}
 		verification.Sample = append(verification.Sample, sample)
