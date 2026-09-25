@@ -63,3 +63,36 @@ func TestParseScanFileRejectsMalformedJSON(t *testing.T) {
 	}
 }
 
+func TestParseTrivyResultsHandlesObjectEnvelope(t *testing.T) {
+	data := []byte(`{
+		"SchemaVersion": 2,
+		"ArtifactName": "/",
+		"ArtifactType": "filesystem",
+		"Results": [{
+			"Target": "ubuntu:22.04",
+			"Class": "os-pkgs",
+			"Type": "ubuntu",
+			"Vulnerabilities": [{
+				"VulnerabilityID": "CVE-2024-0001",
+				"PkgName": "openssl",
+				"InstalledVersion": "3.0.0",
+				"Severity": "HIGH"
+			}]
+		}]
+	}`)
+
+	records, stats, err := ParseTrivyResultsWithStats(data)
+	if err != nil {
+		t.Fatalf("ParseTrivyResultsWithStats returned error: %v", err)
+	}
+	if stats.ResultsFound != 1 || stats.VulnerabilitiesFound != 1 || stats.Skipped != 0 {
+		t.Fatalf("unexpected parse stats: %+v", stats)
+	}
+	if len(records) != 1 || records[0].VulnerabilityID != "CVE-2024-0001" {
+		t.Fatalf("unexpected records: %+v", records)
+	}
+	if string(records[0].RawJSON) == "" {
+		t.Fatal("expected raw vulnerability JSON to be preserved")
+	}
+}
+

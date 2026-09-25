@@ -177,9 +177,11 @@ func start() error {
 	data, err := trivy.LoadTrivyJSON(trivyPath)
 	if err != nil { return stageError("Trivy JSON loading", err) }
 	fmt.Println("[Trivy] JSON loaded successfully")
-	records, err := trivy.ParseTrivyResults(data)
+	records, parseStats, err := trivy.ParseTrivyResultsWithStats(data)
 	if err != nil { return stageError("Trivy JSON parsing", err) }
-	fmt.Printf("[Trivy] Vulnerabilities found: %d\n", len(records))
+	fmt.Printf("[Trivy] Results found: %d\n", parseStats.ResultsFound)
+	fmt.Printf("[Trivy] Vulnerabilities found: %d\n", parseStats.VulnerabilitiesFound)
+	if parseStats.Skipped > 0 { fmt.Printf("[Trivy] Skipped: %d vulnerabilities without an identifier\n", parseStats.Skipped) }
 	if err := mysqlcheck.EnsureTrivyTable(context.Background(), value); err != nil { return stageError("Trivy table setup", err) }
 	fmt.Println("[Trivy] MySQL table ready")
 	count, err := mysqlcheck.ImportTrivyVulnerabilities(context.Background(), value, records)
