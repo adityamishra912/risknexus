@@ -4,6 +4,9 @@
 .env.*
 !.env.example
 
+# Generated Trivy scan output
+trivy-vulnerabilities.json
+
 # Python (Backend)
 __pycache__/
 *.py[cod]
