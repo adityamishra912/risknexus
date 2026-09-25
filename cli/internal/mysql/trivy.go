@@ -15,24 +15,24 @@ import (
 const trivyVulnerabilitiesSchema = `
 CREATE TABLE IF NOT EXISTS trivy_vulnerabilities (
     id BIGINT NOT NULL AUTO_INCREMENT,
-    target VARCHAR(512) NULL,
-    type VARCHAR(128) NULL,
-    vulnerability_id VARCHAR(255) NULL,
+	target VARCHAR(255) NULL,
+	type VARCHAR(64) NULL,
+	vulnerability_id VARCHAR(128) NULL,
     package_name VARCHAR(255) NULL,
     installed_version VARCHAR(255) NULL,
     fixed_version VARCHAR(255) NULL,
-    status VARCHAR(64) NULL,
-    severity VARCHAR(64) NULL,
+	status VARCHAR(32) NULL,
+	severity VARCHAR(32) NULL,
     title TEXT NULL,
     description TEXT NULL,
-    primary_url VARCHAR(1024) NULL,
+	primary_url VARCHAR(512) NULL,
     published_date DATETIME NULL,
     last_modified_date DATETIME NULL,
-    package_identifier VARCHAR(1024) NULL,
+	package_identifier VARCHAR(512) NULL,
     raw_json JSON NULL,
     collected_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE KEY uq_trivy_vulnerability (target, vulnerability_id, package_name, installed_version),
+	UNIQUE KEY uq_trivy_vulnerability (target(191), vulnerability_id, package_name(191), installed_version(191)),
     KEY idx_trivy_target (target),
     KEY idx_trivy_severity (severity),
     KEY idx_trivy_package (package_name)
@@ -46,6 +46,21 @@ func EnsureTrivyTable(ctx context.Context, value config.MySQLConfig) error {
 	defer db.Close()
 	if _, err := db.ExecContext(ctx, trivyVulnerabilitiesSchema); err != nil {
 		return fmt.Errorf("create trivy_vulnerabilities table: %w", err)
+	}
+	var uniqueIndexExists int
+	if err := db.QueryRowContext(ctx, `SELECT COUNT(*)
+		FROM information_schema.statistics
+		WHERE table_schema = DATABASE()
+		  AND table_name = 'trivy_vulnerabilities'
+		  AND index_name = 'uq_trivy_vulnerability'`).Scan(&uniqueIndexExists); err != nil {
+		return fmt.Errorf("inspect trivy_vulnerabilities indexes: %w", err)
+	}
+	if uniqueIndexExists > 0 {
+		if _, err := db.ExecContext(ctx, `ALTER TABLE trivy_vulnerabilities
+			DROP INDEX uq_trivy_vulnerability,
+			ADD UNIQUE KEY uq_trivy_vulnerability (target(191), vulnerability_id, package_name(191), installed_version(191))`); err != nil {
+			return fmt.Errorf("migrate trivy_vulnerabilities uniqueness index: %w", err)
+		}
 	}
 	return nil
 }
@@ -104,7 +119,9 @@ func ImportTrivyVulnerabilities(ctx context.Context, value config.MySQLConfig, r
 		raw_json = VALUES(raw_json),
 		collected_at = NOW()`
 	for _, record := range records {
-		rawJSON, err := json.Marshal(map[string]any{
+		rawJSON := record.RawJSON
+		if len(rawJSON) == 0 {
+			rawJSON, err = json.Marshal(map[string]any{
 			"vulnerability_id": record.VulnerabilityID,
 			"pkg_name": record.PkgName,
 			"installed_version": record.InstalledVersion,
@@ -120,7 +137,8 @@ func ImportTrivyVulnerabilities(ctx context.Context, value config.MySQLConfig, r
 			"pkg_identifier": record.PkgIdentifier,
 			"target": record.Target,
 			"type": record.Type,
-		})
+			})
+		}
 		if err != nil {
 			return 0, fmt.Errorf("marshal Trivy raw JSON: %w", err)
 		}
@@ -151,6 +169,56 @@ func ImportTrivyVulnerabilities(ctx context.Context, value config.MySQLConfig, r
 		return 0, fmt.Errorf("commit Trivy import: %w", err)
 	}
 	return len(records), nil
+}
+
+type TrivyImportVerification struct {
+	Total int
+	Sample []struct {
+		VulnerabilityID string
+		Target          string
+		CVEID           string
+		Severity        string
+		CVSSScore       interface{}
+	}
+}
+
+func VerifyTrivyImport(ctx context.Context, value config.MySQLConfig) (TrivyImportVerification, error) {
+	db, err := openDatabase(value)
+	if err != nil {
+		return TrivyImportVerification{}, fmt.Errorf("open database for Trivy verification: %w", err)
+	}
+	defer db.Close()
+	var verification TrivyImportVerification
+	if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM trivy_vulnerabilities").Scan(&verification.Total); err != nil {
+		return TrivyImportVerification{}, fmt.Errorf("count imported Trivy vulnerabilities: %w", err)
+	}
+	rows, err := db.QueryContext(ctx, `SELECT vulnerability_id AS vulnerability_id,
+		target AS asset_id,
+		vulnerability_id AS cve_id,
+		severity,
+		NULL AS cvss_score
+		FROM trivy_vulnerabilities ORDER BY id LIMIT 10`)
+	if err != nil {
+		return TrivyImportVerification{}, fmt.Errorf("sample imported Trivy vulnerabilities: %w", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var sample struct {
+			VulnerabilityID string
+			Target          string
+			CVEID           string
+			Severity        string
+			CVSSScore       interface{}
+		}
+		if err := rows.Scan(&sample.VulnerabilityID, &sample.Target, &sample.CVEID, &sample.Severity, &sample.CVSSScore); err != nil {
+			return TrivyImportVerification{}, fmt.Errorf("read sampled Trivy vulnerability: %w", err)
+		}
+		verification.Sample = append(verification.Sample, sample)
+	}
+	if err := rows.Err(); err != nil {
+		return TrivyImportVerification{}, fmt.Errorf("iterate sampled Trivy vulnerabilities: %w", err)
+	}
+	return verification, nil
 }
 
 func parseNullableDate(value string) interface{} {

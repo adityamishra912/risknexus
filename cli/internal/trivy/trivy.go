@@ -4,13 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 )
 
 const TempOutputPath = "/tmp/trivy-vulnerabilities.json"
-
-var exactCommand = []string{"sudo", "trivy", "fs", "--scanners", "vuln", "--offline-scan", "--skip-dirs", "/var/lib/containerd", "--format", "json", "--output", TempOutputPath, "/"}
 
 type Result struct {
 	Target         string                 `json:"Target"`
@@ -37,41 +34,43 @@ type VulnerabilityRecord struct {
 	RawJSON           json.RawMessage `json:"-"`
 }
 
-func BuildCommand() []string { return append([]string(nil), exactCommand...) }
-
-func FileExists() bool {
-	_, err := os.Stat(TempOutputPath)
-	return err == nil
-}
-
-func RunScan() error {
-	if _, err := exec.LookPath("trivy"); err != nil {
-		return fmt.Errorf("Trivy executable not found.")
+func LoadTrivyJSON(path string) ([]byte, error) {
+	if _, err := os.Stat(path); err != nil {
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("[Trivy] Existing Trivy JSON file was not found: %s", path)
+		}
+		return nil, fmt.Errorf("[Trivy] Unable to access existing Trivy JSON file %s: %w", path, err)
 	}
-	cmd := exec.Command(exactCommand[0], exactCommand[1:]...)
-	cmd.Stdout = nil
-	cmd.Stderr = nil
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("[Trivy] Scan failed.")
-	}
-	if !FileExists() {
-		return fmt.Errorf("[Trivy] Scan completed but JSON output was not found.")
-	}
-	return nil
-}
-
-func ParseScanFile(path string) ([]VulnerabilityRecord, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("[Trivy] Failed to parse scan result.")
+		return nil, fmt.Errorf("[Trivy] Failed to read existing Trivy JSON file %s: %w", path, err)
 	}
-	var results []Result
+	return data, nil
+}
+func ParseScanFile(path string) ([]VulnerabilityRecord, error) {
+	data, err := LoadTrivyJSON(path)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTrivyResults(data)
+}
+
+func ParseTrivyResults(data []byte) ([]VulnerabilityRecord, error) {
+	var results []struct {
+		Target         string            `json:"Target"`
+		Class          string            `json:"Class"`
+		Vulnerabilities []json.RawMessage `json:"Vulnerabilities"`
+	}
 	if err := json.Unmarshal(data, &results); err != nil {
-		return nil, fmt.Errorf("[Trivy] Failed to parse scan result.")
+		return nil, fmt.Errorf("[Trivy] Failed to parse existing scan result: %w", err)
 	}
 	var records []VulnerabilityRecord
 	for _, result := range results {
-		for _, vuln := range result.Vulnerabilities {
+		for _, rawVulnerability := range result.Vulnerabilities {
+			var vuln VulnerabilityRecord
+			if err := json.Unmarshal(rawVulnerability, &vuln); err != nil {
+				return nil, fmt.Errorf("[Trivy] Failed to parse vulnerability record: %w", err)
+			}
 			copyRecord := vuln
 			if copyRecord.Target == "" {
 				copyRecord.Target = result.Target
@@ -79,11 +78,7 @@ func ParseScanFile(path string) ([]VulnerabilityRecord, error) {
 			if copyRecord.Type == "" {
 				copyRecord.Type = result.Class
 			}
-			if copyRecord.RawJSON == nil {
-				if raw, marshalErr := json.Marshal(vuln); marshalErr == nil {
-					copyRecord.RawJSON = raw
-				}
-			}
+			copyRecord.RawJSON = append(json.RawMessage(nil), rawVulnerability...)
 			if strings.TrimSpace(copyRecord.VulnerabilityID) == "" {
 				continue
 			}

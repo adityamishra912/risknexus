@@ -63,15 +63,3 @@ func TestParseScanFileRejectsMalformedJSON(t *testing.T) {
 	}
 }
 
-func TestBuildCommandUsesExactScanConfiguration(t *testing.T) {
-	cmd := BuildCommand()
-	if len(cmd) == 0 {
-		t.Fatal("empty command")
-	}
-	want := []string{"sudo", "trivy", "fs", "--scanners", "vuln", "--offline-scan", "--skip-dirs", "/var/lib/containerd", "--format", "json", "--output", "/tmp/trivy-vulnerabilities.json", "/"}
-	for i, part := range want {
-		if cmd[i] != part {
-			t.Fatalf("command mismatch at index %d: want %q got %q", i, part, cmd[i])
-		}
-	}
-}

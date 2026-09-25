@@ -171,20 +171,26 @@ func start() error {
 	if counts.Computers == 0 { return stageError("inventory verification", errors.New("no computer inventory was received; inspect glpi-agent and Apache logs")) }
 	fmt.Printf("✓ Computers: %d\n✓ Software: %d\n✓ Software versions: %d\n", counts.Computers, counts.Softwares, counts.SoftwareVersions)
 
-	fmt.Println("[8/10] Running Trivy vulnerability scan...")
-	if _, err := exec.LookPath("trivy"); err != nil { return stageError("Trivy detection", errors.New("Trivy executable not found.")) }
-	if err := runCommand("/", "sudo", "trivy", "fs", "--scanners", "vuln", "--offline-scan", "--skip-dirs", "/var/lib/containerd", "--format", "json", "--output", "/tmp/trivy-vulnerabilities.json", "/"); err != nil { return stageError("Trivy scan", err) }
-	if _, err := os.Stat("/tmp/trivy-vulnerabilities.json"); err != nil { return stageError("Trivy scan", errors.New("[Trivy] Scan completed but JSON output was not found.")) }
-	if err := mysqlcheck.EnsureTrivyTable(context.Background(), value); err != nil { return stageError("Trivy table setup", err) }
-	records, err := trivy.ParseScanFile("/tmp/trivy-vulnerabilities.json")
+	fmt.Println("[8/10] Importing existing Trivy vulnerability results...")
+	trivyPath := trivy.TempOutputPath
+	fmt.Printf("[Trivy] Using existing scan result:\n%s\n", trivyPath)
+	data, err := trivy.LoadTrivyJSON(trivyPath)
+	if err != nil { return stageError("Trivy JSON loading", err) }
+	fmt.Println("[Trivy] JSON loaded successfully")
+	records, err := trivy.ParseTrivyResults(data)
 	if err != nil { return stageError("Trivy JSON parsing", err) }
+	fmt.Printf("[Trivy] Vulnerabilities found: %d\n", len(records))
+	if err := mysqlcheck.EnsureTrivyTable(context.Background(), value); err != nil { return stageError("Trivy table setup", err) }
+	fmt.Println("[Trivy] MySQL table ready")
 	count, err := mysqlcheck.ImportTrivyVulnerabilities(context.Background(), value, records)
 	if err != nil { return stageError("Trivy MySQL import", err) }
-	fmt.Printf("✓ Imported %d Trivy vulnerabilities into MySQL\n", count)
-	if err := os.Remove("/tmp/trivy-vulnerabilities.json"); err != nil {
-		fmt.Printf("⚠ Database import succeeded but temporary Trivy JSON cleanup failed: %v\n", err)
-	} else {
-		fmt.Println("✓ Temporary Trivy JSON deleted")
+	fmt.Printf("[Trivy] Imported: %d vulnerabilities\n", count)
+	verification, err := mysqlcheck.VerifyTrivyImport(context.Background(), value)
+	if err != nil { return stageError("Trivy import verification", err) }
+	fmt.Printf("[Trivy] SELECT COUNT(*) FROM trivy_vulnerabilities: %d\n", verification.Total)
+	fmt.Println("[Trivy] Sample: vulnerability_id, asset_id, cve_id, severity, cvss_score")
+	for _, sample := range verification.Sample {
+		fmt.Printf("[Trivy] %s, %s, %s, %s, %v\n", sample.VulnerabilityID, sample.Target, sample.CVEID, sample.Severity, sample.CVSSScore)
 	}
 
 	fmt.Println("[9/10] Starting FastAPI and Next.js...")
