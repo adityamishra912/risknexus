@@ -1,8 +1,8 @@
 package main
 
 import (
-	"context"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"flag"
@@ -11,15 +11,18 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"os/signal"
 	"path/filepath"
 	"runtime"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/cybernexus/cli/internal/config"
 	mysqlcheck "github.com/cybernexus/cli/internal/mysql"
 	"github.com/cybernexus/cli/internal/glpi"
 	"github.com/cybernexus/cli/internal/system"
+	"github.com/cybernexus/cli/internal/ui"
 	"golang.org/x/term"
 )
 
@@ -30,11 +33,14 @@ func main() {
 	flag.BoolVar(&debug, "debug", false, "show command output and diagnostic details")
 	flag.Parse()
 	if flag.NArg() == 0 { usage(); os.Exit(2) }
+	commandName := flag.Arg(0)
+	longRunning := commandName == "install" || commandName == "start"
+	if longRunning || commandName == "configure" { ui.Welcome() }
 	if debug {
 		fmt.Printf("[DEBUG] OS=%s ARCH=%s CWD=%s\n", runtime.GOOS, runtime.GOARCH, currentDirectory())
 	}
 	var err error
-	switch flag.Arg(0) {
+	switch commandName {
 	case "configure": err = configure()
 	case "install", "start": err = start()
 	case "status": err = status()
@@ -42,7 +48,8 @@ func main() {
 	case "logs": err = compose("logs", "--tail=100")
 	default: err = fmt.Errorf("unknown command %q", flag.Arg(0))
 	}
-	if err != nil { fmt.Fprintf(os.Stderr, "✗ ERROR: %v\n", err); os.Exit(1) }
+	if err != nil { ui.Error(err.Error()); os.Exit(1) }
+	if longRunning { waitForShutdown() }
 }
 
 func usage() {
@@ -52,8 +59,8 @@ func usage() {
 
 func configure() error {
 	path := config.DefaultPath()
-	fmt.Println("CyberNexus MySQL Configuration")
-	fmt.Printf("Configuration file: %s\n\n", path)
+	ui.Step("CyberNexus MySQL Configuration")
+	ui.Info(fmt.Sprintf("Configuration file: %s", path))
 	var existing *config.MySQLConfig
 	if current, err := config.Load(path); err == nil { existing = &current }
 	for {
@@ -67,50 +74,57 @@ func configure() error {
 		value.GLPIInventoryURL = browserURLs.GLPIInventoryURL
 		value.NextPublicAPIURL = browserURLs.NextPublicAPIURL
 		value.MySQLHostContainer = "host.docker.internal"
-		fmt.Println("\n→ Testing MySQL connection...")
+		fmt.Println()
+		ui.Info("Testing MySQL connection")
 		result, err := mysqlcheck.Check(context.Background(), value)
 		if err != nil {
-			fmt.Printf("✗ MySQL connection failed\nHost: %s\nPort: %d\nDatabase: %s\nUsername: %s\nError: %v\n", value.Host, value.Port, value.Database, value.Username, err)
+			ui.Error(fmt.Sprintf("MySQL connection failed\nHost: %s\nPort: %d\nDatabase: %s\nUsername: %s\nError: %v", value.Host, value.Port, value.Database, value.Username, err))
 			if !askYesNo("Retry configuration? [Y/n]: ", true) { return errors.New("MySQL configuration was not saved") }
 			existing = &value
 			continue
 		}
 		if !result.DatabaseExists {
-			fmt.Printf("✓ Connected to MySQL\n⚠ Database %q does not exist.\n1. Create database\n2. Enter a different database\n3. Exit\n", value.Database)
+			ui.Success("Connected to MySQL")
+			ui.Warning(fmt.Sprintf("Database %q does not exist.", value.Database))
+			fmt.Println("1. Create database\n2. Enter a different database\n3. Exit")
 			choice := readLine("Select an option [1]: ")
 			if choice == "2" { existing = &value; continue }
 			if choice != "1" { return errors.New("database does not exist; configuration was not saved") }
 			if err := mysqlcheck.CreateDatabase(context.Background(), value); err != nil { return err }
 			result.DatabaseExists = true
 		}
-		if !result.LooksLikeGLPI { fmt.Printf("⚠ Database %q does not currently contain expected GLPI tables; continuing is allowed for a new GLPI installation.\n", value.Database) }
+		if !result.LooksLikeGLPI { ui.Warning(fmt.Sprintf("Database %q does not currently contain expected GLPI tables; continuing is allowed for a new GLPI installation.", value.Database)) }
 		if err := config.Save(path, value); err != nil { return err }
-		fmt.Printf("✓ MySQL connection successful\n✓ Configuration saved securely at %s\n", path)
+		ui.Success("MySQL connection successful")
+		ui.Success(fmt.Sprintf("Configuration saved securely at %s", path))
 		return nil
 	}
 }
 
 func start() error {
-	fmt.Println("CyberNexus Startup")
-	fmt.Println("[1/9] Detecting system...")
+	ui.Step("[1/9] Detecting system")
 	info, err := system.Detect()
 	if err != nil { return err }
-	fmt.Printf("✓ %s %s\n✓ %s\n✓ %s RAM\n✓ %s available disk space\n✓ Elevated privileges available\n", info.Distribution, info.Version, info.Architecture, info.RAMGB, info.DiskGB)
+	ui.Success(fmt.Sprintf("%s %s detected", info.Distribution, info.Version))
+	ui.Success(info.Architecture + " architecture detected")
+	ui.Success(info.RAMGB + " RAM available")
+	ui.Success(info.DiskGB + " available disk space")
+	ui.Success("Elevated privileges available")
 
-	fmt.Println("[2/9] Checking dependencies...")
+	ui.Step("[2/9] Checking dependencies")
 	dependencies := system.Dependencies()
 	missing := system.Missing(dependencies)
 	for _, dependency := range dependencies {
-		if containsDependency(missing, dependency.Name) { fmt.Printf("✗ %-22s missing (required: %s)\n", dependency.Name, dependency.Required) } else { fmt.Printf("✓ %-22s installed (required: %s)\n", dependency.Name, dependency.Required) }
+		if containsDependency(missing, dependency.Name) { ui.Warning(fmt.Sprintf("%s missing (required: %s)", dependency.Name, dependency.Required)) } else { ui.Success(fmt.Sprintf("%s detected", dependency.Name)) }
 	}
 	if len(missing) > 0 {
-		fmt.Println("The following required components are missing:")
+		ui.Warning("The following required components are missing:")
 		for _, dependency := range missing { fmt.Printf("- %s\n", dependency.Name) }
 		if !askYesNo("Install these components now? [y/N]: ", false) { return errors.New("installation cancelled by user; no dependency changes were made") }
 		if err := installDependencies(missing); err != nil { return stageError("dependency installation", err) }
 	}
 
-	fmt.Println("[3/9] Configuring MySQL...")
+	ui.Step("[3/9] Configuring MySQL")
 	path := config.DefaultPath()
 	value, err := configuredMySQL(path)
 	if err != nil { return stageError("MySQL configuration", err) }
@@ -132,17 +146,17 @@ func start() error {
 	value.GLPIURL = settings.URL
 	value.GLPIInventoryURL = settings.InventoryURL
 	if err := config.Save(path, value); err != nil { return stageError("environment configuration", err) }
-	fmt.Printf("✓ Secure configuration saved at %s\n", path)
+	ui.Success(fmt.Sprintf("Secure configuration saved at %s", path))
 
-	fmt.Println("[4/9] Configuring GLPI...")
+	ui.Step("[4/9] Configuring GLPI")
 	databaseState, err := mysqlcheck.Check(context.Background(), value)
 	if err != nil { return stageError("GLPI database inspection", err) }
 	if !glpi.Detect(settings) {
-		fmt.Printf("⚠ GLPI was not detected at %s.\n", settings.InstallPath)
+		ui.Warning(fmt.Sprintf("GLPI was not detected at %s.", settings.InstallPath))
 		if !askYesNo("Download and install the configured GLPI release now? [Y/n]: ", true) { return errors.New("GLPI installation cancelled by user") }
 		if err := installGLPI(settings, value, !databaseState.LooksLikeGLPI); err != nil { return stageError("GLPI installation", err) }
 	} else {
-		fmt.Printf("✓ Existing GLPI installation found at %s\n", settings.InstallPath)
+		ui.Success(fmt.Sprintf("Existing GLPI installation found at %s", settings.InstallPath))
 		if !databaseState.LooksLikeGLPI {
 			if err := installGLPI(settings, value, true); err != nil { return stageError("GLPI database initialization", err) }
 		}
@@ -150,27 +164,39 @@ func start() error {
 	if err := configureApache(settings); err != nil { return stageError("Apache configuration", err) }
 	if err := glpi.VerifyHTTP(context.Background(), settings); err != nil { return stageError("GLPI health check", err) }
 
-	fmt.Println("[5/9] Configuring GLPI Inventory...")
-	fmt.Println("→ Checking GLPI inventory configuration")
-	if err := mysqlcheck.ConfigureInventory(context.Background(), value, func(format string, args ...any) { fmt.Printf(format+"\n", args...) }); err != nil {
+	ui.Step("[5/9] Configuring GLPI Inventory")
+	ui.Info("Checking GLPI inventory configuration")
+	if err := mysqlcheck.ConfigureInventory(context.Background(), value, func(format string, args ...any) {
+		message := fmt.Sprintf(format, args...)
+		switch {
+		case strings.HasPrefix(message, "✓ "):
+			ui.Success(strings.TrimPrefix(message, "✓ "))
+		case strings.HasPrefix(message, "→ "):
+			ui.Info(strings.TrimPrefix(message, "→ "))
+		default:
+			fmt.Println(message)
+		}
+	}); err != nil {
 		return stageError("GLPI Inventory configuration", err)
 	}
 
-	fmt.Println("[6/9] Configuring GLPI Agent...")
+	ui.Step("[6/9] Configuring GLPI Agent")
 	if _, err := exec.LookPath("glpi-agent"); err != nil {
 		if err := runCommand("/", "apt-get", "install", "-y", "glpi-agent"); err != nil { return stageError("GLPI Agent installation", err) }
 	}
 	if err := glpi.WriteAgentConfig(settings); err != nil { return stageError("GLPI Agent configuration", err) }
 	if err := runCommand("/", "systemctl", "enable", "--now", "glpi-agent"); err != nil { return stageError("GLPI Agent startup", err) }
 
-	fmt.Println("[7/9] Collecting and verifying inventory...")
+	ui.Step("[7/9] Collecting and verifying inventory")
 	if err := runCommand("/", "glpi-agent", "--debug", "--force"); err != nil { return stageError("inventory collection", err) }
 	counts, err := mysqlcheck.Inventory(context.Background(), value)
 	if err != nil { return stageError("inventory verification", err) }
 	if counts.Computers == 0 { return stageError("inventory verification", errors.New("no computer inventory was received; inspect glpi-agent and Apache logs")) }
-	fmt.Printf("✓ Computers: %d\n✓ Software: %d\n✓ Software versions: %d\n", counts.Computers, counts.Softwares, counts.SoftwareVersions)
+	ui.Success(fmt.Sprintf("Computers: %d", counts.Computers))
+	ui.Success(fmt.Sprintf("Software: %d", counts.Softwares))
+	ui.Success(fmt.Sprintf("Software versions: %d", counts.SoftwareVersions))
 
-	fmt.Println("[8/9] Starting FastAPI and Next.js...")
+	ui.Step("[8/9] Starting FastAPI and Next.js")
 	if err := compose("up", "-d", "--build"); err != nil { return stageError("application services", err) }
 	root, err := repositoryRoot()
 	if err != nil { return stageError("Docker network discovery", err) }
@@ -179,11 +205,11 @@ func start() error {
 	if err != nil { return stageError("Docker network discovery", err) }
 	subnet, err := dockerNetworkSubnet(root, composeFile, configPath)
 	if err != nil { return stageError("Docker network discovery", err) }
-	fmt.Printf("→ Docker network subnet: %s\n", subnet)
+	ui.Info("Docker network subnet: " + subnet)
 	var adminRequired *mysqlcheck.AdminCredentialsRequiredError
 	if err := mysqlcheck.EnsureDockerNetworkAccess(context.Background(), value, subnet); err != nil {
 		if !errors.As(err, &adminRequired) { return stageError("MySQL Docker network authorization", err) }
-		fmt.Printf("⚠ %v\n", err)
+		ui.Warning(err.Error())
 		admin, promptErr := promptMySQLAdminCredentials()
 		if promptErr != nil { return stageError("MySQL Docker network authorization", promptErr) }
 		if err := mysqlcheck.ProvisionDockerNetworkAccess(context.Background(), value, subnet, admin); err != nil {
@@ -192,32 +218,39 @@ func start() error {
 		}
 		admin.Password = ""
 	}
-	fmt.Println("✓ MySQL access for the CyberNexus Docker network is configured")
+	ui.Success("MySQL access for the CyberNexus Docker network is configured")
 
-	fmt.Println("[9/9] Running health checks...")
+	ui.Step("[9/9] Running health checks")
 	if err := waitHTTP("http://localhost:8000/", 30); err != nil { return stageError("FastAPI health check", err) }
 	if err := waitHTTP("http://localhost:3000/", 30); err != nil { return stageError("Next.js health check", err) }
 	if err := checkDockerServices(); err != nil { return stageError("Docker service health check", err) }
 
-	fmt.Println("[9/9] CyberNexus is ready")
-	fmt.Printf("Dashboard: http://%s:3000\nGLPI:     %s\nAPI:      %s\n", value.CyberNexusHost, settings.URL, value.NextPublicAPIURL)
+	ui.Success("All services are healthy")
+	ui.Completion(fmt.Sprintf("http://%s:3000", value.CyberNexusHost), settings.URL, value.NextPublicAPIURL)
 	return nil
+}
+
+func waitForShutdown() {
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+	<-ctx.Done()
+	ui.Info("Shutdown signal received. Exiting CLI.")
 }
 
 func configuredMySQL(path string) (config.MySQLConfig, error) {
 	if current, err := config.Load(path); err == nil {
 		if result, checkErr := mysqlcheck.Check(context.Background(), current); checkErr == nil {
-			if result.DatabaseExists { fmt.Println("✓ Existing MySQL configuration is valid") ; return current, nil }
+			if result.DatabaseExists { ui.Success("Existing MySQL configuration is valid"); return current, nil }
 		}
 	}
 	for {
 		value, err := config.Prompt(os.Stdin, os.Stdout, nil, readPassword)
 		if err != nil { return config.MySQLConfig{}, err }
-		fmt.Println("→ Testing MySQL connection...")
+		ui.Info("Testing MySQL connection")
 		result, err := mysqlcheck.Check(context.Background(), value)
-		if err != nil { fmt.Printf("✗ MySQL connection failed: %v\n", err); if askYesNo("Retry configuration? [Y/n]: ", true) { continue }; return config.MySQLConfig{}, errors.New("MySQL configuration cancelled") }
+		if err != nil { ui.Error(fmt.Sprintf("MySQL connection failed: %v", err)); if askYesNo("Retry configuration? [Y/n]: ", true) { continue }; return config.MySQLConfig{}, errors.New("MySQL configuration cancelled") }
 		if !result.DatabaseExists {
-			fmt.Printf("⚠ Database %q does not exist.\n", value.Database)
+			ui.Warning(fmt.Sprintf("Database %q does not exist.", value.Database))
 			if !askYesNo("Create it? [y/N]: ", false) { return config.MySQLConfig{}, errors.New("database creation declined") }
 			if err := mysqlcheck.CreateDatabase(context.Background(), value); err != nil { return config.MySQLConfig{}, err }
 		}
@@ -274,8 +307,9 @@ func status() error {
 	if err != nil { return fmt.Errorf("load configuration %s: %w", path, err) }
 	result, err := mysqlcheck.Check(context.Background(), value)
 	if err != nil { return err }
-	fmt.Println("CyberNexus Status")
-	fmt.Printf("MySQL           ✓ Connected\nHost            %s\nPort            %d\nDatabase        %s\nUser            %s\nPassword        ********\nGLPI tables     %t\n", value.Host, value.Port, value.Database, value.Username, result.LooksLikeGLPI)
+	ui.Step("CyberNexus Status")
+	ui.Success("MySQL connected")
+	fmt.Printf("Host            %s\nPort            %d\nDatabase        %s\nUser            %s\nPassword        ********\nGLPI tables     %t\n", value.Host, value.Port, value.Database, value.Username, result.LooksLikeGLPI)
 	return nil
 }
 
@@ -296,7 +330,7 @@ func runCommand(dir, name string, args ...string) error {
 
 func runCommandDisplayed(dir string, actual, display []string) error {
 	if len(actual) == 0 { return errors.New("empty command") }
-	fmt.Printf("→ Running: %s\n", strings.Join(display, " "))
+	ui.Info("Running: " + strings.Join(display, " "))
 	command := exec.Command(actual[0], actual[1:]...)
 	command.Dir = dir
 	var stdout, stderr bytes.Buffer
