@@ -20,7 +20,6 @@ import (
 	mysqlcheck "github.com/cybernexus/cli/internal/mysql"
 	"github.com/cybernexus/cli/internal/glpi"
 	"github.com/cybernexus/cli/internal/system"
-	"github.com/cybernexus/cli/internal/trivy"
 	"golang.org/x/term"
 )
 
@@ -93,12 +92,12 @@ func configure() error {
 
 func start() error {
 	fmt.Println("CyberNexus Startup")
-	fmt.Println("[1/10] Detecting system...")
+	fmt.Println("[1/9] Detecting system...")
 	info, err := system.Detect()
 	if err != nil { return err }
 	fmt.Printf("✓ %s %s\n✓ %s\n✓ %s RAM\n✓ %s available disk space\n✓ Elevated privileges available\n", info.Distribution, info.Version, info.Architecture, info.RAMGB, info.DiskGB)
 
-	fmt.Println("[2/10] Checking dependencies...")
+	fmt.Println("[2/9] Checking dependencies...")
 	dependencies := system.Dependencies()
 	missing := system.Missing(dependencies)
 	for _, dependency := range dependencies {
@@ -111,7 +110,7 @@ func start() error {
 		if err := installDependencies(missing); err != nil { return stageError("dependency installation", err) }
 	}
 
-	fmt.Println("[3/10] Configuring MySQL...")
+	fmt.Println("[3/9] Configuring MySQL...")
 	path := config.DefaultPath()
 	value, err := configuredMySQL(path)
 	if err != nil { return stageError("MySQL configuration", err) }
@@ -135,7 +134,7 @@ func start() error {
 	if err := config.Save(path, value); err != nil { return stageError("environment configuration", err) }
 	fmt.Printf("✓ Secure configuration saved at %s\n", path)
 
-	fmt.Println("[4/10] Configuring GLPI...")
+	fmt.Println("[4/9] Configuring GLPI...")
 	databaseState, err := mysqlcheck.Check(context.Background(), value)
 	if err != nil { return stageError("GLPI database inspection", err) }
 	if !glpi.Detect(settings) {
@@ -151,59 +150,27 @@ func start() error {
 	if err := configureApache(settings); err != nil { return stageError("Apache configuration", err) }
 	if err := glpi.VerifyHTTP(context.Background(), settings); err != nil { return stageError("GLPI health check", err) }
 
-	fmt.Println("[5/10] Configuring GLPI Inventory...")
+	fmt.Println("[5/9] Configuring GLPI Inventory...")
 	fmt.Println("→ Checking GLPI inventory configuration")
 	if err := mysqlcheck.ConfigureInventory(context.Background(), value, func(format string, args ...any) { fmt.Printf(format+"\n", args...) }); err != nil {
 		return stageError("GLPI Inventory configuration", err)
 	}
 
-	fmt.Println("[6/10] Configuring GLPI Agent...")
+	fmt.Println("[6/9] Configuring GLPI Agent...")
 	if _, err := exec.LookPath("glpi-agent"); err != nil {
 		if err := runCommand("/", "apt-get", "install", "-y", "glpi-agent"); err != nil { return stageError("GLPI Agent installation", err) }
 	}
 	if err := glpi.WriteAgentConfig(settings); err != nil { return stageError("GLPI Agent configuration", err) }
 	if err := runCommand("/", "systemctl", "enable", "--now", "glpi-agent"); err != nil { return stageError("GLPI Agent startup", err) }
 
-	fmt.Println("[7/10] Collecting and verifying inventory...")
+	fmt.Println("[7/9] Collecting and verifying inventory...")
 	if err := runCommand("/", "glpi-agent", "--debug", "--force"); err != nil { return stageError("inventory collection", err) }
 	counts, err := mysqlcheck.Inventory(context.Background(), value)
 	if err != nil { return stageError("inventory verification", err) }
 	if counts.Computers == 0 { return stageError("inventory verification", errors.New("no computer inventory was received; inspect glpi-agent and Apache logs")) }
 	fmt.Printf("✓ Computers: %d\n✓ Software: %d\n✓ Software versions: %d\n", counts.Computers, counts.Softwares, counts.SoftwareVersions)
 
-	fmt.Println("[8/10] Importing existing Trivy vulnerability results...")
-	fmt.Println("[Trivy] Using Trivy JSON importer v2")
-	trivyPath := trivy.TempOutputPath
-	fmt.Printf("[Trivy] Using existing scan result:\n%s\n", trivyPath)
-	data, err := trivy.LoadTrivyJSON(trivyPath)
-	if err != nil { return stageError("Trivy JSON loading", err) }
-	fmt.Println("[Trivy] JSON loaded successfully")
-	records, parseStats, err := trivy.ParseTrivyResultsWithStats(data)
-	if err != nil { return stageError("Trivy JSON parsing", err) }
-	if parseStats.TrivyVersion != "" { fmt.Printf("[Trivy] Trivy version in report: %s\n", parseStats.TrivyVersion) }
-	fmt.Printf("[Trivy] Results found: %d\n", parseStats.ResultsFound)
-	fmt.Printf("[Trivy] Vulnerabilities found: %d\n", parseStats.VulnerabilitiesFound)
-	fmt.Printf("[Trivy] Records skipped: %d (missing ID: %d, invalid: %d, duplicate: %d)\n", parseStats.Skipped, parseStats.MissingVulnerabilityID, parseStats.InvalidRecord, parseStats.Duplicate)
-	fmt.Printf("[Trivy] Valid records: %d\n", len(records))
-	if len(parseStats.MalformedFields) > 0 {
-		limit := len(parseStats.MalformedFields)
-		if limit > 3 { limit = 3 }
-		fmt.Printf("[Trivy] Malformed field examples: %s\n", strings.Join(parseStats.MalformedFields[:limit], "; "))
-	}
-	if err := mysqlcheck.EnsureTrivyTable(context.Background(), value); err != nil { return stageError("Trivy table setup", err) }
-	fmt.Println("[Trivy] MySQL table ready")
-	count, err := mysqlcheck.ImportTrivyVulnerabilities(context.Background(), value, records)
-	if err != nil { return stageError("Trivy MySQL import", err) }
-	fmt.Printf("[Trivy] Imported: %d vulnerabilities\n", count)
-	verification, err := mysqlcheck.VerifyTrivyImport(context.Background(), value)
-	if err != nil { return stageError("Trivy import verification", err) }
-	fmt.Printf("[Trivy] SELECT COUNT(*) FROM trivy_vulnerabilities: %d\n", verification.Total)
-	fmt.Println("[Trivy] Sample: vulnerability_id, target, package_name, installed_version, severity")
-	for _, sample := range verification.Sample {
-		fmt.Printf("[Trivy] %s, %s, %s, %s, %s\n", sample.VulnerabilityID, sample.Target, sample.PackageName, sample.InstalledVersion, sample.Severity)
-	}
-
-	fmt.Println("[9/10] Starting FastAPI and Next.js...")
+	fmt.Println("[8/9] Starting FastAPI and Next.js...")
 	if err := compose("up", "-d", "--build"); err != nil { return stageError("application services", err) }
 	root, err := repositoryRoot()
 	if err != nil { return stageError("Docker network discovery", err) }
@@ -227,12 +194,12 @@ func start() error {
 	}
 	fmt.Println("✓ MySQL access for the CyberNexus Docker network is configured")
 
-	fmt.Println("[10/10] Running health checks...")
+	fmt.Println("[9/9] Running health checks...")
 	if err := waitHTTP("http://localhost:8000/", 30); err != nil { return stageError("FastAPI health check", err) }
 	if err := waitHTTP("http://localhost:3000/", 30); err != nil { return stageError("Next.js health check", err) }
 	if err := checkDockerServices(); err != nil { return stageError("Docker service health check", err) }
 
-	fmt.Println("[10/10] CyberNexus is ready")
+	fmt.Println("[9/9] CyberNexus is ready")
 	fmt.Printf("Dashboard: http://%s:3000\nGLPI:     %s\nAPI:      %s\n", value.CyberNexusHost, settings.URL, value.NextPublicAPIURL)
 	return nil
 }

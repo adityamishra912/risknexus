@@ -4,7 +4,7 @@
 .env.*
 !.env.example
 
-# Generated Trivy scan output
+# Generated scan output retained outside application functionality
 trivy-vulnerabilities.json
 
 # Python (Backend)
