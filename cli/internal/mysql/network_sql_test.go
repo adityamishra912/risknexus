@@ -17,7 +17,9 @@ func dockerNetworkTestValue() config.MySQLConfig {
 
 func TestEnsureDockerNetworkAccessExistingAccountUsesNormalCredentials(t *testing.T) {
 	db, mock, err := sqlmock.New()
-	if err != nil { t.Fatal(err) }
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer db.Close()
 
 	mock.ExpectQuery(regexp.QuoteMeta("SELECT COUNT(*) FROM mysql.user WHERE User = ? AND Host = ?")).
@@ -29,12 +31,16 @@ func TestEnsureDockerNetworkAccessExistingAccountUsesNormalCredentials(t *testin
 	if err := ensureDockerNetworkAccessDB(context.Background(), db, dockerNetworkTestValue(), "172.19.%"); err != nil {
 		t.Fatalf("ensureDockerNetworkAccessDB returned error: %v", err)
 	}
-	if err := mock.ExpectationsWereMet(); err != nil { t.Fatal(err) }
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestEnsureDockerNetworkAccessMissingAccountRequiresAdmin(t *testing.T) {
 	db, mock, err := sqlmock.New()
-	if err != nil { t.Fatal(err) }
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer db.Close()
 	mock.ExpectQuery(regexp.QuoteMeta("SELECT COUNT(*) FROM mysql.user WHERE User = ? AND Host = ?")).
 		WithArgs("glpi_user", "172.19.%").
@@ -42,13 +48,19 @@ func TestEnsureDockerNetworkAccessMissingAccountRequiresAdmin(t *testing.T) {
 
 	err = ensureDockerNetworkAccessDB(context.Background(), db, dockerNetworkTestValue(), "172.19.%")
 	var adminRequired *AdminCredentialsRequiredError
-	if !errors.As(err, &adminRequired) { t.Fatalf("expected admin credentials error, got %v", err) }
-	if err := mock.ExpectationsWereMet(); err != nil { t.Fatal(err) }
+	if !errors.As(err, &adminRequired) {
+		t.Fatalf("expected admin credentials error, got %v", err)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestProvisionDockerNetworkAccessCreatesRestrictedAccountWithoutLocalAccountChange(t *testing.T) {
 	db, mock, err := sqlmock.New()
-	if err != nil { t.Fatal(err) }
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer db.Close()
 
 	mock.ExpectQuery(regexp.QuoteMeta("SELECT COUNT(*) FROM mysql.user WHERE User = ? AND Host = ?")).
@@ -62,12 +74,16 @@ func TestProvisionDockerNetworkAccessCreatesRestrictedAccountWithoutLocalAccount
 	if err := provisionDockerNetworkAccessDB(context.Background(), db, dockerNetworkTestValue(), "172.19.%"); err != nil {
 		t.Fatalf("provisionDockerNetworkAccessDB returned error: %v", err)
 	}
-	if err := mock.ExpectationsWereMet(); err != nil { t.Fatal(err) }
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestProvisionDockerNetworkAccessReportsInsufficientAdminPrivileges(t *testing.T) {
 	db, mock, err := sqlmock.New()
-	if err != nil { t.Fatal(err) }
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer db.Close()
 	mock.ExpectQuery(regexp.QuoteMeta("SELECT COUNT(*) FROM mysql.user WHERE User = ? AND Host = ?")).
 		WithArgs("glpi_user", "172.19.%").
@@ -77,6 +93,7 @@ func TestProvisionDockerNetworkAccessReportsInsufficientAdminPrivileges(t *testi
 	if err == nil || !strings.Contains(err.Error(), "inspect MySQL Docker network account") {
 		t.Fatalf("expected actionable admin error, got %v", err)
 	}
-	if err := mock.ExpectationsWereMet(); err != nil { t.Fatal(err) }
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatal(err)
+	}
 }
-

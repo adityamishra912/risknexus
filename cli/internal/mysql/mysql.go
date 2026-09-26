@@ -111,20 +111,32 @@ func ConfigureInventoryDB(ctx context.Context, db *sql.DB, logf InventoryConfigu
 }
 
 func Check(ctx context.Context, value config.MySQLConfig) (CheckResult, error) {
-	if !validIdentifier.MatchString(value.Database) { return CheckResult{}, fmt.Errorf("invalid database name %q", value.Database) }
+	if !validIdentifier.MatchString(value.Database) {
+		return CheckResult{}, fmt.Errorf("invalid database name %q", value.Database)
+	}
 	baseDSN := fmt.Sprintf("%s:%s@tcp(%s:%d)/?timeout=5s&readTimeout=5s&writeTimeout=5s", value.Username, value.Password, value.Host, value.Port)
 	db, err := sql.Open("mysql", baseDSN)
-	if err != nil { return CheckResult{}, fmt.Errorf("open MySQL connection: %w", err) }
+	if err != nil {
+		return CheckResult{}, fmt.Errorf("open MySQL connection: %w", err)
+	}
 	defer db.Close()
 	pingCtx, cancel := context.WithTimeout(ctx, 7*time.Second)
 	defer cancel()
-	if err := db.PingContext(pingCtx); err != nil { return CheckResult{}, fmt.Errorf("connect to MySQL %s:%d as %q: %w", value.Host, value.Port, value.Username, err) }
+	if err := db.PingContext(pingCtx); err != nil {
+		return CheckResult{}, fmt.Errorf("connect to MySQL %s:%d as %q: %w", value.Host, value.Port, value.Username, err)
+	}
 	var exists int
-	if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM information_schema.schemata WHERE schema_name = ?", value.Database).Scan(&exists); err != nil { return CheckResult{}, fmt.Errorf("check database %q: %w", value.Database, err) }
-	if exists == 0 { return CheckResult{DatabaseExists: false}, nil }
+	if err := db.QueryRowContext(ctx, "SELECT COUNT(*) FROM information_schema.schemata WHERE schema_name = ?", value.Database).Scan(&exists); err != nil {
+		return CheckResult{}, fmt.Errorf("check database %q: %w", value.Database, err)
+	}
+	if exists == 0 {
+		return CheckResult{DatabaseExists: false}, nil
+	}
 	var tableCount int
 	err = db.QueryRowContext(ctx, "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name IN ('glpi_computers', 'glpi_softwares', 'glpi_softwareversions')", value.Database).Scan(&tableCount)
-	if err != nil { return CheckResult{}, fmt.Errorf("inspect GLPI tables in %q: %w", value.Database, err) }
+	if err != nil {
+		return CheckResult{}, fmt.Errorf("inspect GLPI tables in %q: %w", value.Database, err)
+	}
 	return CheckResult{DatabaseExists: true, LooksLikeGLPI: tableCount > 0}, nil
 }
 
@@ -134,22 +146,33 @@ func openDatabase(value config.MySQLConfig) (*sql.DB, error) {
 }
 
 func CreateDatabase(ctx context.Context, value config.MySQLConfig) error {
-	if !validIdentifier.MatchString(value.Database) { return fmt.Errorf("invalid database name %q", value.Database) }
+	if !validIdentifier.MatchString(value.Database) {
+		return fmt.Errorf("invalid database name %q", value.Database)
+	}
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/?timeout=5s", value.Username, value.Password, value.Host, value.Port)
 	db, err := sql.Open("mysql", dsn)
-	if err != nil { return fmt.Errorf("open MySQL connection: %w", err) }
+	if err != nil {
+		return fmt.Errorf("open MySQL connection: %w", err)
+	}
 	defer db.Close()
 	_, err = db.ExecContext(ctx, "CREATE DATABASE IF NOT EXISTS `"+value.Database+"` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
-	if err != nil { return fmt.Errorf("create database %q: %w", value.Database, err) }
+	if err != nil {
+		return fmt.Errorf("create database %q: %w", value.Database, err)
+	}
 	return nil
 }
 
 func Inventory(ctx context.Context, value config.MySQLConfig) (InventoryCounts, error) {
 	db, err := openDatabase(value)
-	if err != nil { return InventoryCounts{}, fmt.Errorf("open GLPI database: %w", err) }
+	if err != nil {
+		return InventoryCounts{}, fmt.Errorf("open GLPI database: %w", err)
+	}
 	defer db.Close()
 	var result InventoryCounts
-	for _, query := range []struct { target *int; name string }{
+	for _, query := range []struct {
+		target *int
+		name   string
+	}{
 		{&result.Computers, "glpi_computers"},
 		{&result.Softwares, "glpi_softwares"},
 		{&result.SoftwareVersions, "glpi_softwareversions"},
@@ -246,11 +269,11 @@ func mysqlHostPattern(subnet string) (string, error) {
 	maskSize, _ := network.Mask.Size()
 	switch {
 	case maskSize == 8:
-		return fmt.Sprintf("%d.%", one), nil
+		return fmt.Sprintf("%d.%%", one), nil
 	case maskSize == 16:
-		return fmt.Sprintf("%d.%d.%", one, two), nil
+		return fmt.Sprintf("%d.%d.%%", one, two), nil
 	case maskSize == 24:
-		return fmt.Sprintf("%d.%d.%d.%", one, two, three), nil
+		return fmt.Sprintf("%d.%d.%d.%%", one, two, three), nil
 	default:
 		return "", fmt.Errorf("Docker network subnet %q is not octet-aligned; cannot represent it safely as a MySQL host pattern", subnet)
 	}

@@ -21,10 +21,10 @@ type Info struct {
 }
 
 type Dependency struct {
-	Name    string
-	Command string
-	Args    []string
-	Package string
+	Name     string
+	Command  string
+	Args     []string
+	Package  string
 	Required string
 }
 
@@ -33,10 +33,16 @@ func Detect() (Info, error) {
 		return Info{}, fmt.Errorf("unsupported system: %s/%s; supported system is Ubuntu 26.04 amd64", runtime.GOOS, runtime.GOARCH)
 	}
 	info := Info{OS: runtime.GOOS, Architecture: runtime.GOARCH, User: os.Getenv("USER"), Elevated: elevated()}
-	if !info.Elevated { return info, fmt.Errorf("start must run with elevated privileges; use sudo ./risknexus start") }
+	if !info.Elevated {
+		return info, fmt.Errorf("start must run with elevated privileges; use sudo ./risknexus start")
+	}
 	info.Distribution, info.Version = readOSRelease()
-	if info.Distribution != "Ubuntu" { return info, fmt.Errorf("unsupported distribution %q; supported distribution is Ubuntu 26.04", info.Distribution) }
-	if info.Version != "26.04" { return info, fmt.Errorf("unsupported Ubuntu version %q; supported version is Ubuntu 26.04", info.Version) }
+	if info.Distribution != "Ubuntu" {
+		return info, fmt.Errorf("unsupported distribution %q; supported distribution is Ubuntu 26.04", info.Distribution)
+	}
+	if info.Version != "26.04" {
+		return info, fmt.Errorf("unsupported Ubuntu version %q; supported version is Ubuntu 26.04", info.Version)
+	}
 	info.RAMGB = readRAM()
 	info.DiskGB = readDisk()
 	return info, nil
@@ -66,35 +72,51 @@ func Dependencies() []Dependency {
 func Missing(dependencies []Dependency) []Dependency {
 	missing := []Dependency{}
 	for _, dependency := range dependencies {
-		if _, err := exec.LookPath(dependency.Command); err != nil { missing = append(missing, dependency); continue }
-		if dependency.Name == "PHP MySQL extension" {
-			output, err := exec.Command(dependency.Command, dependency.Args...).CombinedOutput()
-			if err != nil || (!strings.Contains(string(output), "mysqli") && !strings.Contains(string(output), "pdo_mysql")) { missing = append(missing, dependency) }
+		if _, err := exec.LookPath(dependency.Command); err != nil {
+			missing = append(missing, dependency)
 			continue
 		}
-		if err := exec.Command(dependency.Command, dependency.Args...).Run(); err != nil { missing = append(missing, dependency) }
+		if dependency.Name == "PHP MySQL extension" {
+			output, err := exec.Command(dependency.Command, dependency.Args...).CombinedOutput()
+			if err != nil || (!strings.Contains(string(output), "mysqli") && !strings.Contains(string(output), "pdo_mysql")) {
+				missing = append(missing, dependency)
+			}
+			continue
+		}
+		if err := exec.Command(dependency.Command, dependency.Args...).Run(); err != nil {
+			missing = append(missing, dependency)
+		}
 	}
 	return missing
 }
 
 func readOSRelease() (string, string) {
 	data, err := os.ReadFile("/etc/os-release")
-	if err != nil { return "unknown", "unknown" }
+	if err != nil {
+		return "unknown", "unknown"
+	}
 	values := map[string]string{}
 	for _, line := range strings.Split(string(data), "\n") {
 		parts := strings.SplitN(line, "=", 2)
-		if len(parts) == 2 { values[parts[0]] = strings.Trim(parts[1], "\"") }
+		if len(parts) == 2 {
+			values[parts[0]] = strings.Trim(parts[1], "\"")
+		}
 	}
 	return values["NAME"], values["VERSION_ID"]
 }
 
 func readRAM() string {
 	data, err := os.ReadFile("/proc/meminfo")
-	if err != nil { return "unknown" }
+	if err != nil {
+		return "unknown"
+	}
 	for _, line := range strings.Split(string(data), "\n") {
 		if strings.HasPrefix(line, "MemTotal:") {
 			parts := strings.Fields(line)
-			if len(parts) >= 2 { kb, _ := strconv.ParseInt(parts[1], 10, 64); return fmt.Sprintf("%.1f GB", float64(kb)/1024/1024) }
+			if len(parts) >= 2 {
+				kb, _ := strconv.ParseInt(parts[1], 10, 64)
+				return fmt.Sprintf("%.1f GB", float64(kb)/1024/1024)
+			}
 		}
 	}
 	return "unknown"
@@ -103,10 +125,16 @@ func readRAM() string {
 func readDisk() string {
 	command := exec.Command("df", "-BG", "/")
 	output, err := command.Output()
-	if err != nil { return "unknown" }
+	if err != nil {
+		return "unknown"
+	}
 	lines := strings.Split(strings.TrimSpace(string(output)), "\n")
-	if len(lines) < 2 { return "unknown" }
+	if len(lines) < 2 {
+		return "unknown"
+	}
 	parts := strings.Fields(lines[len(lines)-1])
-	if len(parts) >= 4 { return strings.TrimSuffix(parts[3], "G") + " GB" }
+	if len(parts) >= 4 {
+		return strings.TrimSuffix(parts[3], "G") + " GB"
+	}
 	return "unknown"
 }

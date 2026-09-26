@@ -4,8 +4,8 @@ import "testing"
 
 func TestMysqlHostPatternFromDockerSubnet(t *testing.T) {
 	tests := []struct {
-		subnet  string
-		expect  string
+		subnet string
+		expect string
 	}{
 		{"172.19.0.0/16", "172.19.%"},
 		{"10.42.7.0/24", "10.42.7.%"},
