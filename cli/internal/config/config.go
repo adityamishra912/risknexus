@@ -11,6 +11,8 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+
+	"golang.org/x/term"
 )
 
 type MySQLConfig struct {
@@ -21,7 +23,9 @@ type MySQLConfig struct {
 	Password string
 	GLPIURL string
 	GLPIInventoryURL string
+	RiskNexusHost string
 	CyberNexusHost string
+	GeminiAPIKey string
 	NextPublicAPIURL string
 	MySQLHostContainer string
 }
@@ -33,11 +37,22 @@ type BrowserURLs struct {
 }
 
 func DefaultPath() string {
-	if configured := os.Getenv("CYBERNEXUS_CONFIG_FILE"); configured != "" {
+	if configured := os.Getenv("RISKNEXUS_CONFIG_FILE"); configured != "" {
 		return configured
 	}
-	if runtime.GOOS != "windows" && os.Getenv("USER") == "root" {
-		return "/etc/cybernexus/.env"
+	if configured := os.Getenv("CYBERNEXUS_CONFIG_FILE"); configured != "" {
+		// Legacy fallback for installations created before the RiskNexus rename.
+		return configured
+	}
+	if runtime.GOOS != "windows" {
+		if _, err := os.Stat("/etc/risknexus"); err == nil {
+			return "/etc/risknexus/.env"
+		}
+		if _, err := os.Stat("/etc/cybernexus"); err == nil {
+			// Legacy fallback for an existing CyberNexus configuration directory.
+			return "/etc/cybernexus/.env"
+		}
+		return "/etc/risknexus/.env"
 	}
 	return ".env"
 }
@@ -54,39 +69,61 @@ func Load(path string) (MySQLConfig, error) {
 			return MySQLConfig{}, fmt.Errorf("MYSQL_PORT must be a number: %w", err)
 		}
 	}
-	return MySQLConfig{Host: values["MYSQL_HOST"], Port: port, Database: values["MYSQL_DATABASE"], Username: values["MYSQL_USER"], Password: values["MYSQL_PASSWORD"], GLPIURL: values["GLPI_URL"], GLPIInventoryURL: values["GLPI_INVENTORY_URL"], CyberNexusHost: values["CYBERNEXUS_HOST"], NextPublicAPIURL: values["NEXT_PUBLIC_API_URL"], MySQLHostContainer: values["MYSQL_HOST_CONTAINER"]}, nil
+	hostName := values["RISKNEXUS_HOST"]
+	if hostName == "" {
+		// Legacy fallback for existing environment files.
+		hostName = values["CYBERNEXUS_HOST"]
+	}
+	return MySQLConfig{Host: values["MYSQL_HOST"], Port: port, Database: values["MYSQL_DATABASE"], Username: values["MYSQL_USER"], Password: values["MYSQL_PASSWORD"], GLPIURL: values["GLPI_URL"], GLPIInventoryURL: values["GLPI_INVENTORY_URL"], RiskNexusHost: hostName, CyberNexusHost: hostName, GeminiAPIKey: values["GEMINI_API_KEY"], NextPublicAPIURL: values["NEXT_PUBLIC_API_URL"], MySQLHostContainer: values["MYSQL_HOST_CONTAINER"]}, nil
 }
 
-func ValidateCyberNexusHost(host string) error {
-	if host == "" { return errors.New("CyberNexus host/IP address is required") }
-	if strings.ContainsAny(host, "/:\\ \t\r\n") { return fmt.Errorf("invalid CyberNexus host %q: enter a hostname or IP address without a scheme, port, path, or whitespace", host) }
+func ValidateRiskNexusHost(host string) error {
+	if host == "" { return errors.New("RiskNexus host/IP address is required") }
+	if strings.ContainsAny(host, "/:\\ \t\r\n") { return fmt.Errorf("invalid RiskNexus host %q: enter a hostname or IP address without a scheme, port, path, or whitespace", host) }
 	if net.ParseIP(host) != nil { return nil }
 	for _, label := range strings.Split(host, ".") {
-		if label == "" || len(label) > 63 || label[0] == '-' || label[len(label)-1] == '-' { return fmt.Errorf("invalid CyberNexus hostname %q", host) }
+		if label == "" || len(label) > 63 || label[0] == '-' || label[len(label)-1] == '-' { return fmt.Errorf("invalid RiskNexus hostname %q", host) }
 		for _, character := range label {
-			if (character < 'a' || character > 'z') && (character < 'A' || character > 'Z') && (character < '0' || character > '9') && character != '-' { return fmt.Errorf("invalid CyberNexus hostname %q", host) }
+			if (character < 'a' || character > 'z') && (character < 'A' || character > 'Z') && (character < '0' || character > '9') && character != '-' { return fmt.Errorf("invalid RiskNexus hostname %q", host) }
 		}
 	}
 	return nil
 }
 
+func ValidateCyberNexusHost(host string) error {
+	return ValidateRiskNexusHost(host)
+}
+
 func GenerateBrowserURLs(host string) (BrowserURLs, error) {
-	if err := ValidateCyberNexusHost(host); err != nil { return BrowserURLs{}, err }
+	if err := ValidateRiskNexusHost(host); err != nil { return BrowserURLs{}, err }
 	glpiURL := fmt.Sprintf("http://%s/glpi", host)
 	return BrowserURLs{GLPIURL: glpiURL, GLPIInventoryURL: glpiURL + "/front/inventory.php", NextPublicAPIURL: fmt.Sprintf("http://%s:8000/api/v1", host)}, nil
 }
 
-func PromptCyberNexusHost(in io.Reader, out io.Writer, existing string) (string, error) {
+func PromptRiskNexusHost(in io.Reader, out io.Writer, existing string) (string, error) {
 	reader := bufio.NewReader(in)
 	for {
-		if existing == "" { fmt.Fprint(out, "Enter CyberNexus host/IP address: ") } else { fmt.Fprintf(out, "Enter CyberNexus host/IP address [%s]: ", existing) }
+		if existing == "" { fmt.Fprint(out, "Enter RiskNexus host/IP address: ") } else { fmt.Fprintf(out, "Enter RiskNexus host/IP address [%s]: ", existing) }
 		line, err := reader.ReadString('\n')
 		if err != nil && !errors.Is(err, io.EOF) { return "", err }
 		host := strings.TrimSuffix(strings.TrimSuffix(line, "\n"), "\r")
 		if host == "" { host = existing }
-		if err := ValidateCyberNexusHost(host); err != nil { fmt.Fprintf(out, "✗ %v\n", err); if errors.Is(err, io.EOF) { return "", err }; continue }
+		if err := ValidateRiskNexusHost(host); err != nil { fmt.Fprintf(out, "✗ %v\n", err); if errors.Is(err, io.EOF) { return "", err }; continue }
 		return host, nil
 	}
+}
+
+func PromptCyberNexusHost(in io.Reader, out io.Writer, existing string) (string, error) {
+	return PromptRiskNexusHost(in, out, existing)
+}
+
+func PromptGeminiAPIKey(out io.Writer, existing string) (string, error) {
+	fmt.Fprint(out, "Gemini API Key: ")
+	password, err := term.ReadPassword(int(os.Stdin.Fd()))
+	fmt.Fprintln(out)
+	if err != nil { return "", err }
+	if string(password) == "" && existing != "" { return existing, nil }
+	return strings.TrimSpace(string(password)), nil
 }
 
 func Prompt(in io.Reader, out io.Writer, existing *MySQLConfig, passwordReader func() ([]byte, error)) (MySQLConfig, error) {
@@ -145,8 +182,12 @@ func Save(path string, value MySQLConfig) error {
 	containerHost := value.Host
 	if value.Host == "127.0.0.1" || value.Host == "localhost" { containerHost = "host.docker.internal" }
 	if value.MySQLHostContainer != "" { containerHost = value.MySQLHostContainer }
-	if err := ValidateCyberNexusHost(value.CyberNexusHost); err != nil { return err }
-	contents := fmt.Sprintf("CYBERNEXUS_HOST=%s\nMYSQL_HOST=%s\nMYSQL_HOST_CONTAINER=%s\nMYSQL_PORT=%d\nMYSQL_DATABASE=%s\nMYSQL_USER=%s\nMYSQL_PASSWORD=%s\nGLPI_URL=%s\nGLPI_INVENTORY_URL=%s\nNEXT_PUBLIC_API_URL=%s\nCORS_ORIGINS=%s\nCYBERNEXUS_CONFIG_FILE=%s\n", quote(value.CyberNexusHost), quote(value.Host), quote(containerHost), value.Port, quote(value.Database), quote(value.Username), quote(value.Password), quote(value.GLPIURL), quote(value.GLPIInventoryURL), quote(value.NextPublicAPIURL), quote(fmt.Sprintf("http://%s:3000,http://localhost:3000,http://127.0.0.1:3000", value.CyberNexusHost)), quote(path))
+	hostName := value.RiskNexusHost
+	if hostName == "" && value.CyberNexusHost != "" { hostName = value.CyberNexusHost }
+	if hostName == "" { hostName = value.Host }
+	if err := ValidateRiskNexusHost(hostName); err != nil { return err }
+	configHost := fmt.Sprintf("http://%s:3000,http://localhost:3000,http://127.0.0.1:3000", hostName)
+	contents := fmt.Sprintf("RISKNEXUS_HOST=%s\nCYBERNEXUS_HOST=%s\nMYSQL_HOST=%s\nMYSQL_HOST_CONTAINER=%s\nMYSQL_PORT=%d\nMYSQL_DATABASE=%s\nMYSQL_USER=%s\nMYSQL_PASSWORD=%s\nGLPI_URL=%s\nGLPI_INVENTORY_URL=%s\nNEXT_PUBLIC_API_URL=%s\nCORS_ORIGINS=%s\nGEMINI_API_KEY=%s\nRISKNEXUS_CONFIG_FILE=%s\nCYBERNEXUS_CONFIG_FILE=%s\n", quote(hostName), quote(hostName), quote(value.Host), quote(containerHost), value.Port, quote(value.Database), quote(value.Username), quote(value.Password), quote(value.GLPIURL), quote(value.GLPIInventoryURL), quote(value.NextPublicAPIURL), quote(configHost), quote(value.GeminiAPIKey), quote(path), quote(path))
 	if err := os.WriteFile(path, []byte(contents), 0600); err != nil { return fmt.Errorf("write config %s: %w", path, err) }
 	return nil
 }

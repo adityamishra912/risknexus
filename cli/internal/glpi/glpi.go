@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cybernexus/cli/internal/config"
+	"github.com/risknexus/cli/internal/config"
 )
 
 type Settings struct {
@@ -21,13 +21,17 @@ type Settings struct {
 const DefaultVersion = "v10.0.20"
 
 func FromEnvironment() Settings {
-	url := os.Getenv("CYBERNEXUS_GLPI_URL")
+	url := os.Getenv("RISKNEXUS_GLPI_URL")
+	if url == "" { url = os.Getenv("CYBERNEXUS_GLPI_URL") } // Legacy compatibility fallback.
 	if url == "" { url = "http://localhost/glpi" }
-	inventory := os.Getenv("CYBERNEXUS_GLPI_INVENTORY_URL")
+	inventory := os.Getenv("RISKNEXUS_GLPI_INVENTORY_URL")
+	if inventory == "" { inventory = os.Getenv("CYBERNEXUS_GLPI_INVENTORY_URL") } // Legacy compatibility fallback.
 	if inventory == "" { inventory = strings.TrimRight(url, "/") + "/front/inventory.php" }
-	path := os.Getenv("CYBERNEXUS_GLPI_PATH")
+	path := os.Getenv("RISKNEXUS_GLPI_PATH")
+	if path == "" { path = os.Getenv("CYBERNEXUS_GLPI_PATH") } // Legacy compatibility fallback.
 	if path == "" { path = "/var/www/glpi" }
-	version := os.Getenv("CYBERNEXUS_GLPI_VERSION")
+	version := os.Getenv("RISKNEXUS_GLPI_VERSION")
+	if version == "" { version = os.Getenv("CYBERNEXUS_GLPI_VERSION") } // Legacy compatibility fallback.
 	if version == "" { version = DefaultVersion }
 	return Settings{URL: strings.TrimRight(url, "/"), InventoryURL: inventory, InstallPath: path, Version: version}
 }

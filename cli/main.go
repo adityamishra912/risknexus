@@ -18,11 +18,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cybernexus/cli/internal/config"
-	mysqlcheck "github.com/cybernexus/cli/internal/mysql"
-	"github.com/cybernexus/cli/internal/glpi"
-	"github.com/cybernexus/cli/internal/system"
-	"github.com/cybernexus/cli/internal/ui"
+	"github.com/risknexus/cli/internal/config"
+	mysqlcheck "github.com/risknexus/cli/internal/mysql"
+	"github.com/risknexus/cli/internal/glpi"
+	"github.com/risknexus/cli/internal/system"
+	"github.com/risknexus/cli/internal/ui"
 	"golang.org/x/term"
 )
 
@@ -36,9 +36,7 @@ func main() {
 	commandName := flag.Arg(0)
 	longRunning := commandName == "install" || commandName == "start"
 	if longRunning || commandName == "configure" { ui.Welcome() }
-	if debug {
-		fmt.Printf("[DEBUG] OS=%s ARCH=%s CWD=%s\n", runtime.GOOS, runtime.GOARCH, currentDirectory())
-	}
+	if debug { fmt.Printf("[DEBUG] OS=%s ARCH=%s CWD=%s\n", runtime.GOOS, runtime.GOARCH, currentDirectory()) }
 	var err error
 	switch commandName {
 	case "configure": err = configure()
@@ -53,22 +51,24 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "CyberNexus CLI")
-	fmt.Fprintln(os.Stderr, "Usage: cybernexus [--debug] <install|configure|start|stop|status|logs>")
+	fmt.Fprintln(os.Stderr, "RiskNexus CLI")
+	fmt.Fprintln(os.Stderr, "Usage: risknexus [--debug] <install|configure|start|stop|status|logs>")
 }
 
 func configure() error {
 	path := config.DefaultPath()
-	ui.Step("CyberNexus MySQL Configuration")
+	ui.Step("RISKNEXUS CONFIGURATION")
 	ui.Info(fmt.Sprintf("Configuration file: %s", path))
 	var existing *config.MySQLConfig
 	if current, err := config.Load(path); err == nil { existing = &current }
 	for {
+		ui.Step("MySQL Administration")
 		value, err := config.Prompt(os.Stdin, os.Stdout, existing, readPassword)
 		if err != nil { return err }
-		value.CyberNexusHost, err = config.PromptCyberNexusHost(os.Stdin, os.Stdout, "")
+		value.RiskNexusHost, err = config.PromptRiskNexusHost(os.Stdin, os.Stdout, existingValue(existing, "RiskNexusHost"))
 		if err != nil { return err }
-		browserURLs, err := config.GenerateBrowserURLs(value.CyberNexusHost)
+		value.CyberNexusHost = value.RiskNexusHost
+		browserURLs, err := config.GenerateBrowserURLs(value.RiskNexusHost)
 		if err != nil { return err }
 		value.GLPIURL = browserURLs.GLPIURL
 		value.GLPIInventoryURL = browserURLs.GLPIInventoryURL
@@ -94,8 +94,17 @@ func configure() error {
 			result.DatabaseExists = true
 		}
 		if !result.LooksLikeGLPI { ui.Warning(fmt.Sprintf("Database %q does not currently contain expected GLPI tables; continuing is allowed for a new GLPI installation.", value.Database)) }
-		if err := config.Save(path, value); err != nil { return err }
 		ui.Success("MySQL connection successful")
+		ui.Step("AI Configuration")
+		for {
+			key, err := config.PromptGeminiAPIKey(os.Stdout, value.GeminiAPIKey)
+			if err != nil { return err }
+			if strings.TrimSpace(key) == "" { ui.Error("Gemini API key is required."); continue }
+			value.GeminiAPIKey = key
+			break
+		}
+		if err := config.Save(path, value); err != nil { return err }
+		ui.Success("Gemini API key configured")
 		ui.Success(fmt.Sprintf("Configuration saved securely at %s", path))
 		return nil
 	}
@@ -128,14 +137,18 @@ func start() error {
 	path := config.DefaultPath()
 	value, err := configuredMySQL(path)
 	if err != nil { return stageError("MySQL configuration", err) }
-	if value.CyberNexusHost == "" {
-		value.CyberNexusHost, err = config.PromptCyberNexusHost(os.Stdin, os.Stdout, "")
-		if err != nil { return stageError("CyberNexus host configuration", err) }
-	} else if err := config.ValidateCyberNexusHost(value.CyberNexusHost); err != nil {
-		return stageError("CyberNexus host configuration", err)
+	if value.RiskNexusHost == "" {
+		value.RiskNexusHost, err = config.PromptRiskNexusHost(os.Stdin, os.Stdout, "")
+		if err != nil { return stageError("RiskNexus host configuration", err) }
+	} else if err := config.ValidateRiskNexusHost(value.RiskNexusHost); err != nil {
+		return stageError("RiskNexus host configuration", err)
 	}
-	browserURLs, err := config.GenerateBrowserURLs(value.CyberNexusHost)
-	if err != nil { return stageError("CyberNexus host configuration", err) }
+	if strings.TrimSpace(value.GeminiAPIKey) == "" {
+		return stageError("Gemini API configuration", errors.New("Gemini API key is required; run risknexus configure"))
+	}
+	value.CyberNexusHost = value.RiskNexusHost
+	browserURLs, err := config.GenerateBrowserURLs(value.RiskNexusHost)
+	if err != nil { return stageError("RiskNexus host configuration", err) }
 	value.GLPIURL = browserURLs.GLPIURL
 	value.GLPIInventoryURL = browserURLs.GLPIInventoryURL
 	value.NextPublicAPIURL = browserURLs.NextPublicAPIURL
@@ -218,7 +231,7 @@ func start() error {
 		}
 		admin.Password = ""
 	}
-	ui.Success("MySQL access for the CyberNexus Docker network is configured")
+	ui.Success("MySQL access for the RiskNexus Docker network is configured")
 
 	ui.Step("[9/9] Running health checks")
 	if err := waitHTTP("http://localhost:8000/", 30); err != nil { return stageError("FastAPI health check", err) }
@@ -226,7 +239,7 @@ func start() error {
 	if err := checkDockerServices(); err != nil { return stageError("Docker service health check", err) }
 
 	ui.Success("All services are healthy")
-	ui.Completion(fmt.Sprintf("http://%s:3000", value.CyberNexusHost), settings.URL, value.NextPublicAPIURL)
+	ui.Completion(fmt.Sprintf("http://%s:3000", value.RiskNexusHost), settings.URL, value.NextPublicAPIURL)
 	return nil
 }
 
@@ -295,9 +308,9 @@ func installGLPI(settings glpi.Settings, value config.MySQLConfig, initializeDat
 
 func configureApache(settings glpi.Settings) error {
 	content := fmt.Sprintf("<VirtualHost *:80>\n    DocumentRoot %s/public\n    <Directory %s/public>\n        AllowOverride All\n        Require all granted\n    </Directory>\n</VirtualHost>\n", settings.InstallPath, settings.InstallPath)
-	if err := os.WriteFile("/etc/apache2/sites-available/cybernexus-glpi.conf", []byte(content), 0644); err != nil { return fmt.Errorf("write Apache site: %w", err) }
+	if err := os.WriteFile("/etc/apache2/sites-available/risknexus-glpi.conf", []byte(content), 0644); err != nil { return fmt.Errorf("write Apache site: %w", err) }
 	if err := runCommand("/", "a2enmod", "rewrite"); err != nil { return err }
-	if err := runCommand("/", "a2ensite", "cybernexus-glpi.conf"); err != nil { return err }
+	if err := runCommand("/", "a2ensite", "risknexus-glpi.conf"); err != nil { return err }
 	return runCommand("/", "systemctl", "reload", "apache2")
 }
 
@@ -307,7 +320,7 @@ func status() error {
 	if err != nil { return fmt.Errorf("load configuration %s: %w", path, err) }
 	result, err := mysqlcheck.Check(context.Background(), value)
 	if err != nil { return err }
-	ui.Step("CyberNexus Status")
+	ui.Step("RiskNexus Status")
 	ui.Success("MySQL connected")
 	fmt.Printf("Host            %s\nPort            %d\nDatabase        %s\nUser            %s\nPassword        ********\nGLPI tables     %t\n", value.Host, value.Port, value.Database, value.Username, result.LooksLikeGLPI)
 	return nil
@@ -414,7 +427,17 @@ func repositoryRoot() (string, error) {
 
 func containsDependency(values []system.Dependency, name string) bool { for _, value := range values { if value.Name == name { return true } }; return false }
 func unique(values []string) []string { result := []string{}; seen := map[string]bool{}; for _, value := range values { if !seen[value] { result = append(result, value); seen[value] = true } }; return result }
-func stageError(stage string, err error) error { return fmt.Errorf("installation failed at %s: %w; logs: run cybernexus logs", stage, err) }
+func stageError(stage string, err error) error { return fmt.Errorf("installation failed at %s: %w; logs: run risknexus logs", stage, err) }
+
+func existingValue(configValue *config.MySQLConfig, field string) string {
+	if configValue == nil { return "" }
+	switch field {
+	case "RiskNexusHost":
+		return configValue.RiskNexusHost
+	default:
+		return ""
+	}
+}
 
 func readPassword() ([]byte, error) {
 	if !term.IsTerminal(int(os.Stdin.Fd())) { return nil, errors.New("password input requires an interactive terminal") }

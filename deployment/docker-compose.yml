@@ -3,7 +3,7 @@ services:
     build:
       context: ../backend
     env_file:
-      - ${CYBERNEXUS_CONFIG_FILE:-../.env}
+      - ${RISKNEXUS_CONFIG_FILE:-${CYBERNEXUS_CONFIG_FILE:-../.env}}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -13,6 +13,8 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-glpi}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
     ports:
       - "8000:8000"
     volumes:

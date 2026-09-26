@@ -13,7 +13,7 @@ _IDENTIFIER = re.compile(r"^[A-Za-z0-9_]+$")
 
 def _connection():
     if not settings.MYSQL_USER or not settings.MYSQL_PASSWORD:
-        raise HTTPException(status_code=503, detail="GLPI MySQL is not configured; run cybernexus configure")
+        raise HTTPException(status_code=503, detail="GLPI MySQL is not configured; run risknexus configure")
     mysql_host = settings.MYSQL_HOST_CONTAINER or settings.MYSQL_HOST
     try:
         import pymysql

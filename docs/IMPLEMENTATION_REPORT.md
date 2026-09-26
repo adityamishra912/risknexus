@@ -1,4 +1,4 @@
-# CyberNexus Implementation Report
+# RiskNexus Implementation Report
 
 ## Current Status
 
@@ -20,9 +20,9 @@ Go CLI orchestrates all stages
 
 The browser never receives database credentials and never connects directly to MySQL. On Linux, Compose maps `host.docker.internal` to the host gateway and generated configuration sets `MYSQL_HOST_CONTAINER` for the backend container while retaining the real host value for CLI and GLPI operations.
 
-`CYBERNEXUS_HOST` is the browser-facing hostname or IP. For example, `192.168.201.129` generates `http://192.168.201.129/glpi`, `http://192.168.201.129/glpi/front/inventory.php`, and `http://192.168.201.129:8000/api/v1`. `MYSQL_HOST` remains the host-side database address in the protected file; Compose overrides the backend container's `MYSQL_HOST` from `MYSQL_HOST_CONTAINER` without changing the host-side value.
+`RISKNEXUS_HOST` is the browser-facing hostname or IP. For example, a configured host generates the GLPI and API URLs used by the browser. `MYSQL_HOST` remains the host-side database address in the protected file; Compose overrides the backend container's `MYSQL_HOST` from `MYSQL_HOST_CONTAINER` without changing the host-side value.
 
-## `cybernexus start` Workflow
+## `risknexus start` Workflow
 
 `start` and `install` call the same idempotent function. The stages are:
 
@@ -31,7 +31,7 @@ The browser never receives database credentials and never connects directly to M
 3. Ask before running `apt-get update` and installing missing packages.
 4. Load an existing valid MySQL configuration or prompt for host, port, database, username, and hidden password. Missing databases require an explicit create confirmation.
 5. Save the protected environment file and derive `GLPI_URL` and `GLPI_INVENTORY_URL`.
-6. Detect GLPI at `CYBERNEXUS_GLPI_PATH` or `/var/www/glpi`. If absent, ask for confirmation, download the pinned GLPI `v10.0.20` release (or the explicit `CYBERNEXUS_GLPI_VERSION` override), extract it, set ownership, and initialize the database only when GLPI tables are not already present.
+6. Detect GLPI at `RISKNEXUS_GLPI_PATH` or `/var/www/glpi`. If absent, ask for confirmation, download the pinned GLPI `v10.0.20` release (or the explicit `RISKNEXUS_GLPI_VERSION` override), extract it, set ownership, and initialize the database only when GLPI tables are not already present.
 7. Write an Apache virtual host, enable rewrite, reload Apache, and verify the GLPI URL responds.
 8. Query `glpi_configs` for the existing `inventory`/`enabled_inventory` row. If its value is not `1`, update only that row with parameterized SQL and verify the resulting value. A missing row is treated as a configuration error; no row is inserted.
 9. Install the GLPI Agent package if missing, write `/etc/glpi-agent/agent.cfg`, enable/start its systemd service, and run `glpi-agent --debug --force`.
@@ -45,20 +45,20 @@ Existing GLPI files and a database containing GLPI tables are reused. Database i
 ## CLI Commands
 
 ```text
-cybernexus start       # full staged setup and startup
-cybernexus install     # alias for start
-cybernexus configure   # prompt, validate, and save MySQL configuration
-cybernexus status      # MySQL and GLPI table health; password is redacted
-cybernexus stop        # docker compose down
-cybernexus logs        # docker compose logs --tail=100
-cybernexus --debug start
+risknexus start       # full staged setup and startup
+risknexus install     # alias for start
+risknexus configure   # prompt, validate, and save MySQL configuration
+risknexus status      # MySQL and GLPI table health; password is redacted
+risknexus stop        # docker compose down
+risknexus logs        # docker compose logs --tail=100
+risknexus --debug start
 ```
 
-Every external command is printed, streams stdout/stderr, and includes exit code plus captured output on failure. Stage errors include the failing stage and `cybernexus logs` as the next diagnostic action.
+Every external command is printed, streams stdout/stderr, and includes exit code plus captured output on failure. Stage errors include the failing stage and `risknexus logs` as the next diagnostic action.
 
 ## Configuration
 
-The CLI uses `CYBERNEXUS_CONFIG_FILE` when set. Otherwise root Linux runs use `/etc/cybernexus/.env`; non-root/development runs use `.env`. The file is written with mode `0600` and includes:
+The CLI uses `RISKNEXUS_CONFIG_FILE` when set. Otherwise Linux runs use `/etc/risknexus/.env`; development runs use `.env`. The file is written with mode `0600` and includes:
 
 ```text
 MYSQL_HOST
@@ -69,23 +69,23 @@ MYSQL_USER
 MYSQL_PASSWORD
 GLPI_URL
 GLPI_INVENTORY_URL
-CYBERNEXUS_CONFIG_FILE
-CYBERNEXUS_HOST
+RISKNEXUS_CONFIG_FILE
+RISKNEXUS_HOST
 NEXT_PUBLIC_API_URL
 ```
 
-`CYBERNEXUS_HOST` is the validated hostname or IP address used by browsers. Startup reuses it from the protected configuration or prompts for it on first setup. It generates `GLPI_URL`, `GLPI_INVENTORY_URL`, and `NEXT_PUBLIC_API_URL` without exposing MySQL credentials. `MYSQL_HOST` remains for host-side CLI/GLPI operations; FastAPI uses `MYSQL_HOST_CONTAINER` when supplied by Docker Compose.
+`RISKNEXUS_HOST` is the validated hostname or IP address used by browsers. Startup reuses it from the protected configuration or prompts for it on first setup. It generates `GLPI_URL`, `GLPI_INVENTORY_URL`, and `NEXT_PUBLIC_API_URL` without exposing MySQL credentials. `MYSQL_HOST` remains for host-side CLI/GLPI operations; FastAPI uses `MYSQL_HOST_CONTAINER` when supplied by Docker Compose.
 
 Optional installer variables are read from the process environment:
 
 ```text
-CYBERNEXUS_GLPI_URL=http://localhost/glpi
-CYBERNEXUS_GLPI_INVENTORY_URL=http://localhost/glpi/front/inventory.php
-CYBERNEXUS_GLPI_PATH=/var/www/glpi
-CYBERNEXUS_GLPI_VERSION=v10.0.20
+RISKNEXUS_GLPI_URL=http://localhost/glpi
+RISKNEXUS_GLPI_INVENTORY_URL=http://localhost/glpi/front/inventory.php
+RISKNEXUS_GLPI_PATH=/var/www/glpi
+RISKNEXUS_GLPI_VERSION=v10.0.20
 ```
 
-The installer defaults to reproducible GLPI release `v10.0.20`. `CYBERNEXUS_GLPI_VERSION` pins another explicit release tag for compatibility testing. Passwords are never printed; the GLPI database initialization command displays `--db-password=********` while the actual process receives the real value.
+The installer defaults to reproducible GLPI release `v10.0.20`. `RISKNEXUS_GLPI_VERSION` pins another explicit release tag for compatibility testing. Passwords are never printed; the GLPI database initialization command displays `--db-password=********` while the actual process receives the real value.
 
 ## FastAPI GLPI API
 
@@ -173,7 +173,7 @@ The Go module should be checked on a machine with Go installed:
 cd cli
 gofmt -w .
 go test ./...
-go build -o cybernexus .
+go build -o risknexus .
 ```
 
 ## Error and Log Behavior
@@ -182,7 +182,7 @@ go build -o cybernexus .
 - GLPI inventory configuration uses the existing MySQL connection and never invokes a GLPI console inventory command.
 - FastAPI GLPI connection and query failures use `logger.exception`, preserving traceback in server logs.
 - Frontend request failures include the endpoint, status, and response body where available.
-- Compose logs remain available through `docker compose logs` and `cybernexus logs`.
+- Compose logs remain available through `docker compose logs` and `risknexus logs`.
 - Passwords and other secrets are excluded from status output and frontend responses.
 
 ## Verification
@@ -200,7 +200,7 @@ Not executable in this workspace:
 ```text
 go test ./...                          Go is not installed
 pytest                                 pytest is not installed
-sudo ./cybernexus start                requires Ubuntu 26.04 and root services
+sudo ./risknexus start                 requires Ubuntu 26.04 and root services
 ```
 
 Required target-VM acceptance commands:
@@ -209,8 +209,8 @@ Required target-VM acceptance commands:
 cd cli
 gofmt -w .
 go test ./...
-go build -o cybernexus .
-sudo ./cybernexus start
+go build -o risknexus .
+sudo ./risknexus start
 curl http://localhost:8000/api/v1/glpi/tables
 ```
 
@@ -224,4 +224,4 @@ curl http://localhost:8000/api/v1/glpi/tables
 
 ## Troubleshooting
 
-Use `sudo ./cybernexus --debug start` for command context and streamed errors. Use `sudo ./cybernexus logs` for application container logs, `systemctl status glpi-agent` for agent state, `journalctl -u glpi-agent` for agent logs, and Apache's error log for GLPI HTTP failures. A failed run stops at its stage and does not report that CyberNexus is ready.
+Use `sudo ./risknexus --debug start` for command context and streamed errors. Use `sudo ./risknexus logs` for application container logs, `systemctl status glpi-agent` for agent state, `journalctl -u glpi-agent` for agent logs, and Apache's error log for GLPI HTTP failures. A failed run stops at its stage and does not report that RiskNexus is ready.

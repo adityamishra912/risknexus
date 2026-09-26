@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
-	"github.com/cybernexus/cli/internal/config"
+	"github.com/risknexus/cli/internal/config"
 )
 
 func dockerNetworkTestValue() config.MySQLConfig {

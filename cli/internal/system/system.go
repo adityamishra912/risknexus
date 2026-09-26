@@ -33,7 +33,7 @@ func Detect() (Info, error) {
 		return Info{}, fmt.Errorf("unsupported system: %s/%s; supported system is Ubuntu 26.04 amd64", runtime.GOOS, runtime.GOARCH)
 	}
 	info := Info{OS: runtime.GOOS, Architecture: runtime.GOARCH, User: os.Getenv("USER"), Elevated: elevated()}
-	if !info.Elevated { return info, fmt.Errorf("start must run with elevated privileges; use sudo ./cybernexus start") }
+	if !info.Elevated { return info, fmt.Errorf("start must run with elevated privileges; use sudo ./risknexus start") }
 	info.Distribution, info.Version = readOSRelease()
 	if info.Distribution != "Ubuntu" { return info, fmt.Errorf("unsupported distribution %q; supported distribution is Ubuntu 26.04", info.Distribution) }
 	if info.Version != "26.04" { return info, fmt.Errorf("unsupported Ubuntu version %q; supported version is Ubuntu 26.04", info.Version) }

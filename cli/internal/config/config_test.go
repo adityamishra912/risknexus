@@ -5,16 +5,16 @@ import (
 	"testing"
 )
 
-func TestValidateCyberNexusHost(t *testing.T) {
-	valid := []string{"192.168.201.129", "cybernexus.example", "localhost"}
+func TestValidateRiskNexusHost(t *testing.T) {
+	valid := []string{"192.168.201.129", "risknexus.example", "localhost"}
 	for _, host := range valid {
-		if err := ValidateCyberNexusHost(host); err != nil {
+		if err := ValidateRiskNexusHost(host); err != nil {
 			t.Errorf("expected %q to be valid: %v", host, err)
 		}
 	}
 	invalid := []string{"", "http://192.168.201.129", "192.168.201.129:3000", "server/path", "server name"}
 	for _, host := range invalid {
-		if err := ValidateCyberNexusHost(host); err == nil {
+		if err := ValidateRiskNexusHost(host); err == nil {
 			t.Errorf("expected %q to be rejected", host)
 		}
 	}
@@ -34,7 +34,7 @@ func TestSaveLoadPreservesHostConfiguration(t *testing.T) {
 	path := filepath.Join(t.TempDir(), ".env")
 	original := MySQLConfig{
 		Host: "127.0.0.1", Port: 3306, Database: "glpi", Username: "glpi_user", Password: "secret",
-		CyberNexusHost: "192.168.201.129", GLPIURL: "http://192.168.201.129/glpi",
+		RiskNexusHost: "192.168.201.129", GLPIURL: "http://192.168.201.129/glpi",
 		GLPIInventoryURL: "http://192.168.201.129/glpi/front/inventory.php", NextPublicAPIURL: "http://192.168.201.129:8000/api/v1",
 		MySQLHostContainer: "host.docker.internal",
 	}
@@ -45,7 +45,7 @@ func TestSaveLoadPreservesHostConfiguration(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if loaded.CyberNexusHost != original.CyberNexusHost || loaded.NextPublicAPIURL != original.NextPublicAPIURL || loaded.MySQLHostContainer != original.MySQLHostContainer {
+	if loaded.RiskNexusHost != original.RiskNexusHost || loaded.NextPublicAPIURL != original.NextPublicAPIURL || loaded.MySQLHostContainer != original.MySQLHostContainer {
 		t.Fatalf("host configuration was not preserved: %#v", loaded)
 	}
 }

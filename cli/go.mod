@@ -1,4 +1,4 @@
-module github.com/cybernexus/cli
+module github.com/risknexus/cli
 
 go 1.22
 

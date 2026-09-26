@@ -11,7 +11,7 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/cybernexus/cli/internal/config"
+	"github.com/risknexus/cli/internal/config"
 )
 
 var validIdentifier = regexp.MustCompile(`^[A-Za-z0-9_]+$`)
